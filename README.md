@@ -1,2 +1,5 @@
-# tropical_cyclone_changes_analysis
-An Analysis of the Global Tropical Cyclone Record - regression and change point methodologies looking for a change in the historic record.
+# Changes in the Tropical Cyclone Record
+
+This repository contains all the code and Quarto files (as well as the rendered version) for the statistical analysis accompanying the manuscript "Changepoint Analysis Confirms Decline in Observed Global Tropical Cyclone Frequency".
+
+The repository contains the following:
