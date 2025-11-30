@@ -1,0 +1,343 @@
+---
+title: "Tropical Cyclone Analysis"
+subtitle: "Single Change Point & Regression Methods"
+author: "Tom Fisher"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-location: left
+    embed-resources: true
+editor: visual
+---
+
+```{r, include=FALSE}
+library(tidyverse)
+set.seed(1)
+
+load("./data/ibtracs_nonShortiesForProportions.RData")
+ibtracs_data <- non_shorty_for_props
+load("./data/hursat_nonShortiesForProportions.RData")
+hursat_data <- non_shorty_for_props
+
+source("cusumBasedChangePointsTest.R")
+
+ibtracs_all_basins <- ibtracs_data |>
+  group_by(SEASON) |>
+  summarize(Major_Storms = sum(Major_Storms),
+            Intense_Storms = sum(Intense_Storms),
+            Total_Storms = sum(Total_Storms)) |>
+  mutate(BASIN = "Global") |>
+  bind_rows(ibtracs_data)
+
+hursat_all_basins <- hursat_data |>
+  group_by(SEASON) |>
+  summarize(Major_Storms = sum(Major_Storms),
+            Intense_Storms = sum(Intense_Storms),
+            Total_Storms = sum(Total_Storms)) |>
+  mutate(BASIN = "Global") |>
+  bind_rows(hursat_data)
+
+ibtracs_trimmed <- ibtracs_all_basins |>
+  dplyr::filter(SEASON %in% unique(hursat_all_basins$SEASON) )
+```
+
+```{r, echo=FALSE}
+get_report_basin <- function(basin="Global", all_basins=ibtracs_all_basins, runs=50000) {
+  ## Some Data Processing for plots and summary statistics
+  storm_basin <- all_basins |>
+    dplyr::filter(BASIN==basin) |>
+    mutate(YearsSinceStart = SEASON - min(SEASON)) |>
+    mutate(Prop_Major = Major_Storms/Total_Storms,
+           Prop_Intense = Intense_Storms/Total_Storms)
+  
+  storm_basin_long <- storm_basin |>
+    dplyr::select(SEASON, Total_Storms, Major_Storms, Prop_Major, Intense_Storms, Prop_Intense, BASIN) |>
+    pivot_longer(c(Total_Storms, Major_Storms, Prop_Major, Intense_Storms, Prop_Intense), names_to="Measure", values_to="values") |>
+    mutate(Measure = factor(Measure, levels=c("Total_Storms", "Major_Storms", "Prop_Major", "Intense_Storms", "Prop_Intense"),
+                            labels=c("Total Non-Shorties",
+                                     "Major Storms",
+                                     "Proportion of Major Storms",
+                                     "Intense Storms",
+                                     "Proportion of Intense Storms")))
+  
+  ## Basic Plots of the data
+  plot_data <- ggplot(storm_basin_long, aes(x=SEASON, y=values) ) +
+    geom_line(color="gray50") + 
+    geom_point(color="gray40") +
+    facet_wrap(~Measure, nrow=5, scales="free_y") +
+    theme_bw() + 
+    theme(axis.title = element_blank() )
+  
+  ## Summary statistics
+  summary_stat <- storm_basin |>
+    summarise(`Total Storms (Avg)` = mean(Total_Storms),
+              `Total Storms (stddev)` = sd(Total_Storms),
+              `Major Storms (Avg)` = mean(Major_Storms),
+              `Major Storms (stddev)` = sd(Major_Storms),
+              `Prop Major Storms` = sum(Major_Storms)/sum(Total_Storms),
+              `Intense Storms (Avg)` = mean(Intense_Storms),
+              `Intense Storms (stddev)` = sd(Intense_Storms),
+              `Prop Intense Storms` = sum(Intense_Storms)/sum(Total_Storms) )
+  
+  ## Poisson Regression on Total, Major & Intense
+  
+  count_pois_fit <- glm(Total_Storms ~ YearsSinceStart, data=storm_basin,
+                        family=poisson(link="log"))
+  
+  major_pois_fit <- glm(Major_Storms ~ YearsSinceStart, data=storm_basin,
+                        family=poisson(link="log") )
+
+  intense_pois_fit <- glm(Intense_Storms ~ YearsSinceStart, data=storm_basin,
+                          family=poisson(link="log") )
+
+  ## Poisson SCUSUM AMOC Change Point Test
+  ##  on totals, major, and intense
+
+  pois_chpt_test <- scusumTestPoisson(storm_basin$Total_Storms)
+  
+  major_pois_chpt_test <- scusumTestPoisson(storm_basin$Major_Storms)
+  
+  intense_pois_chpt_test <- scusumTestPoisson(storm_basin$Intense_Storms)
+  
+  ## Logistic Regression on Proportion of Major
+  ##    and Proportion of Intense
+
+  prop_data <- storm_basin |>
+    mutate(Non_Major = Total_Storms - Major_Storms,
+           Non_Intense = Total_Storms - Intense_Storms)
+  
+  prop_major_logit_fit <- glm(cbind(Major_Storms, Non_Major) ~ YearsSinceStart, 
+                              data=prop_data, 
+                              family=binomial)
+  
+  prop_intense_logit_fit <- glm(cbind(Intense_Storms, Non_Intense) ~ YearsSinceStart, 
+                                data=prop_data, 
+                                family=binomial)
+
+  ## SCUSUM Test for Proportions
+  ##    On Major & Intense
+  
+  prop_major_chpt_test <- scusumTestProportion(cbind(prop_data$Major_Storms, prop_data$Total_Storms) )
+  
+  prop_intense_chpt_test <- scusumTestProportion(cbind(prop_data$Intense_Storms, prop_data$Total_Storms) )
+  
+  ## Here we do some segmenting for the plots
+  ##   with the changepoint segmentations
+  
+  if(pois_chpt_test[3]<0.10 ) {
+    mean1 <- mean(storm_basin$Total_Storms[1:pois_chpt_test[2]])
+    mean2 <- mean(storm_basin$Total_Storms[(pois_chpt_test[2]+1):dim(storm_basin)[1]])
+    df_total_seg <- data.frame(
+      SEASON = c(min(storm_basin$SEASON)-0.4, storm_basin$SEASON[pois_chpt_test[2]]+0.4,
+                 storm_basin$SEASON[pois_chpt_test[2]]+0.6, max(storm_basin$SEASON)+0.4),
+      Group = c(rep("seg1", 2),
+                rep("seg2", 2) ),
+      Mean = c(rep(mean1, 2),
+               rep(mean2, 2) ),
+      Measure = "Total_Storms"
+    )
+  } else {
+    df_total_seg <- data.frame(
+      SEASON = c(min(storm_basin$SEASON)-0.4, max(storm_basin$SEASON)+0.4),
+      Group = c(rep("seg2", 2) ),
+      Mean = c(rep(mean(storm_basin$Total_Storms), 2) ),
+      Measure = "Total_Storms"
+    )
+  }
+  
+  
+  if(major_pois_chpt_test[3]<0.10) {
+    mean1 <- mean(storm_basin$Major_Storms[1:major_pois_chpt_test[2]])
+    mean2 <- mean(storm_basin$Major_Storms[(major_pois_chpt_test[2]+1):dim(storm_basin)[1]])
+    df_major_seg <- data.frame(
+      SEASON = c(min(storm_basin$SEASON)-0.4, storm_basin$SEASON[major_pois_chpt_test[2]]+0.4,
+                 storm_basin$SEASON[major_pois_chpt_test[2]]+0.6, max(storm_basin$SEASON)+0.4),
+      Group = c(rep("seg1", 2),
+                rep("seg2", 2) ),
+      Mean = c(rep(mean1, 2),
+               rep(mean2, 2) ),
+      Measure = "Major_Storms"
+    )
+  } else {
+    df_major_seg <- data.frame(
+      SEASON = c(min(storm_basin$SEASON)-0.4, max(storm_basin$SEASON)+0.4),
+      Group = c(rep("seg2", 2) ),
+      Mean = c(rep(mean(storm_basin$Major_Storms), 2) ),
+      Measure = "Major_Storms"
+    )
+  }
+  
+  
+  if(intense_pois_chpt_test[3]<0.10) {
+    mean1 <- mean(storm_basin$Intense_Storms[1:intense_pois_chpt_test[2]])
+    mean2 <- mean(storm_basin$Intense_Storms[(intense_pois_chpt_test[2]+1):dim(storm_basin)[1]])
+    df_intense_seg <- data.frame(
+      SEASON = c(min(storm_basin$SEASON)-0.4, storm_basin$SEASON[intense_pois_chpt_test[2]]+0.4,
+                 storm_basin$SEASON[intense_pois_chpt_test[2]]+0.6, max(storm_basin$SEASON)+0.4),
+      Group = c(rep("seg1", 2),
+                rep("seg2", 2) ),
+      Mean = c(rep(mean1, 2),
+               rep(mean2, 2) ),
+      Measure = "Intense_Storms"
+    )
+  } else {
+    df_intense_seg <- data.frame(
+      SEASON = c(min(storm_basin$SEASON)-0.4, max(storm_basin$SEASON)+0.4),
+      Group = c(rep("seg2", 2) ),
+      Mean = c(rep(mean(storm_basin$Intense_Storms), 2) ),
+      Measure = "Intense_Storms"
+    )
+  }
+  
+  if(prop_major_chpt_test[3]<0.10) {
+    mean1 <- sum(storm_basin$Major_Storms[1:prop_major_chpt_test[2]])/
+      sum(storm_basin$Total_Storms[1:prop_major_chpt_test[2]])
+    mean2 <- sum(storm_basin$Major_Storms[(prop_major_chpt_test[2]+1):dim(storm_basin)[1]])/
+      sum(storm_basin$Total_Storms[(prop_major_chpt_test[2]+1):dim(storm_basin)[1]])
+    df_prop_major_seg <- data.frame(
+      SEASON = c(min(storm_basin$SEASON)-0.4, storm_basin$SEASON[prop_major_chpt_test[2]]+0.4,
+                 storm_basin$SEASON[prop_major_chpt_test[2]]+0.6, max(storm_basin$SEASON)+0.4),
+      Group = c(rep("seg1", 2),
+                rep("seg2", 2) ),
+      Mean = c(rep(mean1, 2),
+               rep(mean2, 2) ),
+      Measure = "Prop_Major"
+    )
+  } else {
+    df_prop_major_seg <- data.frame(
+      SEASON = c(min(storm_basin$SEASON)-0.4, max(storm_basin$SEASON)+0.4),
+      Group = c(rep("seg2", 2) ),
+      Mean = c(rep(sum(storm_basin$Major_Storms)/sum(storm_basin$Total_Storms), 
+                   2 ) ),
+      Measure = "Prop_Major"
+    )
+  }
+  
+    
+  if(prop_intense_chpt_test[3]<0.10) {
+    mean1 <- sum(storm_basin$Intense_Storms[1:prop_intense_chpt_test[2]])/
+      sum(storm_basin$Total_Storms[1:prop_intense_chpt_test[2]])
+    mean2 <- sum(storm_basin$Intense_Storms[(prop_intense_chpt_test[2]+1):dim(storm_basin)[1]])/
+      sum(storm_basin$Total_Storms[(prop_intense_chpt_test[2]+1):dim(storm_basin)[1]])
+    df_prop_intense_seg <- data.frame(
+      SEASON = c(min(storm_basin$SEASON)-0.4, storm_basin$SEASON[prop_intense_chpt_test[2]]+0.4,
+                 storm_basin$SEASON[prop_intense_chpt_test[2]]+0.6, max(storm_basin$SEASON)+0.4),
+      Group = c(rep("seg1", 2),
+                rep("seg2", 2) ),
+      Mean = c(rep(mean1, 2),
+               rep(mean2, 2) ),
+      Measure = "Prop_Intense"
+    )
+  } else {
+    df_prop_intense_seg <- data.frame(
+      SEASON = c(min(storm_basin$SEASON)-0.4, max(storm_basin$SEASON)+0.4),
+      Group = c(rep("seg2", 2) ),
+      Mean = c(rep(sum(storm_basin$Intense_Storms)/sum(storm_basin$Total_Storms), 
+                   2 ) ),
+      Measure = "Prop_Intense"
+    )
+  }
+  df_segments <- bind_rows(
+    df_total_seg, df_major_seg, df_prop_major_seg, df_intense_seg, df_prop_intense_seg) |>
+    mutate(Measure = factor(Measure, levels=c("Total_Storms", "Major_Storms", "Prop_Major", "Intense_Storms", "Prop_Intense"),
+                            labels=c("Total Non-Shorties",
+                                     "Major Storms",
+                                     "Proportion of Major Storms",
+                                     "Intense Storms",
+                                     "Proportion of Intense Storms")))
+  
+  plot_seg_fits <- plot_data +
+    geom_line(data=df_segments, aes(x=SEASON, y=Mean, group=Group),
+              linewidth=1.2)
+  
+  list(summary_stat = summary_stat,
+       
+       pois_fit = count_pois_fit,
+       major_fit = major_pois_fit,
+       intense_fit = intense_pois_fit,
+       
+       major_logit_fit = prop_major_logit_fit,
+       intense_logit_fit = prop_intense_logit_fit,
+       
+       pois_chpt_test = pois_chpt_test,
+       major_pois_chpt_test = major_pois_chpt_test,
+       intense_pois_chpt_test = intense_pois_chpt_test,
+       
+       prop_major_chpt_test = prop_major_chpt_test,
+       prop_intense_chpt_test = prop_intense_chpt_test,
+       
+       plot_data = plot_data,
+       plot_seg_fits = plot_seg_fits,
+       
+       data=storm_basin)
+}
+```
+
+# Methods
+
+Before performing the analysis, we discuss the different methods used.
+
+## Regression Based methods
+
+### For Count Data
+
+For the data consisting of counts (number of non-shorties per season and number of major storms per season) we perform a Poisson regression with a log-link function. That is, we model:
+
+$$\log(Count) = \beta_0 + \beta_1\times Year$$
+
+which in the original units looks like
+
+$$Count = \exp(\beta_0 + \beta_1\times Year) = \exp(\beta_0)\times \exp(\beta_1\times Year)$$
+
+So for the Poisson based method, all the effects we find are multiplicative.
+
+It is worth noting that the Poisson regression is arguably more reliable than standard linear regression (particularly in the six basins) since we are working with moderately small counts.
+
+I also report values from the predictions based on these models. This provides some context of what the model is suggesting.
+
+### For Proportions
+
+For the proportional data (proportion of major storms), we are using a logistic regression. Let $p$=proportion of major storms, we are modeling
+
+$$\log\left(\frac{p}{1-p}\right) = \beta_0 + \beta_1\times Year$$
+
+So again, when interpreting we need to transform back to the original units. But it is worth noting that the associated hypothesis test for this regression must be interpreted in terms of log-odds. It is also worth noting that when performing this logistic regression we are implicitly assuming that the process controlling the total counts of storms, is not changing. We use this same method on the proportion of intense storms.
+
+## Change Point Approaches
+
+The regression approaches assume a fairly restrictive structure -- we are assuming some linear model. That is, any changes we see in the record are following some underlying linear trend. In the change point approach, we are simply looking for shifts in the mean of the process.
+
+At some level, both methods looking for changes, or non-homegenieties in the data, but the change point approach doesn't require that linearity assumption.
+
+### At Most One Change Point (AMOC)
+
+We perform some iid SCUSUM based-test to look for at most one change point. This provides the most likely change point location (given only a single change point can occur) and its corresponding $p$-value.
+
+It is worth noting that CUSUM based tests can be conservative in practice (reported $p$-values may be slightly elevated). If we want something more robust, we can perform a boostrapping/simulation type approach. For this report I use the asymptotic approach.
+
+### Change point for Proportions
+
+We coded up a SCUSUM test for the proportion using standard Intro Stat binomial distribution theory. This is not all that different than the MDL search performed earlier. However, unlike the counts (or total number of storms), now the parameter of interest is $p$, the proportion of major storms or proportion of intense storms.
+
+{{< include ./report_analysis_code/cyclone_report_global.qmd >}}
+
+{{< include ./report_analysis_code/cyclone_report_north_atlantic.qmd >}}
+
+{{< include ./report_analysis_code/cyclone_report_eastern_pacific.qmd >}}
+
+{{< include ./report_analysis_code/cyclone_report_western_pacific.qmd >}}
+
+{{< include ./report_analysis_code/cyclone_report_north_indian.qmd >}}
+
+{{< include ./report_analysis_code/cyclone_report_southern_indian.qmd >}}
+
+{{< include ./report_analysis_code/cyclone_report_southern_pacific.qmd >}}
+
+
+```{r}
+save(ibtracs_global_results, ibtracs_na_results, ibtracs_ep_results, 
+     ibtracs_wp_results, ibtracs_ni_results, ibtracs_si_results, ibtracs_sp_results,
+     file="./data/results_ibtracs.RData")
+```
+
