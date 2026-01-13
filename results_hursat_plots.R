@@ -1,11 +1,12 @@
 ################################################
 ##
-##  results_plots.R
+##  results_hursat_plots.R
 ##
 ##  This file builds the plots of the change
 ##    point results. If the found p-value
 ##    is less than 1/3 (the "likely" finding)
-##    we plot the suggested segmentation.
+##    we plot the suggested segmentation base
+##    on the HURSAT dataset.
 ##
 ##  The first plot is all the findings at the
 ##    global level. Then the subsequent plots
@@ -13,22 +14,22 @@
 ##
 ##  Author: Tom Fisher (fishert4@miamioh.edu)
 ##
-##  Code tested on 2025-11-30
+##  Code tested on 2026-01-13
 
 
 library(tidyverse)
 library(patchwork)
 
 rm(list=ls())
-yearFirst <- 1980
-yearLast <- 2024
+yearFirst <- 1981
+yearLast <- 2017
 
 
 #######################################
 ## Load data & Change point findings
 
-load("./data/ibtracs_nonShortiesForProportions.RData")
-load("./data/results_ibtracs.RData")
+load("./data/hursat_nonShortiesForProportions.RData")
+load("./data/results_hursat.RData")
 
 #########################################
 ## PLOT Parameters and
@@ -38,24 +39,25 @@ load("./data/results_ibtracs.RData")
 data_dots <- "gray50"
 data_line <- "gray60"
 seg_line <- "gray20"
-caption_text <- "Source: International Best Track Archive for Climate Stewardship\nhttps://www.ncei.noaa.gov/products/international-best-track-archive"
+caption_text <- "Source: NOAA HURSAT-B1\nhttps://www.pnas.org/doi/10.1073/pnas.1920849117"
+
 
 
 our_labels <- function(x) {
   case_when(x==yearFirst ~ paste0(yearFirst),
-            x==yearLast ~ paste0(yearLast),
+            x==2017 ~ "2017",
             x==2000 ~ "2000",
             .default = paste0("'", str_sub(x, 3,4)))
 }
 x_scale_global <- scale_x_continuous(limits=c(yearFirst-0.75, yearLast+0.75),
-                                     breaks=seq(yearFirst, 2028, 4),
+                                     breaks=seq(yearFirst, 2017, 3),
                                      labels = our_labels,
-                                     minor_breaks=seq(1982, 2028, 4), 
+                                     minor_breaks=seq(1981, 2028, 1), 
                                      expand = c(0,0))
 x_scale_marginal <- scale_x_continuous(limits=c(yearFirst-0.75, yearLast+0.75),
-                                       breaks=seq(yearFirst, 2028, 4),
+                                       breaks=seq(yearFirst, 2030, 5),
                                        labels = function(x) { paste0("'", str_sub(x, 3,4) ) },
-                                       minor_breaks=seq(1982, 2028, 4), 
+                                       minor_breaks=NULL, 
                                        expand = c(0,0))
 
 theme_marginal <- theme_minimal() +
@@ -64,6 +66,14 @@ theme_marginal <- theme_minimal() +
         plot.caption = element_text(family="mono"),
         plot.title.position = "plot")
 
+integer_breaks <- function(n = 5, ...) {
+  fxn <- function(x) {
+    breaks <- floor(pretty(x, n, ...))
+    breaks <- unique(breaks) # Ensure unique breaks
+    breaks[breaks == floor(breaks)] # Keep only integer values
+  }
+  return(fxn)
+}
 
 ################################################################################
 ################################################################################
@@ -93,22 +103,22 @@ global_basin_tall <- global_basin |>
                                    "Intense Storms",
                                    "Proportion of Intense Storms") ) )
 
-# Total Storms - change at time 18
-ibtracs_global_results$pois_chpt_test
+# Total Storms - change at time 20
+hursat_global_results$pois_chpt_test
 # Major Storms - no change
-ibtracs_global_results$major_pois_chpt_test
-# Proportion Major Storms - change at time 11
-ibtracs_global_results$prop_major_chpt_test
-# Intense Storms - change at 12
-ibtracs_global_results$intense_pois_chpt_test
-# Proportion Intense Storms - change at 12
-ibtracs_global_results$prop_intense_chpt_test
+hursat_global_results$major_pois_chpt_test
+# Proportion Major Storms - change at time 21
+hursat_global_results$prop_major_chpt_test
+# Intense Storms - no change
+hursat_global_results$intense_pois_chpt_test
+# Proportion Intense Storms - change at 21
+hursat_global_results$prop_intense_chpt_test
 
-mean1 <- mean(global_basin$Total_Storms[1:ibtracs_global_results$pois_chpt_test[2]])
-mean2 <- mean(global_basin$Total_Storms[(ibtracs_global_results$pois_chpt_test[2]+1):dim(global_basin)[1]])
+mean1 <- mean(global_basin$Total_Storms[1:hursat_global_results$pois_chpt_test[2]])
+mean2 <- mean(global_basin$Total_Storms[(hursat_global_results$pois_chpt_test[2]+1):dim(global_basin)[1]])
 df_total_seg <- data.frame(
-  SEASON = c(min(global_basin$SEASON)-0.4, global_basin$SEASON[ibtracs_global_results$pois_chpt_test[2]]+0.4,
-             global_basin$SEASON[ibtracs_global_results$pois_chpt_test[2]]+0.6, max(global_basin$SEASON)+0.4),
+  SEASON = c(min(global_basin$SEASON)-0.4, global_basin$SEASON[hursat_global_results$pois_chpt_test[2]]+0.4,
+             global_basin$SEASON[hursat_global_results$pois_chpt_test[2]]+0.6, max(global_basin$SEASON)+0.4),
   Group = c(rep("seg1", 2),
             rep("seg2", 2) ),
   Mean = c(rep(mean1, 2),
@@ -122,25 +132,20 @@ df_major_seg <- data.frame(
   Measure = "Major_Storms")
 
 
-mean1 <- mean(global_basin$Intense_Storms[1:ibtracs_global_results$intense_pois_chpt_test[2]])
-mean2 <- mean(global_basin$Intense_Storms[(ibtracs_global_results$intense_pois_chpt_test[2]+1):dim(global_basin)[1]])
 df_intense_seg <- data.frame(
-  SEASON = c(min(global_basin$SEASON)-0.4, global_basin$SEASON[ibtracs_global_results$intense_pois_chpt_test[2]]+0.4,
-             global_basin$SEASON[ibtracs_global_results$intense_pois_chpt_test[2]]+0.6, max(global_basin$SEASON)+0.4),
-  Group = c(rep("seg1", 2),
-            rep("seg2", 2) ),
-  Mean = c(rep(mean1, 2),
-           rep(mean2, 2) ),
+  SEASON = c(min(global_basin$SEASON)-0.4, max(global_basin$SEASON)+0.4),
+  Group = c(rep("seg2", 2) ),
+  Mean = c(rep(mean(global_basin$Intense_Storms), 2) ),
   Measure = "Intense_Storms"
 )
 
-mean1 <- sum(global_basin$Major_Storms[1:ibtracs_global_results$prop_major_chpt_test[2]])/
-  sum(global_basin$Total_Storms[1:ibtracs_global_results$prop_major_chpt_test[2]])
-mean2 <- sum(global_basin$Major_Storms[(ibtracs_global_results$prop_major_chpt_test[2]+1):dim(global_basin)[1]])/
-  sum(global_basin$Total_Storms[(ibtracs_global_results$prop_major_chpt_test[2]+1):dim(global_basin)[1]])
+mean1 <- sum(global_basin$Major_Storms[1:hursat_global_results$prop_major_chpt_test[2]])/
+  sum(global_basin$Total_Storms[1:hursat_global_results$prop_major_chpt_test[2]])
+mean2 <- sum(global_basin$Major_Storms[(hursat_global_results$prop_major_chpt_test[2]+1):dim(global_basin)[1]])/
+  sum(global_basin$Total_Storms[(hursat_global_results$prop_major_chpt_test[2]+1):dim(global_basin)[1]])
 df_prop_major_seg <- data.frame(
-  SEASON = c(min(global_basin$SEASON)-0.4, global_basin$SEASON[ibtracs_global_results$prop_major_chpt_test[2]]+0.4,
-             global_basin$SEASON[ibtracs_global_results$prop_major_chpt_test[2]]+0.6, max(global_basin$SEASON)+0.4),
+  SEASON = c(min(global_basin$SEASON)-0.4, global_basin$SEASON[hursat_global_results$prop_major_chpt_test[2]]+0.4,
+             global_basin$SEASON[hursat_global_results$prop_major_chpt_test[2]]+0.6, max(global_basin$SEASON)+0.4),
   Group = c(rep("seg1", 2),
             rep("seg2", 2) ),
   Mean = c(rep(mean1, 2),
@@ -150,13 +155,13 @@ df_prop_major_seg <- data.frame(
 
 
 
-mean1 <- sum(global_basin$Intense_Storms[1:ibtracs_global_results$prop_intense_chpt_test[2]])/
-  sum(global_basin$Total_Storms[1:ibtracs_global_results$prop_intense_chpt_test[2]])
-mean2 <- sum(global_basin$Intense_Storms[(ibtracs_global_results$prop_intense_chpt_test[2]+1):dim(global_basin)[1]])/
-  sum(global_basin$Total_Storms[(ibtracs_global_results$prop_intense_chpt_test[2]+1):dim(global_basin)[1]])
+mean1 <- sum(global_basin$Intense_Storms[1:hursat_global_results$prop_intense_chpt_test[2]])/
+  sum(global_basin$Total_Storms[1:hursat_global_results$prop_intense_chpt_test[2]])
+mean2 <- sum(global_basin$Intense_Storms[(hursat_global_results$prop_intense_chpt_test[2]+1):dim(global_basin)[1]])/
+  sum(global_basin$Total_Storms[(hursat_global_results$prop_intense_chpt_test[2]+1):dim(global_basin)[1]])
 df_prop_intense_seg <- data.frame(
-  SEASON = c(min(global_basin$SEASON)-0.4, global_basin$SEASON[ibtracs_global_results$prop_intense_chpt_test[2]]+0.4,
-             global_basin$SEASON[ibtracs_global_results$prop_intense_chpt_test[2]]+0.6, max(global_basin$SEASON)+0.4),
+  SEASON = c(min(global_basin$SEASON)-0.4, global_basin$SEASON[hursat_global_results$prop_intense_chpt_test[2]]+0.4,
+             global_basin$SEASON[hursat_global_results$prop_intense_chpt_test[2]]+0.6, max(global_basin$SEASON)+0.4),
   Group = c(rep("seg1", 2),
             rep("seg2", 2) ),
   Mean = c(rep(mean1, 2),
@@ -179,7 +184,7 @@ plot_global_findings <- ggplot(global_basin_tall, aes(x=SEASON, y=Value) ) +
   facet_wrap(~Measure, nrow=5, scales="free_y") +
   geom_line(data=df_segments, aes(x=SEASON, y=Mean, group=Group),
             linewidth=1.2, color=seg_line) +
-  labs(title="Global Tropical Cyclone Record",
+  labs(title="Global Tropical Cyclone Record (1981-2017)",
        subtitle="Segmentations based on SCUSUM Change Point Test",
        caption=caption_text) +
   theme_minimal() + 
@@ -188,7 +193,7 @@ plot_global_findings <- ggplot(global_basin_tall, aes(x=SEASON, y=Value) ) +
 
 plot_global_findings
 
-ggsave(filename="./plots/result_global_findings.png",
+ggsave(filename="./plots/result_hursat_global_findings.png",
        plot=plot_global_findings,
        width=6.5, height=7, bg="white")
 
@@ -241,12 +246,12 @@ global_counts <- non_shorty_for_props %>%
 ################################################################################
 ################################################################################
 
-ibtracs_na_results$pois_chpt_test
-ibtracs_ep_results$pois_chpt_test
-ibtracs_wp_results$pois_chpt_test
-ibtracs_ni_results$pois_chpt_test
-ibtracs_si_results$pois_chpt_test
-ibtracs_sp_results$pois_chpt_test
+hursat_na_results$pois_chpt_test
+hursat_ep_results$pois_chpt_test
+hursat_wp_results$pois_chpt_test
+hursat_ni_results$pois_chpt_test
+hursat_si_results$pois_chpt_test
+hursat_sp_results$pois_chpt_test
 
 storm_counts <- non_shorty_for_props |>
   mutate(Prop_Storms = Major_Storms/Total_Storms)
@@ -254,12 +259,12 @@ storm_counts <- non_shorty_for_props |>
 storm_basin_regimes <- storm_counts %>%
   ungroup() %>%
   arrange(BASIN, SEASON) %>%
-  mutate(Regime = c(findInterval(1:N, ibtracs_na_results$pois_chpt_test[2]+1),
-                    findInterval(1:N, ibtracs_ep_results$pois_chpt_test[2]+1),
-                    findInterval(1:N, ibtracs_wp_results$pois_chpt_test[2]+1),
+  mutate(Regime = c(findInterval(1:N, hursat_na_results$pois_chpt_test[2]+1),
+                    findInterval(1:N, hursat_ep_results$pois_chpt_test[2]+1),
+                    findInterval(1:N, hursat_wp_results$pois_chpt_test[2]+1),
                     findInterval(1:N, NULL),
-                    findInterval(1:N, ibtracs_si_results$pois_chpt_test[2]+1),
-                    findInterval(1:N, ibtracs_sp_results$pois_chpt_test[2]+1)) ) %>%
+                    findInterval(1:N, hursat_si_results$pois_chpt_test[2]+1),
+                    findInterval(1:N, hursat_sp_results$pois_chpt_test[2]+1)) ) %>%
   group_by(BASIN, Regime) %>%
   summarize(Regime_Length = max(SEASON)-min(SEASON)+1,
             AvgTotalStorms = mean(Total_Storms),
@@ -278,9 +283,10 @@ plot_basin_totals <- ggplot(storm_counts) +
        caption=caption_text) +
   theme_minimal() + 
   theme_marginal +
-  x_scale_marginal
+  x_scale_marginal +
+  scale_y_continuous(breaks = integer_breaks())
 
-ggsave(filename="./plots/result_basin_nonshortiesfindings.png", 
+ggsave(filename="./plots/result_hursat_basin_nonshortiesfindings.png", 
        plot=plot_basin_totals,
        width=6.5, height=4.5, bg="white")
 
@@ -297,12 +303,12 @@ ggsave(filename="./plots/result_basin_nonshortiesfindings.png",
 ################################################################################
 ################################################################################
 
-ibtracs_na_results$major_pois_chpt_test
-ibtracs_ep_results$major_pois_chpt_test
-ibtracs_wp_results$major_pois_chpt_test
-ibtracs_ni_results$major_pois_chpt_test
-ibtracs_si_results$major_pois_chpt_test
-ibtracs_sp_results$major_pois_chpt_test
+hursat_na_results$major_pois_chpt_test
+hursat_ep_results$major_pois_chpt_test
+hursat_wp_results$major_pois_chpt_test
+hursat_ni_results$major_pois_chpt_test
+hursat_si_results$major_pois_chpt_test
+hursat_sp_results$major_pois_chpt_test
 
 storm_counts <- non_shorty_for_props |>
   mutate(Prop_Storms = Major_Storms/Total_Storms)
@@ -310,12 +316,12 @@ storm_counts <- non_shorty_for_props |>
 storm_basin_regimes <- storm_counts %>%
   ungroup() %>%
   arrange(BASIN, SEASON) %>%
-  mutate(Regime = c(findInterval(1:N, ibtracs_na_results$major_pois_chpt_test[2]+1),
-                    findInterval(1:N, ibtracs_ep_results$major_pois_chpt_test[2]+1),
+  mutate(Regime = c(findInterval(1:N, hursat_na_results$major_pois_chpt_test[2]+1),
+                    findInterval(1:N, hursat_ep_results$major_pois_chpt_test[2]+1),
+                    findInterval(1:N, hursat_wp_results$major_pois_chpt_test[2]+1),
+                    findInterval(1:N, hursat_ni_results$major_pois_chpt_test[2]+1),
                     findInterval(1:N, NULL),
-                    findInterval(1:N, ibtracs_ni_results$major_pois_chpt_test[2]+1),
-                    findInterval(1:N, NULL),
-                    findInterval(1:N, NULL) ) ) %>%
+                    findInterval(1:N, hursat_sp_results$major_pois_chpt_test[2]+1) ) ) %>%
   group_by(BASIN, Regime) %>%
   summarize(Regime_Length = max(SEASON)-min(SEASON)+1,
             AvgMajorStorms = mean(Major_Storms),
@@ -334,9 +340,10 @@ plot_basin_major <- ggplot(storm_counts) +
        caption=caption_text) +
   theme_minimal() + 
   theme_marginal +
+  scale_y_continuous(breaks = integer_breaks()) +
   x_scale_marginal
 
-ggsave(filename="./plots/result_basin_major_findings.png", 
+ggsave(filename="./plots/result_hursat_basin_major_findings.png", 
        plot=plot_basin_major,
        width=6.5, height=4.5, bg="white")
 
@@ -351,12 +358,12 @@ ggsave(filename="./plots/result_basin_major_findings.png",
 ################################################################################
 ################################################################################
 
-ibtracs_na_results$prop_major_chpt_test
-ibtracs_ep_results$prop_major_chpt_test
-ibtracs_wp_results$prop_major_chpt_test
-ibtracs_ni_results$prop_major_chpt_test
-ibtracs_si_results$prop_major_chpt_test
-ibtracs_sp_results$prop_major_chpt_test
+hursat_na_results$prop_major_chpt_test
+hursat_ep_results$prop_major_chpt_test
+hursat_wp_results$prop_major_chpt_test
+hursat_ni_results$prop_major_chpt_test
+hursat_si_results$prop_major_chpt_test
+hursat_sp_results$prop_major_chpt_test
 
 storm_counts <- non_shorty_for_props |>
   mutate(Prop_Storms = Major_Storms/Total_Storms)
@@ -364,12 +371,12 @@ storm_counts <- non_shorty_for_props |>
 storm_basin_regimes <- storm_counts %>%
   ungroup() %>%
   arrange(BASIN, SEASON) %>%
-  mutate(Regime = c(findInterval(1:N, NULL),
+  mutate(Regime = c(findInterval(1:N, hursat_na_results$prop_major_chpt_test[2]+1),
                     findInterval(1:N, NULL),
-                    findInterval(1:N, ibtracs_wp_results$prop_major_chpt_test[2]+1),
-                    findInterval(1:N, ibtracs_ni_results$prop_major_chpt_test[2]+1),
-                    findInterval(1:N, ibtracs_si_results$prop_major_chpt_test[2]+1),
-                    findInterval(1:N, ibtracs_sp_results$prop_major_chpt_test[2]+1) ) ) |>
+                    findInterval(1:N, hursat_wp_results$prop_major_chpt_test[2]+1),
+                    findInterval(1:N, NULL),
+                    findInterval(1:N, hursat_si_results$prop_major_chpt_test[2]+1),
+                    findInterval(1:N, NULL) ) ) |>
   group_by(BASIN, Regime) %>%
   summarize(Regime_Length = max(SEASON)-min(SEASON)+1,
             PropMajorStorms = sum(Major_Storms)/sum(Total_Storms),
@@ -390,7 +397,7 @@ plot_basin_prop_major <- ggplot(storm_counts) +
   theme_marginal +
   x_scale_marginal
 
-ggsave(filename="./plots/result_basin_prop_major_findings.png", 
+ggsave(filename="./plots/result_hursat_basin_prop_major_findings.png", 
        plot=plot_basin_prop_major,
        width=6.5, height=4.5, bg="white")
 
@@ -408,12 +415,12 @@ ggsave(filename="./plots/result_basin_prop_major_findings.png",
 ################################################################################
 ################################################################################
 
-ibtracs_na_results$intense_pois_chpt_test
-ibtracs_ep_results$intense_pois_chpt_test
-ibtracs_wp_results$intense_pois_chpt_test
-ibtracs_ni_results$intense_pois_chpt_test
-ibtracs_si_results$intense_pois_chpt_test
-ibtracs_sp_results$intense_pois_chpt_test
+hursat_na_results$intense_pois_chpt_test
+hursat_ep_results$intense_pois_chpt_test
+hursat_wp_results$intense_pois_chpt_test
+hursat_ni_results$intense_pois_chpt_test
+hursat_si_results$intense_pois_chpt_test
+hursat_sp_results$intense_pois_chpt_test
 
 storm_counts <- non_shorty_for_props |>
   mutate(Prop_Storms = Intense_Storms/Total_Storms)
@@ -421,12 +428,12 @@ storm_counts <- non_shorty_for_props |>
 storm_basin_regimes <- storm_counts %>%
   ungroup() %>%
   arrange(BASIN, SEASON) %>%
-  mutate(Regime = c(findInterval(1:N, ibtracs_na_results$intense_pois_chpt_test[2]+1),
-                    findInterval(1:N, ibtracs_ep_results$intense_pois_chpt_test[2]+1),
-                    findInterval(1:N, ibtracs_wp_results$intense_pois_chpt_test[2]+1),
+  mutate(Regime = c(findInterval(1:N, hursat_na_results$intense_pois_chpt_test[2]+1),
+                    findInterval(1:N, hursat_ep_results$intense_pois_chpt_test[2]+1),
                     findInterval(1:N, NULL),
-                    findInterval(1:N, ibtracs_si_results$intense_pois_chpt_test[2]+1),
-                    findInterval(1:N, ibtracs_sp_results$intense_pois_chpt_test[2]+1) ) ) %>%
+                    findInterval(1:N, NULL),
+                    findInterval(1:N, hursat_si_results$intense_pois_chpt_test[2]+1),
+                    findInterval(1:N, NULL) ) ) %>%
   group_by(BASIN, Regime) %>%
   summarize(Regime_Length = max(SEASON)-min(SEASON)+1,
             AvgIntenseStorms = mean(Intense_Storms),
@@ -444,10 +451,11 @@ plot_basin_intense <- ggplot(storm_counts) +
        subtitle="Segmentations based on SCUSUM Change Point Test",
        caption=caption_text) +
   theme_minimal() + 
+  scale_y_continuous(breaks = integer_breaks()) +
   theme_marginal +
   x_scale_marginal
 
-ggsave(filename="./plots/result_basin_intense_findings.png", 
+ggsave(filename="./plots/result_hursat_basin_intense_findings.png", 
        plot=plot_basin_intense,
        width=6.5, height=4.5, bg="white")
 
@@ -462,12 +470,12 @@ ggsave(filename="./plots/result_basin_intense_findings.png",
 ################################################################################
 ################################################################################
 
-ibtracs_na_results$prop_intense_chpt_test
-ibtracs_ep_results$prop_intense_chpt_test
-ibtracs_wp_results$prop_intense_chpt_test
-ibtracs_ni_results$prop_intense_chpt_test
-ibtracs_si_results$prop_intense_chpt_test
-ibtracs_sp_results$prop_intense_chpt_test
+hursat_na_results$prop_intense_chpt_test
+hursat_ep_results$prop_intense_chpt_test
+hursat_wp_results$prop_intense_chpt_test
+hursat_ni_results$prop_intense_chpt_test
+hursat_si_results$prop_intense_chpt_test
+hursat_sp_results$prop_intense_chpt_test
 
 storm_counts <- non_shorty_for_props |>
   mutate(Prop_Storms = Intense_Storms/Total_Storms)
@@ -475,12 +483,12 @@ storm_counts <- non_shorty_for_props |>
 storm_basin_regimes <- storm_counts %>%
   ungroup() %>%
   arrange(BASIN, SEASON) %>%
-  mutate(Regime = c(findInterval(1:N, NULL),
-                    findInterval(1:N, ibtracs_wp_results$prop_intense_chpt_test[2]+1),
-                    findInterval(1:N, ibtracs_wp_results$prop_intense_chpt_test[2]+1),
+  mutate(Regime = c(findInterval(1:N, hursat_na_results$prop_intense_chpt_test[2]+1),
                     findInterval(1:N, NULL),
-                    findInterval(1:N, ibtracs_si_results$prop_intense_chpt_test[2]+1),
-                    findInterval(1:N, ibtracs_sp_results$prop_intense_chpt_test[2]+1) ) ) |>
+                    findInterval(1:N, hursat_wp_results$prop_intense_chpt_test[2]+1),
+                    findInterval(1:N, NULL),
+                    findInterval(1:N, hursat_si_results$prop_intense_chpt_test[2]+1),
+                    findInterval(1:N, NULL) ) ) |>
   group_by(BASIN, Regime) %>%
   summarize(Regime_Length = max(SEASON)-min(SEASON)+1,
             PropIntenseStorms = sum(Intense_Storms)/sum(Total_Storms),
@@ -501,7 +509,7 @@ plot_basin_prop_intense <- ggplot(storm_counts) +
   theme_marginal +
   x_scale_marginal
 
-ggsave(filename="./plots/result_basin_prop_intense_findings.png", 
+ggsave(filename="./plots/result_hursat_basin_prop_intense_findings.png", 
        plot=plot_basin_prop_intense,
        width=6.5, height=4.5, bg="white")
 

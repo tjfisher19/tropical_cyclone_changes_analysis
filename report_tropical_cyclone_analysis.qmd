@@ -30,6 +30,8 @@ ibtracs_all_basins <- ibtracs_data |>
   mutate(BASIN = "Global") |>
   bind_rows(ibtracs_data)
 
+num_years_ibtracs <- length(unique(ibtracs_data$SEASON))
+
 hursat_all_basins <- hursat_data |>
   group_by(SEASON) |>
   summarize(Major_Storms = sum(Major_Storms),
@@ -37,6 +39,8 @@ hursat_all_basins <- hursat_data |>
             Total_Storms = sum(Total_Storms)) |>
   mutate(BASIN = "Global") |>
   bind_rows(hursat_data)
+
+num_years_hursat <- length(unique(hursat_data$SEASON) )
 
 ibtracs_trimmed <- ibtracs_all_basins |>
   dplyr::filter(SEASON %in% unique(hursat_all_basins$SEASON) )
@@ -334,10 +338,14 @@ We coded up a SCUSUM test for the proportion using standard Intro Stat binomial 
 
 {{< include ./report_analysis_code/cyclone_report_southern_pacific.qmd >}}
 
-
-```{r}
+```{r, echo=FALSE}
 save(ibtracs_global_results, ibtracs_na_results, ibtracs_ep_results, 
      ibtracs_wp_results, ibtracs_ni_results, ibtracs_si_results, ibtracs_sp_results,
      file="./data/results_ibtracs.RData")
+save(hursat_global_results, hursat_na_results, hursat_ep_results, 
+     hursat_wp_results, hursat_ni_results, hursat_si_results, hursat_sp_results,
+     file="./data/results_hursat.RData")
+save(trimmed_global_results, trimmed_na_results, trimmed_ep_results, 
+     trimmed_wp_results, trimmed_ni_results, trimmed_si_results, trimmed_sp_results,
+     file="./data/results_trimmed.RData")
 ```
-

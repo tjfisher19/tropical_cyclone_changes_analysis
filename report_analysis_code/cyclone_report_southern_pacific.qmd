@@ -31,11 +31,11 @@ summary(ibtracs_sp_results$pois_fit)
 
 
 
-Note, this says a decrease of `r abs(coef(ibtracs_sp_results$pois_fit)[2])` log-storms per year. This corresponds to a `r (1-exp(coef(ibtracs_sp_results$pois_fit)[2]))*100` percent decrease per season. So over 45 years, that is a decrease of `r (1-exp(coef(ibtracs_sp_results$pois_fit)[2])^45)*100` percent.
+Note, this says a decrease of `r abs(coef(ibtracs_sp_results$pois_fit)[2])` log-storms per year. This corresponds to a `r (1-exp(coef(ibtracs_sp_results$pois_fit)[2]))*100` percent decrease per season. So over `r num_years_ibtracs` years, that is a decrease of `r (1-exp(coef(ibtracs_sp_results$pois_fit)[2])^num_years_ibtracs)*100` percent.
 
-Using this model, we would predict `r predict(ibtracs_sp_results$pois_fit, type="response")[1]` storms in 1980 and `r predict(ibtracs_sp_results$pois_fit, type="response")[45]` storms in 2024.
+Using this model, we would predict `r predict(ibtracs_sp_results$pois_fit, type="response")[1]` storms in 1980 and `r predict(ibtracs_sp_results$pois_fit, type="response")[num_years_ibtracs]` storms in 2025.
 
-That is a change of `r (predict(ibtracs_sp_results$pois_fit, type="response")[45]-predict(ibtracs_sp_results$pois_fit, type="response")[1])/45*10` storms per decade.
+That is a change of `r (predict(ibtracs_sp_results$pois_fit, type="response")[num_years_ibtracs]-predict(ibtracs_sp_results$pois_fit, type="response")[1])/num_years_ibtracs*10` storms per decade.
 
 #### Poisson Regression on Major Storms
 
@@ -43,9 +43,9 @@ That is a change of `r (predict(ibtracs_sp_results$pois_fit, type="response")[45
 summary(ibtracs_sp_results$major_fit)
 ```
 
-Using this model the number of a major storm in 1980 was `r predict(ibtracs_sp_results$major_fit, type="response")[1]` and `r predict(ibtracs_sp_results$major_fit, type="response")[45]` in 2024.
+Using this model the number of a major storm in 1980 was `r predict(ibtracs_sp_results$major_fit, type="response")[1]` and `r predict(ibtracs_sp_results$major_fit, type="response")[num_years_ibtracs]` in 2025.
 
-That is a change of `r (predict(ibtracs_sp_results$major_fit, type="response")[45]-predict(ibtracs_sp_results$major_fit, type="response")[1])/45*10` storms per decade.
+That is a change of `r (predict(ibtracs_sp_results$major_fit, type="response")[num_years_ibtracs]-predict(ibtracs_sp_results$major_fit, type="response")[1])/num_years_ibtracs*10` storms per decade.
 
 #### Poisson Regression on Intense Storms
 
@@ -54,9 +54,9 @@ summary(ibtracs_sp_results$intense_fit)
 ```
 
 
-Using this model the number of a major storm in 1980 was `r predict(ibtracs_sp_results$intense_fit, type="response")[1]` and `r predict(ibtracs_sp_results$intense_fit, type="response")[45]` in 2024.
+Using this model the number of a major storm in 1980 was `r predict(ibtracs_sp_results$intense_fit, type="response")[1]` and `r predict(ibtracs_sp_results$intense_fit, type="response")[num_years_ibtracs]` in 2025.
 
-That is a change of `r (predict(ibtracs_sp_results$intense_fit, type="response")[45]-predict(ibtracs_sp_results$intense_fit, type="response")[1])/45*10` storms per decade.
+That is a change of `r (predict(ibtracs_sp_results$intense_fit, type="response")[num_years_ibtracs]-predict(ibtracs_sp_results$intense_fit, type="response")[1])/num_years_ibtracs*10` storms per decade.
 
 #### Logistic Regression on Proportions of Major
 
@@ -66,9 +66,9 @@ summary(ibtracs_sp_results$major_logit_fit)
 
 We see a significant result with a positive coefficient, so the log-odds of major storms has increased. This tells us the proportion of major storms has increased.
 
-Specifically, using this model the probability of a major storm in 1980 was `r predict(ibtracs_sp_results$major_logit_fit, type="response")[1]` and `r predict(ibtracs_sp_results$major_logit_fit, type="response")[45]` in 2024.
+Specifically, using this model the probability of a major storm in 1980 was `r predict(ibtracs_sp_results$major_logit_fit, type="response")[1]` and `r predict(ibtracs_sp_results$major_logit_fit, type="response")[num_years_ibtracs]` in 2025.
 
-That is a change of `r (predict(ibtracs_sp_results$major_logit_fit, type="response")[45]-predict(ibtracs_sp_results$major_logit_fit, type="response")[1])/45*10*100` percent per decade.
+That is a change of `r (predict(ibtracs_sp_results$major_logit_fit, type="response")[num_years_ibtracs]-predict(ibtracs_sp_results$major_logit_fit, type="response")[1])/num_years_ibtracs*10*100` percent per decade.
 
 #### Logistic Regression on Proportions of Intense
 
@@ -77,9 +77,9 @@ summary(ibtracs_sp_results$intense_logit_fit)
 ```
 
 
-Specifically, using this model the probability of a major storm in 1980 was `r predict(ibtracs_sp_results$intense_logit_fit, type="response")[1]` and `r predict(ibtracs_sp_results$intense_logit_fit, type="response")[45]` in 2024.
+Specifically, using this model the probability of a major storm in 1980 was `r predict(ibtracs_sp_results$intense_logit_fit, type="response")[1]` and `r predict(ibtracs_sp_results$intense_logit_fit, type="response")[num_years_ibtracs]` in 2025.
 
-That is a change of `r (predict(ibtracs_sp_results$intense_logit_fit, type="response")[45]-predict(ibtracs_sp_results$intense_logit_fit, type="response")[1])/45*10*100` percent per decade.
+That is a change of `r (predict(ibtracs_sp_results$intense_logit_fit, type="response")[num_years_ibtracs]-predict(ibtracs_sp_results$intense_logit_fit, type="response")[1])/num_years_ibtracs*10*100` percent per decade.
 
 ### Change Point Methods
 
@@ -91,7 +91,7 @@ ibtracs_sp_results$pois_chpt_test
 
 The dates suggest the changepoint would occur from `r 1979+ibtracs_sp_results$pois_chpt_test[2]` to `r 1979+ibtracs_sp_results$pois_chpt_test[2]+1` with $p$-value `r ibtracs_sp_results$pois_chpt_test[3]`.
 
-In regime one, the mean number of total storms is `r mean(ibtracs_sp_results$data$Total_Storms[1:ibtracs_sp_results$pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(ibtracs_sp_results$data$Total_Storms[(ibtracs_sp_results$pois_chpt_test[2]+1):45])`; a change of `r mean(ibtracs_sp_results$data$Total_Storms[(ibtracs_sp_results$pois_chpt_test[2]+1):45]) - mean(ibtracs_sp_results$data$Total_Storms[1:ibtracs_sp_results$pois_chpt_test[2]])`.
+In regime one, the mean number of total storms is `r mean(ibtracs_sp_results$data$Total_Storms[1:ibtracs_sp_results$pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(ibtracs_sp_results$data$Total_Storms[(ibtracs_sp_results$pois_chpt_test[2]+1):num_years_ibtracs])`; a change of `r mean(ibtracs_sp_results$data$Total_Storms[(ibtracs_sp_results$pois_chpt_test[2]+1):num_years_ibtracs]) - mean(ibtracs_sp_results$data$Total_Storms[1:ibtracs_sp_results$pois_chpt_test[2]])`.
 
 #### Change in counts of major storms
 
@@ -101,7 +101,7 @@ ibtracs_sp_results$major_pois_chpt_test
 
 The dates suggest the changepoint would occur from `r 1979+ibtracs_sp_results$major_pois_chpt_test[2]` to `r 1979+ibtracs_sp_results$major_pois_chpt_test[2]+1` with $p$-value `r ibtracs_sp_results$major_pois_chpt_test[3]`.
 
-In regime one, the mean number of major storms is `r mean(ibtracs_sp_results$data$Major_Storms[1:ibtracs_sp_results$major_pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(ibtracs_sp_results$data$Major_Storms[(ibtracs_sp_results$major_pois_chpt_test[2]+1):45])`; a change of `r mean(ibtracs_sp_results$data$Major_Storms[(ibtracs_sp_results$major_pois_chpt_test[2]+1):45]) - mean(ibtracs_sp_results$data$Major_Storms[1:ibtracs_sp_results$major_pois_chpt_test[2]])`.
+In regime one, the mean number of major storms is `r mean(ibtracs_sp_results$data$Major_Storms[1:ibtracs_sp_results$major_pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(ibtracs_sp_results$data$Major_Storms[(ibtracs_sp_results$major_pois_chpt_test[2]+1):num_years_ibtracs])`; a change of `r mean(ibtracs_sp_results$data$Major_Storms[(ibtracs_sp_results$major_pois_chpt_test[2]+1):num_years_ibtracs]) - mean(ibtracs_sp_results$data$Major_Storms[1:ibtracs_sp_results$major_pois_chpt_test[2]])`.
 
 #### Change in counts of intense storms
 
@@ -112,7 +112,7 @@ ibtracs_sp_results$intense_pois_chpt_test
 
 The dates suggest the changepoint would occur from `r 1979+ibtracs_sp_results$intense_pois_chpt_test[2]` to `r 1979+ibtracs_sp_results$intense_pois_chpt_test[2]+1` with $p$-value `r ibtracs_sp_results$intense_pois_chpt_test[3]`.
 
-In regime one, the mean number of intense storms is `r mean(ibtracs_sp_results$data$Intense_Storms[1:ibtracs_sp_results$intense_pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(ibtracs_sp_results$data$Intense_Storms[(ibtracs_sp_results$intense_pois_chpt_test[2]+1):45])`; a change of `r mean(ibtracs_sp_results$data$Intense_Storms[(ibtracs_sp_results$intense_pois_chpt_test[2]+1):45]) - mean(ibtracs_sp_results$data$Intense_Storms[1:ibtracs_sp_results$intense_pois_chpt_test[2]])`.
+In regime one, the mean number of intense storms is `r mean(ibtracs_sp_results$data$Intense_Storms[1:ibtracs_sp_results$intense_pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(ibtracs_sp_results$data$Intense_Storms[(ibtracs_sp_results$intense_pois_chpt_test[2]+1):num_years_ibtracs])`; a change of `r mean(ibtracs_sp_results$data$Intense_Storms[(ibtracs_sp_results$intense_pois_chpt_test[2]+1):num_years_ibtracs]) - mean(ibtracs_sp_results$data$Intense_Storms[1:ibtracs_sp_results$intense_pois_chpt_test[2]])`.
 
 #### Proportion of major storms
 
@@ -124,7 +124,7 @@ ibtracs_sp_results$prop_major_chpt_test
 
 The change in proportions occurs `r 1979+ibtracs_sp_results$prop_major_chpt_test[2]` to `r 1979+ibtracs_sp_results$prop_major_chpt_test[2]+1` with $p$-value `r ibtracs_sp_results$prop_major_chpt_test[3]`. 
 
-In regime one, the proportion of major storms is `r sum(ibtracs_sp_results$data$Major_Storms[1:ibtracs_sp_results$prop_major_chpt_test[2]])/sum(ibtracs_sp_results$data$Total_Storms[1:ibtracs_sp_results$prop_major_chpt_test[2]])` and in regime two, the proportion of major storms is `r sum(ibtracs_sp_results$data$Major_Storms[(ibtracs_sp_results$prop_major_chpt_test[2]+1):45])/sum(ibtracs_sp_results$data$Total_Storms[(ibtracs_sp_results$prop_major_chpt_test[2]+1):45])`; a change of `r sum(ibtracs_sp_results$data$Major_Storms[(ibtracs_sp_results$prop_major_chpt_test[2]+1):45])/sum(ibtracs_sp_results$data$Total_Storms[(ibtracs_sp_results$prop_major_chpt_test[2]+1):45]) - sum(ibtracs_sp_results$data$Major_Storms[1:ibtracs_sp_results$prop_major_chpt_test[2]])/sum(ibtracs_sp_results$data$Total_Storms[1:ibtracs_sp_results$prop_major_chpt_test[2]])`.
+In regime one, the proportion of major storms is `r sum(ibtracs_sp_results$data$Major_Storms[1:ibtracs_sp_results$prop_major_chpt_test[2]])/sum(ibtracs_sp_results$data$Total_Storms[1:ibtracs_sp_results$prop_major_chpt_test[2]])` and in regime two, the proportion of major storms is `r sum(ibtracs_sp_results$data$Major_Storms[(ibtracs_sp_results$prop_major_chpt_test[2]+1):num_years_ibtracs])/sum(ibtracs_sp_results$data$Total_Storms[(ibtracs_sp_results$prop_major_chpt_test[2]+1):num_years_ibtracs])`; a change of `r sum(ibtracs_sp_results$data$Major_Storms[(ibtracs_sp_results$prop_major_chpt_test[2]+1):num_years_ibtracs])/sum(ibtracs_sp_results$data$Total_Storms[(ibtracs_sp_results$prop_major_chpt_test[2]+1):num_years_ibtracs]) - sum(ibtracs_sp_results$data$Major_Storms[1:ibtracs_sp_results$prop_major_chpt_test[2]])/sum(ibtracs_sp_results$data$Total_Storms[1:ibtracs_sp_results$prop_major_chpt_test[2]])`.
 
 #### Proportion of intense storms
 
@@ -137,7 +137,7 @@ ibtracs_sp_results$prop_intense_chpt_test
 The change in proportions occurs `r 1979+ibtracs_sp_results$prop_intense_chpt_test[2]` to `r 1979+ibtracs_sp_results$prop_intense_chpt_test[2]+1` with $p$-value `r ibtracs_sp_results$prop_intense_chpt_test[3]`.
 
 
-In regime one, the proportion of major storms is `r sum(ibtracs_sp_results$data$Intense_Storms[1:ibtracs_sp_results$prop_intense_chpt_test[2]])/sum(ibtracs_sp_results$data$Total_Storms[1:ibtracs_sp_results$prop_intense_chpt_test[2]])` and in regime two, the proportion of major storms is `r sum(ibtracs_sp_results$data$Intense_Storms[(ibtracs_sp_results$prop_intense_chpt_test[2]+1):45])/sum(ibtracs_sp_results$data$Total_Storms[(ibtracs_sp_results$prop_intense_chpt_test[2]+1):45])`; a change of `r sum(ibtracs_sp_results$data$Intense_Storms[(ibtracs_sp_results$prop_intense_chpt_test[2]+1):45])/sum(ibtracs_sp_results$data$Total_Storms[(ibtracs_sp_results$prop_intense_chpt_test[2]+1):45]) - sum(ibtracs_sp_results$data$Intense_Storms[1:ibtracs_sp_results$prop_intense_chpt_test[2]])/sum(ibtracs_sp_results$data$Total_Storms[1:ibtracs_sp_results$prop_intense_chpt_test[2]])`.
+In regime one, the proportion of major storms is `r sum(ibtracs_sp_results$data$Intense_Storms[1:ibtracs_sp_results$prop_intense_chpt_test[2]])/sum(ibtracs_sp_results$data$Total_Storms[1:ibtracs_sp_results$prop_intense_chpt_test[2]])` and in regime two, the proportion of major storms is `r sum(ibtracs_sp_results$data$Intense_Storms[(ibtracs_sp_results$prop_intense_chpt_test[2]+1):num_years_ibtracs])/sum(ibtracs_sp_results$data$Total_Storms[(ibtracs_sp_results$prop_intense_chpt_test[2]+1):num_years_ibtracs])`; a change of `r sum(ibtracs_sp_results$data$Intense_Storms[(ibtracs_sp_results$prop_intense_chpt_test[2]+1):num_years_ibtracs])/sum(ibtracs_sp_results$data$Total_Storms[(ibtracs_sp_results$prop_intense_chpt_test[2]+1):num_years_ibtracs]) - sum(ibtracs_sp_results$data$Intense_Storms[1:ibtracs_sp_results$prop_intense_chpt_test[2]])/sum(ibtracs_sp_results$data$Total_Storms[1:ibtracs_sp_results$prop_intense_chpt_test[2]])`.
 
 ### Overall Change Point Findings
 
@@ -152,7 +152,7 @@ bind_rows(
     mutate(Regime = "Entire Record"),
   ibtracs_all_basins |>
     dplyr::filter(BASIN=="Southern Pacific") |>
-    mutate(Regime = ifelse(SEASON < 2001, "1980-2000", "2001-2024") ) |>
+    mutate(Regime = ifelse(SEASON < 2001, "1980-2000", "2001-2025") ) |>
     group_by(Regime) |>
     summarize(`Total Storms (avg)` = mean(Total_Storms),
               `Total Storms (stddev)` = sd(Total_Storms) ) 
@@ -175,7 +175,7 @@ bind_rows(
     mutate(Regime = "Entire Record"),
   ibtracs_all_basins |>
     dplyr::filter(BASIN=="Southern Pacific") |>
-    mutate(Regime = ifelse(SEASON < 2001, "1980-2000", "2001-2024") ) |>
+    mutate(Regime = ifelse(SEASON < 2001, "1980-2000", "2001-2025") ) |>
     group_by(Regime) |>
     summarize(`Total Storms (avg)` = mean(Total_Storms),
               `Major Storms (avg)` = mean(Major_Storms),
@@ -217,11 +217,11 @@ hursat_sp_results$summary_stat |>
 summary(hursat_sp_results$pois_fit)
 ```
 
-Note, this says a decrease of `r abs(coef(hursat_sp_results$pois_fit)[2])` log-storms per year. This corresponds to a `r (1-exp(coef(hursat_sp_results$pois_fit)[2]))*100` percent decrease per season. So over 37 years, that is a decrease of `r (1-exp(coef(hursat_sp_results$pois_fit)[2])^37)*100` percent.
+Note, this says a decrease of `r abs(coef(hursat_sp_results$pois_fit)[2])` log-storms per year. This corresponds to a `r (1-exp(coef(hursat_sp_results$pois_fit)[2]))*100` percent decrease per season. So over 37 years, that is a decrease of `r (1-exp(coef(hursat_sp_results$pois_fit)[2])^num_years_hursat)*100` percent.
 
-Using this model, we would predict `r predict(hursat_sp_results$pois_fit, type="response")[1]` storms in 1981 and `r predict(hursat_sp_results$pois_fit, type="response")[37]` storms in 2017.
+Using this model, we would predict `r predict(hursat_sp_results$pois_fit, type="response")[1]` storms in 1981 and `r predict(hursat_sp_results$pois_fit, type="response")[num_years_hursat]` storms in 2017.
 
-That is a change of `r (predict(hursat_sp_results$pois_fit, type="response")[37]-predict(hursat_sp_results$pois_fit, type="response")[1])/37*10` storms per decade.
+That is a change of `r (predict(hursat_sp_results$pois_fit, type="response")[num_years_hursat]-predict(hursat_sp_results$pois_fit, type="response")[1])/num_years_hursat*10` storms per decade.
 
 
 #### Poisson Regression on Major Storms
@@ -231,9 +231,9 @@ summary(hursat_sp_results$major_fit)
 ```
 
 
-Using this model the number of a major storm in 1981 was `r predict(hursat_sp_results$major_fit, type="response")[1]` and `r predict(hursat_sp_results$major_fit, type="response")[37]` in 2017.
+Using this model the number of a major storm in 1981 was `r predict(hursat_sp_results$major_fit, type="response")[1]` and `r predict(hursat_sp_results$major_fit, type="response")[num_years_hursat]` in 2017.
 
-That is a change of `r (predict(hursat_sp_results$major_fit, type="response")[37]-predict(hursat_sp_results$major_fit, type="response")[1])/37*10` storms per decade.
+That is a change of `r (predict(hursat_sp_results$major_fit, type="response")[num_years_hursat]-predict(hursat_sp_results$major_fit, type="response")[1])/num_years_hursat*10` storms per decade.
 
 #### Poisson Regression on Intense Storms
 
@@ -243,9 +243,9 @@ summary(hursat_sp_results$intense_fit)
 
 We see a significant increasing trend in the number of intense storms.
 
-Using this model the number of a major storm in 1981 was `r predict(hursat_sp_results$intense_fit, type="response")[1]` and `r predict(hursat_sp_results$intense_fit, type="response")[37]` in 2017.
+Using this model the number of a major storm in 1981 was `r predict(hursat_sp_results$intense_fit, type="response")[1]` and `r predict(hursat_sp_results$intense_fit, type="response")[num_years_hursat]` in 2017.
 
-That is a change of `r (predict(hursat_sp_results$intense_fit, type="response")[37]-predict(hursat_sp_results$intense_fit, type="response")[1])/37*10` storms per decade.
+That is a change of `r (predict(hursat_sp_results$intense_fit, type="response")[num_years_hursat]-predict(hursat_sp_results$intense_fit, type="response")[1])/num_years_hursat*10` storms per decade.
 
 
 #### Logistic Regression on Proportions
@@ -255,9 +255,9 @@ summary(hursat_sp_results$major_logit_fit)
 ```
 
 
-Specifically, using this model the probability of a major storm in 1981 was `r predict(hursat_sp_results$major_logit_fit, type="response")[1]` and `r predict(hursat_sp_results$major_logit_fit, type="response")[37]` in 2017.
+Specifically, using this model the probability of a major storm in 1981 was `r predict(hursat_sp_results$major_logit_fit, type="response")[1]` and `r predict(hursat_sp_results$major_logit_fit, type="response")[num_years_hursat]` in 2017.
 
-That is a change of `r (predict(hursat_sp_results$major_logit_fit, type="response")[37]-predict(hursat_sp_results$major_logit_fit, type="response")[1])/37*10*100` percent per decade.
+That is a change of `r (predict(hursat_sp_results$major_logit_fit, type="response")[num_years_hursat]-predict(hursat_sp_results$major_logit_fit, type="response")[1])/num_years_hursat*10*100` percent per decade.
 
 
 #### Logistic Regression on Proportions of Intense
@@ -267,9 +267,9 @@ summary(hursat_sp_results$intense_logit_fit)
 ```
 
 
-Specifically, using this model the probability of a major storm in 1981 was `r predict(hursat_sp_results$intense_logit_fit, type="response")[1]` and `r predict(hursat_sp_results$intense_logit_fit, type="response")[37]` in 2017.
+Specifically, using this model the probability of a major storm in 1981 was `r predict(hursat_sp_results$intense_logit_fit, type="response")[1]` and `r predict(hursat_sp_results$intense_logit_fit, type="response")[num_years_hursat]` in 2017.
 
-That is a change of `r (predict(hursat_sp_results$intense_logit_fit, type="response")[37]-predict(hursat_sp_results$intense_logit_fit, type="response")[1])/37*10*100` percent per decade.
+That is a change of `r (predict(hursat_sp_results$intense_logit_fit, type="response")[num_years_hursat]-predict(hursat_sp_results$intense_logit_fit, type="response")[1])/num_years_hursat*10*100` percent per decade.
 
 
 ### Change Point Methods
@@ -282,7 +282,7 @@ hursat_sp_results$pois_chpt_test
 
 The dates suggest the changepoint would occur from `r 1980+hursat_sp_results$pois_chpt_test[2]` to `r 1980+hursat_sp_results$pois_chpt_test[2]+1` with $p$-value `r hursat_sp_results$pois_chpt_test[3]`.
 
-In regime one, the mean number of total storms is `r mean(hursat_sp_results$data$Total_Storms[1:hursat_sp_results$pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(hursat_sp_results$data$Total_Storms[(hursat_sp_results$pois_chpt_test[2]+1):37])`; a change of `r mean(hursat_sp_results$data$Total_Storms[(hursat_sp_results$pois_chpt_test[2]+1):37]) - mean(hursat_sp_results$data$Total_Storms[1:hursat_sp_results$pois_chpt_test[2]])`.
+In regime one, the mean number of total storms is `r mean(hursat_sp_results$data$Total_Storms[1:hursat_sp_results$pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(hursat_sp_results$data$Total_Storms[(hursat_sp_results$pois_chpt_test[2]+1):num_years_hursat])`; a change of `r mean(hursat_sp_results$data$Total_Storms[(hursat_sp_results$pois_chpt_test[2]+1):num_years_hursat]) - mean(hursat_sp_results$data$Total_Storms[1:hursat_sp_results$pois_chpt_test[2]])`.
 
 #### Change in counts of major storms
 
@@ -292,7 +292,7 @@ hursat_sp_results$major_pois_chpt_test
 
 The dates suggest the changepoint would occur from `r 1980+hursat_sp_results$major_pois_chpt_test[2]` to `r 1980+hursat_sp_results$major_pois_chpt_test[2]+1` with $p$-value `r hursat_sp_results$major_pois_chpt_test[3]`.
 
-In regime one, the mean number of total storms is `r mean(hursat_sp_results$data$Major_Storms[1:hursat_sp_results$major_pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(hursat_sp_results$data$Major_Storms[(hursat_sp_results$major_pois_chpt_test[2]+1):37])`; a change of `r mean(hursat_sp_results$data$Major_Storms[(hursat_sp_results$major_pois_chpt_test[2]+1):37]) - mean(hursat_sp_results$data$Major_Storms[1:hursat_sp_results$major_pois_chpt_test[2]])`.
+In regime one, the mean number of total storms is `r mean(hursat_sp_results$data$Major_Storms[1:hursat_sp_results$major_pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(hursat_sp_results$data$Major_Storms[(hursat_sp_results$major_pois_chpt_test[2]+1):num_years_hursat])`; a change of `r mean(hursat_sp_results$data$Major_Storms[(hursat_sp_results$major_pois_chpt_test[2]+1):num_years_hursat]) - mean(hursat_sp_results$data$Major_Storms[1:hursat_sp_results$major_pois_chpt_test[2]])`.
 
 #### Change in counts of intense storms
 
@@ -302,7 +302,7 @@ hursat_sp_results$intense_pois_chpt_test
 
 The dates suggest the changepoint would occur from `r 1980+hursat_sp_results$intense_pois_chpt_test[2]` to `r 1980+hursat_sp_results$intense_pois_chpt_test[2]+1` with $p$-value `r hursat_sp_results$intense_pois_chpt_test[3]`.
 
-In regime one, the mean number of total storms is `r mean(hursat_sp_results$data$Intense_Storms[1:hursat_sp_results$intense_pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(hursat_sp_results$data$Intense_Storms[(hursat_sp_results$intense_pois_chpt_test[2]+1):37])`; a change of `r mean(hursat_sp_results$data$Intense_Storms[(hursat_sp_results$intense_pois_chpt_test[2]+1):37]) - mean(hursat_sp_results$data$Intense_Storms[1:hursat_sp_results$intense_pois_chpt_test[2]])`.
+In regime one, the mean number of total storms is `r mean(hursat_sp_results$data$Intense_Storms[1:hursat_sp_results$intense_pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(hursat_sp_results$data$Intense_Storms[(hursat_sp_results$intense_pois_chpt_test[2]+1):num_years_hursat])`; a change of `r mean(hursat_sp_results$data$Intense_Storms[(hursat_sp_results$intense_pois_chpt_test[2]+1):num_years_hursat]) - mean(hursat_sp_results$data$Intense_Storms[1:hursat_sp_results$intense_pois_chpt_test[2]])`.
 
 
 #### Proportion of major storms
@@ -315,7 +315,7 @@ hursat_sp_results$prop_major_chpt_test
 
 The change in proportions occurs `r 1979+hursat_sp_results$prop_major_chpt_test[2]` to `r 1979+hursat_sp_results$prop_major_chpt_test[2]+1` with $p$-value `r hursat_sp_results$prop_major_chpt_test[3]`. 
 
-In regime one, the proportion of major storms is `r sum(hursat_sp_results$data$Major_Storms[1:hursat_sp_results$prop_major_chpt_test[2]])/sum(hursat_sp_results$data$Total_Storms[1:hursat_sp_results$prop_major_chpt_test[2]])` and in regime two, the proportion of major storms is `r sum(hursat_sp_results$data$Major_Storms[(hursat_sp_results$prop_major_chpt_test[2]+1):37])/sum(hursat_sp_results$data$Total_Storms[(hursat_sp_results$prop_major_chpt_test[2]+1):37])`; a change of `r sum(hursat_sp_results$data$Major_Storms[(hursat_sp_results$prop_major_chpt_test[2]+1):37])/sum(hursat_sp_results$data$Total_Storms[(hursat_sp_results$prop_major_chpt_test[2]+1):37]) - sum(hursat_sp_results$data$Major_Storms[1:hursat_sp_results$prop_major_chpt_test[2]])/sum(hursat_sp_results$data$Total_Storms[1:hursat_sp_results$prop_major_chpt_test[2]])`.
+In regime one, the proportion of major storms is `r sum(hursat_sp_results$data$Major_Storms[1:hursat_sp_results$prop_major_chpt_test[2]])/sum(hursat_sp_results$data$Total_Storms[1:hursat_sp_results$prop_major_chpt_test[2]])` and in regime two, the proportion of major storms is `r sum(hursat_sp_results$data$Major_Storms[(hursat_sp_results$prop_major_chpt_test[2]+1):num_years_hursat])/sum(hursat_sp_results$data$Total_Storms[(hursat_sp_results$prop_major_chpt_test[2]+1):num_years_hursat])`; a change of `r sum(hursat_sp_results$data$Major_Storms[(hursat_sp_results$prop_major_chpt_test[2]+1):num_years_hursat])/sum(hursat_sp_results$data$Total_Storms[(hursat_sp_results$prop_major_chpt_test[2]+1):num_years_hursat]) - sum(hursat_sp_results$data$Major_Storms[1:hursat_sp_results$prop_major_chpt_test[2]])/sum(hursat_sp_results$data$Total_Storms[1:hursat_sp_results$prop_major_chpt_test[2]])`.
 
 
 
@@ -330,7 +330,7 @@ hursat_sp_results$prop_intense_chpt_test
 The change in proportions occurs `r 1979+hursat_sp_results$prop_intense_chpt_test[2]` to `r 1979+hursat_sp_results$prop_intense_chpt_test[2]+1` with $p$-value `r hursat_sp_results$prop_intense_chpt_test[3]`.
 
 
-In regime one, the proportion of major storms is `r sum(hursat_sp_results$data$Intense_Storms[1:hursat_sp_results$prop_intense_chpt_test[2]])/sum(hursat_sp_results$data$Total_Storms[1:hursat_sp_results$prop_intense_chpt_test[2]])` and in regime two, the proportion of major storms is `r sum(hursat_sp_results$data$Intense_Storms[(hursat_sp_results$prop_intense_chpt_test[2]+1):37])/sum(hursat_sp_results$data$Total_Storms[(hursat_sp_results$prop_intense_chpt_test[2]+1):37])`; a change of `r sum(hursat_sp_results$data$Intense_Storms[(hursat_sp_results$prop_intense_chpt_test[2]+1):37])/sum(hursat_sp_results$data$Total_Storms[(hursat_sp_results$prop_intense_chpt_test[2]+1):37]) - sum(hursat_sp_results$data$Intense_Storms[1:hursat_sp_results$prop_intense_chpt_test[2]])/sum(hursat_sp_results$data$Total_Storms[1:hursat_sp_results$prop_intense_chpt_test[2]])`.
+In regime one, the proportion of major storms is `r sum(hursat_sp_results$data$Intense_Storms[1:hursat_sp_results$prop_intense_chpt_test[2]])/sum(hursat_sp_results$data$Total_Storms[1:hursat_sp_results$prop_intense_chpt_test[2]])` and in regime two, the proportion of major storms is `r sum(hursat_sp_results$data$Intense_Storms[(hursat_sp_results$prop_intense_chpt_test[2]+1):num_years_hursat])/sum(hursat_sp_results$data$Total_Storms[(hursat_sp_results$prop_intense_chpt_test[2]+1):num_years_hursat])`; a change of `r sum(hursat_sp_results$data$Intense_Storms[(hursat_sp_results$prop_intense_chpt_test[2]+1):num_years_hursat])/sum(hursat_sp_results$data$Total_Storms[(hursat_sp_results$prop_intense_chpt_test[2]+1):num_years_hursat]) - sum(hursat_sp_results$data$Intense_Storms[1:hursat_sp_results$prop_intense_chpt_test[2]])/sum(hursat_sp_results$data$Total_Storms[1:hursat_sp_results$prop_intense_chpt_test[2]])`.
 
 ### Overall Change Point Findings
 
@@ -433,11 +433,11 @@ trimmed_sp_results$summary_stat |>
 summary(trimmed_sp_results$pois_fit)
 ```
 
-Note, this says a decrease of `r abs(coef(trimmed_sp_results$pois_fit)[2])` log-storms per year. This corresponds to a `r (1-exp(coef(trimmed_sp_results$pois_fit)[2]))*100` percent decrease per season. So over 37 years, that is a decrease of `r (1-exp(coef(trimmed_sp_results$pois_fit)[2])^37)*100` percent.
+Note, this says a decrease of `r abs(coef(trimmed_sp_results$pois_fit)[2])` log-storms per year. This corresponds to a `r (1-exp(coef(trimmed_sp_results$pois_fit)[2]))*100` percent decrease per season. So over 37 years, that is a decrease of `r (1-exp(coef(trimmed_sp_results$pois_fit)[2])^num_years_hursat)*100` percent.
 
-Using this model, we would predict `r predict(trimmed_sp_results$pois_fit, type="response")[1]` storms in 1981 and `r predict(trimmed_sp_results$pois_fit, type="response")[37]` storms in 2017
+Using this model, we would predict `r predict(trimmed_sp_results$pois_fit, type="response")[1]` storms in 1981 and `r predict(trimmed_sp_results$pois_fit, type="response")[num_years_hursat]` storms in 2017
 
-That is a change of `r (predict(trimmed_sp_results$pois_fit, type="response")[37]-predict(trimmed_sp_results$pois_fit, type="response")[1])/37*10` storms per decade.
+That is a change of `r (predict(trimmed_sp_results$pois_fit, type="response")[num_years_hursat]-predict(trimmed_sp_results$pois_fit, type="response")[1])/num_years_hursat*10` storms per decade.
 
 #### Poisson Regression on Major Storms
 
@@ -447,9 +447,9 @@ summary(trimmed_sp_results$major_fit)
 
 We see a non-significant trend in the number of major storms.
 
-Using this model the number of a major storm in 1981 was `r predict(trimmed_sp_results$major_fit, type="response")[1]` and `r predict(trimmed_sp_results$major_fit, type="response")[37]` in 2017.
+Using this model the number of a major storm in 1981 was `r predict(trimmed_sp_results$major_fit, type="response")[1]` and `r predict(trimmed_sp_results$major_fit, type="response")[num_years_hursat]` in 2017.
 
-That is a change of `r (predict(trimmed_sp_results$major_fit, type="response")[37]-predict(trimmed_sp_results$major_fit, type="response")[1])/37*10` storms per decade.
+That is a change of `r (predict(trimmed_sp_results$major_fit, type="response")[num_years_hursat]-predict(trimmed_sp_results$major_fit, type="response")[1])/num_years_hursat*10` storms per decade.
 
 
 #### Poisson Regression on Intense Storms
@@ -458,9 +458,9 @@ That is a change of `r (predict(trimmed_sp_results$major_fit, type="response")[3
 summary(trimmed_sp_results$intense_fit)
 ```
 
-Using this model the number of a major storm in 1981 was `r predict(trimmed_sp_results$intense_fit, type="response")[1]` and `r predict(trimmed_sp_results$intense_fit, type="response")[37]` in 2017
+Using this model the number of a major storm in 1981 was `r predict(trimmed_sp_results$intense_fit, type="response")[1]` and `r predict(trimmed_sp_results$intense_fit, type="response")[num_years_hursat]` in 2017
 
-That is a change of `r (predict(trimmed_sp_results$intense_fit, type="response")[37]-predict(trimmed_sp_results$intense_fit, type="response")[1])/37*10` storms per decade.
+That is a change of `r (predict(trimmed_sp_results$intense_fit, type="response")[num_years_hursat]-predict(trimmed_sp_results$intense_fit, type="response")[1])/num_years_hursat*10` storms per decade.
 
 
 #### Logistic Regression on Proportions
@@ -470,10 +470,10 @@ summary(trimmed_sp_results$major_logit_fit)
 ```
 
 
-Specifically, using this model the probability of a major storm in 1981 was `r predict(trimmed_sp_results$major_logit_fit, type="response")[1]` and `r predict(trimmed_sp_results$major_logit_fit, type="response")[37]` in 2017.
+Specifically, using this model the probability of a major storm in 1981 was `r predict(trimmed_sp_results$major_logit_fit, type="response")[1]` and `r predict(trimmed_sp_results$major_logit_fit, type="response")[num_years_hursat]` in 2017.
 
 
-That is a change of `r (predict(trimmed_sp_results$major_logit_fit, type="response")[37]-predict(trimmed_sp_results$major_logit_fit, type="response")[1])/37*10*100` percent per decade.
+That is a change of `r (predict(trimmed_sp_results$major_logit_fit, type="response")[num_years_hursat]-predict(trimmed_sp_results$major_logit_fit, type="response")[1])/num_years_hursat*10*100` percent per decade.
 
 
 
@@ -484,9 +484,9 @@ summary(trimmed_sp_results$intense_logit_fit)
 ```
 
 
-Specifically, using this model the probability of a major storm in 1981 was `r predict(trimmed_sp_results$intense_logit_fit, type="response")[1]` and `r predict(trimmed_sp_results$intense_logit_fit, type="response")[37]` in 2017.
+Specifically, using this model the probability of a major storm in 1981 was `r predict(trimmed_sp_results$intense_logit_fit, type="response")[1]` and `r predict(trimmed_sp_results$intense_logit_fit, type="response")[num_years_hursat]` in 2017.
 
-That is a change of `r (predict(trimmed_sp_results$intense_logit_fit, type="response")[37]-predict(trimmed_sp_results$intense_logit_fit, type="response")[1])/37*10*100` percent per decade.
+That is a change of `r (predict(trimmed_sp_results$intense_logit_fit, type="response")[num_years_hursat]-predict(trimmed_sp_results$intense_logit_fit, type="response")[1])/num_years_hursat*10*100` percent per decade.
 
 
 ### Change Point Methods
@@ -499,7 +499,7 @@ trimmed_sp_results$pois_chpt_test
 
 We have evidence the number of non-shorties has changed. The dates suggest the changepoint would occur from `r 1980+trimmed_sp_results$pois_chpt_test[2]` to `r 1980+trimmed_sp_results$pois_chpt_test[2]+1` with $p$-value `r hursat_sp_results$pois_chpt_test[3]`.
 
-In regime one, the mean number of total storms is `r mean(trimmed_sp_results$data$Total_Storms[1:trimmed_sp_results$pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(trimmed_sp_results$data$Total_Storms[(trimmed_sp_results$pois_chpt_test[2]+1):37])`; a change of `r mean(trimmed_sp_results$data$Total_Storms[(trimmed_sp_results$pois_chpt_test[2]+1):37]) - mean(trimmed_sp_results$data$Total_Storms[1:trimmed_sp_results$pois_chpt_test[2]])`.
+In regime one, the mean number of total storms is `r mean(trimmed_sp_results$data$Total_Storms[1:trimmed_sp_results$pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(trimmed_sp_results$data$Total_Storms[(trimmed_sp_results$pois_chpt_test[2]+1):num_years_hursat])`; a change of `r mean(trimmed_sp_results$data$Total_Storms[(trimmed_sp_results$pois_chpt_test[2]+1):num_years_hursat]) - mean(trimmed_sp_results$data$Total_Storms[1:trimmed_sp_results$pois_chpt_test[2]])`.
 
 #### Change in counts of major storms
 
@@ -510,7 +510,7 @@ trimmed_sp_results$major_pois_chpt_test
 
 The dates suggest the changepoint would occur from `r 1980+trimmed_sp_results$major_pois_chpt_test[2]` to `r 1980+trimmed_sp_results$major_pois_chpt_test[2]+1` with $p$-value `r trimmed_sp_results$major_pois_chpt_test[3]`.
 
-In regime one, the mean number of total storms is `r mean(trimmed_sp_results$data$Major_Storms[1:trimmed_sp_results$major_pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(trimmed_sp_results$data$Major_Storms[(trimmed_sp_results$major_pois_chpt_test[2]+1):37])`; a change of `r mean(trimmed_sp_results$data$Major_Storms[(trimmed_sp_results$major_pois_chpt_test[2]+1):37]) - mean(trimmed_sp_results$data$Major_Storms[1:trimmed_sp_results$major_pois_chpt_test[2]])`.
+In regime one, the mean number of total storms is `r mean(trimmed_sp_results$data$Major_Storms[1:trimmed_sp_results$major_pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(trimmed_sp_results$data$Major_Storms[(trimmed_sp_results$major_pois_chpt_test[2]+1):num_years_hursat])`; a change of `r mean(trimmed_sp_results$data$Major_Storms[(trimmed_sp_results$major_pois_chpt_test[2]+1):num_years_hursat]) - mean(trimmed_sp_results$data$Major_Storms[1:trimmed_sp_results$major_pois_chpt_test[2]])`.
 
 
 #### Change in counts of intense storms
@@ -522,7 +522,7 @@ trimmed_sp_results$intense_pois_chpt_test
 
 The dates suggest the changepoint would occur from `r 1980+trimmed_sp_results$intense_pois_chpt_test[2]` to `r 1980+trimmed_sp_results$intense_pois_chpt_test[2]+1` with $p$-value `r trimmed_sp_results$intense_pois_chpt_test[3]`.
 
-In regime one, the mean number of total storms is `r mean(trimmed_sp_results$data$Intense_Storms[1:trimmed_sp_results$intense_pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(trimmed_sp_results$data$Intense_Storms[(trimmed_sp_results$intense_pois_chpt_test[2]+1):37])`; a change of `r mean(trimmed_sp_results$data$Intense_Storms[(trimmed_sp_results$intense_pois_chpt_test[2]+1):37]) - mean(trimmed_sp_results$data$Intense_Storms[1:trimmed_sp_results$intense_pois_chpt_test[2]])`.
+In regime one, the mean number of total storms is `r mean(trimmed_sp_results$data$Intense_Storms[1:trimmed_sp_results$intense_pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(trimmed_sp_results$data$Intense_Storms[(trimmed_sp_results$intense_pois_chpt_test[2]+1):num_years_hursat])`; a change of `r mean(trimmed_sp_results$data$Intense_Storms[(trimmed_sp_results$intense_pois_chpt_test[2]+1):num_years_hursat]) - mean(trimmed_sp_results$data$Intense_Storms[1:trimmed_sp_results$intense_pois_chpt_test[2]])`.
 
 
 
@@ -538,7 +538,7 @@ trimmed_sp_results$prop_major_chpt_test
 
 The change in proportions occurs `r 1979+trimmed_sp_results$prop_major_chpt_test[2]` to `r 1979+trimmed_sp_results$prop_major_chpt_test[2]+1` with $p$-value `r trimmed_sp_results$prop_major_chpt_test[3]`. 
 
-In regime one, the proportion of major storms is `r sum(trimmed_sp_results$data$Major_Storms[1:trimmed_sp_results$prop_major_chpt_test[2]])/sum(trimmed_sp_results$data$Total_Storms[1:trimmed_sp_results$prop_major_chpt_test[2]])` and in regime two, the proportion of major storms is `r sum(trimmed_sp_results$data$Major_Storms[(trimmed_sp_results$prop_major_chpt_test[2]+1):37])/sum(trimmed_sp_results$data$Total_Storms[(trimmed_sp_results$prop_major_chpt_test[2]+1):37])`; a change of `r sum(trimmed_sp_results$data$Major_Storms[(trimmed_sp_results$prop_major_chpt_test[2]+1):37])/sum(trimmed_sp_results$data$Total_Storms[(trimmed_sp_results$prop_major_chpt_test[2]+1):37]) - sum(trimmed_sp_results$data$Major_Storms[1:trimmed_sp_results$prop_major_chpt_test[2]])/sum(trimmed_sp_results$data$Total_Storms[1:trimmed_sp_results$prop_major_chpt_test[2]])`.
+In regime one, the proportion of major storms is `r sum(trimmed_sp_results$data$Major_Storms[1:trimmed_sp_results$prop_major_chpt_test[2]])/sum(trimmed_sp_results$data$Total_Storms[1:trimmed_sp_results$prop_major_chpt_test[2]])` and in regime two, the proportion of major storms is `r sum(trimmed_sp_results$data$Major_Storms[(trimmed_sp_results$prop_major_chpt_test[2]+1):num_years_hursat])/sum(trimmed_sp_results$data$Total_Storms[(trimmed_sp_results$prop_major_chpt_test[2]+1):num_years_hursat])`; a change of `r sum(trimmed_sp_results$data$Major_Storms[(trimmed_sp_results$prop_major_chpt_test[2]+1):num_years_hursat])/sum(trimmed_sp_results$data$Total_Storms[(trimmed_sp_results$prop_major_chpt_test[2]+1):num_years_hursat]) - sum(trimmed_sp_results$data$Major_Storms[1:trimmed_sp_results$prop_major_chpt_test[2]])/sum(trimmed_sp_results$data$Total_Storms[1:trimmed_sp_results$prop_major_chpt_test[2]])`.
 
 
 #### Proportion of intense storms
@@ -552,7 +552,7 @@ trimmed_sp_results$prop_intense_chpt_test
 The change in proportions occurs `r 1979+trimmed_sp_results$prop_intense_chpt_test[2]` to `r 1979+trimmed_sp_results$prop_intense_chpt_test[2]+1` with $p$-value `r trimmed_sp_results$prop_intense_chpt_test[3]`.
 
 
-In regime one, the proportion of major storms is `r sum(trimmed_sp_results$data$Intense_Storms[1:trimmed_sp_results$prop_intense_chpt_test[2]])/sum(trimmed_sp_results$data$Total_Storms[1:trimmed_sp_results$prop_intense_chpt_test[2]])` and in regime two, the proportion of major storms is `r sum(trimmed_sp_results$data$Intense_Storms[(trimmed_sp_results$prop_intense_chpt_test[2]+1):37])/sum(trimmed_sp_results$data$Total_Storms[(trimmed_sp_results$prop_intense_chpt_test[2]+1):37])`; a change of `r sum(trimmed_sp_results$data$Intense_Storms[(trimmed_sp_results$prop_intense_chpt_test[2]+1):37])/sum(trimmed_sp_results$data$Total_Storms[(trimmed_sp_results$prop_intense_chpt_test[2]+1):37]) - sum(trimmed_sp_results$data$Intense_Storms[1:trimmed_sp_results$prop_intense_chpt_test[2]])/sum(trimmed_sp_results$data$Total_Storms[1:trimmed_sp_results$prop_intense_chpt_test[2]])`.
+In regime one, the proportion of major storms is `r sum(trimmed_sp_results$data$Intense_Storms[1:trimmed_sp_results$prop_intense_chpt_test[2]])/sum(trimmed_sp_results$data$Total_Storms[1:trimmed_sp_results$prop_intense_chpt_test[2]])` and in regime two, the proportion of major storms is `r sum(trimmed_sp_results$data$Intense_Storms[(trimmed_sp_results$prop_intense_chpt_test[2]+1):num_years_hursat])/sum(trimmed_sp_results$data$Total_Storms[(trimmed_sp_results$prop_intense_chpt_test[2]+1):num_years_hursat])`; a change of `r sum(trimmed_sp_results$data$Intense_Storms[(trimmed_sp_results$prop_intense_chpt_test[2]+1):num_years_hursat])/sum(trimmed_sp_results$data$Total_Storms[(trimmed_sp_results$prop_intense_chpt_test[2]+1):num_years_hursat]) - sum(trimmed_sp_results$data$Intense_Storms[1:trimmed_sp_results$prop_intense_chpt_test[2]])/sum(trimmed_sp_results$data$Total_Storms[1:trimmed_sp_results$prop_intense_chpt_test[2]])`.
 
 
 
@@ -621,7 +621,7 @@ trimmed_sp_results$plot_seg_fits
 **Poisson Regression**
 
 ```{r, echo=FALSE}
-data.frame(Data=c("IBTracs 1980-2024", "HURSAT 1981-2017", "IBTracs 1981-2017"),
+data.frame(Data=c("IBTracs 1980-2025", "HURSAT 1981-2017", "IBTracs 1981-2017"),
            Coefficent = c(coef(ibtracs_sp_results$pois_fit)[2],coef(hursat_sp_results$pois_fit)[2],coef(trimmed_sp_results$pois_fit)[2]),
            `p-value` = c(anova(ibtracs_sp_results$pois_fit)$`Pr(>Chi)`[2], anova(hursat_sp_results$pois_fit)$`Pr(>Chi)`[2], anova(trimmed_sp_results$pois_fit)$`Pr(>Chi)`[2]),
            `Start` = c(predict(ibtracs_sp_results$pois_fit, type="response")[1], predict(hursat_sp_results$pois_fit, type="response")[1], predict(trimmed_sp_results$pois_fit, type="response")[1] ),
@@ -635,7 +635,7 @@ data.frame(Data=c("IBTracs 1980-2024", "HURSAT 1981-2017", "IBTracs 1981-2017"),
 **SCUSUM Change Point Test**
 
 ```{r, echo=FALSE}
-data.frame(Data=c("IBTracs 1980-2024", "HURSAT 1981-2017", "IBTracs 1981-2017"),
+data.frame(Data=c("IBTracs 1980-2025", "HURSAT 1981-2017", "IBTracs 1981-2017"),
            `Chpt Location` = c(ibtracs_sp_results$pois_chpt_test[2]+1980,hursat_sp_results$pois_chpt_test[2]+1981,trimmed_sp_results$pois_chpt_test[2]+1981),
            `p-value` =c(ibtracs_sp_results$pois_chpt_test[3],hursat_sp_results$pois_chpt_test[3],trimmed_sp_results$pois_chpt_test[3]),
            `Regime 1` = c(mean(ibtracs_sp_results$data$Total_Storms[1:ibtracs_sp_results$pois_chpt_test[2]]),
@@ -647,6 +647,7 @@ data.frame(Data=c("IBTracs 1980-2024", "HURSAT 1981-2017", "IBTracs 1981-2017"),
            `Change` = c(mean(ibtracs_sp_results$data$Total_Storms[(ibtracs_sp_results$pois_chpt_test[2]+1):length(ibtracs_sp_results$data$Total_Storms)]) - mean(ibtracs_sp_results$data$Total_Storms[1:ibtracs_sp_results$pois_chpt_test[2]]),
                         mean(hursat_sp_results$data$Total_Storms[(hursat_sp_results$pois_chpt_test[2]+1):length(hursat_sp_results$data$Total_Storms)]) - mean(hursat_sp_results$data$Total_Storms[1:hursat_sp_results$pois_chpt_test[2]]),
                         mean(trimmed_sp_results$data$Total_Storms[(trimmed_sp_results$pois_chpt_test[2]+1):length(trimmed_sp_results$data$Total_Storms)]) - mean(trimmed_sp_results$data$Total_Storms[1:trimmed_sp_results$pois_chpt_test[2]]) ) ) |>
+  mutate(Perc_Change = Change/`Regime.1`*100) |>
   knitr::kable(digits=5)
 ```
 
@@ -655,7 +656,7 @@ data.frame(Data=c("IBTracs 1980-2024", "HURSAT 1981-2017", "IBTracs 1981-2017"),
 **Poisson Regression**
 
 ```{r, echo=FALSE}
-data.frame(Data=c("IBTracs 1980-2024", "HURSAT 1981-2017", "IBTracs 1981-2017"),
+data.frame(Data=c("IBTracs 1980-2025", "HURSAT 1981-2017", "IBTracs 1981-2017"),
            Coefficent = c(coef(ibtracs_sp_results$major_fit)[2],
                           coef(hursat_sp_results$major_fit)[2],
                           coef(trimmed_sp_results$major_fit)[2]),
@@ -677,7 +678,7 @@ data.frame(Data=c("IBTracs 1980-2024", "HURSAT 1981-2017", "IBTracs 1981-2017"),
 **SCUSUM Change Point Test**
 
 ```{r, echo=FALSE}
-data.frame(Data=c("IBTracs 1980-2024", "HURSAT 1981-2017", "IBTracs 1981-2017"),
+data.frame(Data=c("IBTracs 1980-2025", "HURSAT 1981-2017", "IBTracs 1981-2017"),
            `Chpt Location` = c(ibtracs_sp_results$major_pois_chpt_test[2]+1980,hursat_sp_results$major_pois_chpt_test[2]+1981,trimmed_sp_results$major_pois_chpt_test[2]+1981),
            `p-value` =c(ibtracs_sp_results$major_pois_chpt_test[3],hursat_sp_results$major_pois_chpt_test[3],trimmed_sp_results$major_pois_chpt_test[3]),
            `Regime 1` = c(mean(ibtracs_sp_results$data$Major_Storms[1:ibtracs_sp_results$major_pois_chpt_test[2]]),
@@ -689,6 +690,7 @@ data.frame(Data=c("IBTracs 1980-2024", "HURSAT 1981-2017", "IBTracs 1981-2017"),
            `Change` = c(mean(ibtracs_sp_results$data$Major_Storms[(ibtracs_sp_results$major_pois_chpt_test[2]+1):length(ibtracs_sp_results$data$Major_Storms)]) - mean(ibtracs_sp_results$data$Major_Storms[1:ibtracs_sp_results$major_pois_chpt_test[2]]),
                         mean(hursat_sp_results$data$Major_Storms[(hursat_sp_results$major_pois_chpt_test[2]+1):length(hursat_sp_results$data$Major_Storms)]) - mean(hursat_sp_results$data$Major_Storms[1:hursat_sp_results$major_pois_chpt_test[2]]),
                         mean(trimmed_sp_results$data$Major_Storms[(trimmed_sp_results$major_pois_chpt_test[2]+1):length(trimmed_sp_results$data$Major_Storms)]) - mean(trimmed_sp_results$data$Major_Storms[1:trimmed_sp_results$major_pois_chpt_test[2]]) ) ) |>
+  mutate(Perc_Change = Change/`Regime.1`*100) |>
   knitr::kable(digits=5)
 ```
 
@@ -697,7 +699,7 @@ data.frame(Data=c("IBTracs 1980-2024", "HURSAT 1981-2017", "IBTracs 1981-2017"),
 **Logistic Regression**
 
 ```{r, echo=FALSE}
-data.frame(Data=c("IBTracs 1980-2024", "HURSAT 1981-2017", "IBTracs 1981-2017"),
+data.frame(Data=c("IBTracs 1980-2025", "HURSAT 1981-2017", "IBTracs 1981-2017"),
            Coefficent = c(coef(ibtracs_sp_results$major_logit_fit)[2],coef(hursat_sp_results$major_logit_fit)[2],coef(trimmed_sp_results$major_logit_fit)[2]),
            `p-value` = c(anova(ibtracs_sp_results$major_logit_fit)$`Pr(>Chi)`[2], anova(hursat_sp_results$major_logit_fit)$`Pr(>Chi)`[2], anova(trimmed_sp_results$major_logit_fit)$`Pr(>Chi)`[2]),
                       `Start` = c(predict(ibtracs_sp_results$major_logit_fit, type="response")[1]*100, 
@@ -715,7 +717,7 @@ data.frame(Data=c("IBTracs 1980-2024", "HURSAT 1981-2017", "IBTracs 1981-2017"),
 **SCUSUM Change Point Test**
 
 ```{r, echo=FALSE}
-data.frame(Data=c("IBTracs 1980-2024", "HURSAT 1981-2017", "IBTracs 1981-2017"),
+data.frame(Data=c("IBTracs 1980-2025", "HURSAT 1981-2017", "IBTracs 1981-2017"),
            `Chpt Location` = c(ibtracs_sp_results$prop_major_chpt_test[2]+1980,hursat_sp_results$prop_major_chpt_test[2]+1981,trimmed_sp_results$prop_major_chpt_test[2]+1981),
            `p-value` =c(ibtracs_sp_results$prop_major_chpt_test[3],hursat_sp_results$prop_major_chpt_test[3],trimmed_sp_results$prop_major_chpt_test[3]),
            `Regime 1 %` = c(sum(ibtracs_sp_results$data$Major_Storms[1:ibtracs_sp_results$prop_major_chpt_test[2]])/sum(ibtracs_sp_results$data$Total_Storms[1:ibtracs_sp_results$prop_major_chpt_test[2]])*100,
@@ -737,7 +739,7 @@ data.frame(Data=c("IBTracs 1980-2024", "HURSAT 1981-2017", "IBTracs 1981-2017"),
 **Poisson Regression**
 
 ```{r, echo=FALSE}
-data.frame(Data=c("IBTracs 1980-2024", "HURSAT 1981-2017", "IBTracs 1981-2017"),
+data.frame(Data=c("IBTracs 1980-2025", "HURSAT 1981-2017", "IBTracs 1981-2017"),
            Coefficent = c(coef(ibtracs_sp_results$intense_fit)[2],
                           coef(hursat_sp_results$intense_fit)[2],
                           coef(trimmed_sp_results$intense_fit)[2]),
@@ -759,7 +761,7 @@ data.frame(Data=c("IBTracs 1980-2024", "HURSAT 1981-2017", "IBTracs 1981-2017"),
 **SCUSUM Change Point Test**
 
 ```{r, echo=FALSE}
-data.frame(Data=c("IBTracs 1980-2024", "HURSAT 1981-2017", "IBTracs 1981-2017"),
+data.frame(Data=c("IBTracs 1980-2025", "HURSAT 1981-2017", "IBTracs 1981-2017"),
            `Chpt Location` = c(ibtracs_sp_results$intense_pois_chpt_test[2]+1980,hursat_sp_results$intense_pois_chpt_test[2]+1981,trimmed_sp_results$intense_pois_chpt_test[2]+1981),
            `p-value` =c(ibtracs_sp_results$intense_pois_chpt_test[3],hursat_sp_results$intense_pois_chpt_test[3],trimmed_sp_results$intense_pois_chpt_test[3]),
            `Regime 1` = c(mean(ibtracs_sp_results$data$Intense_Storms[1:ibtracs_sp_results$intense_pois_chpt_test[2]]),
@@ -771,6 +773,7 @@ data.frame(Data=c("IBTracs 1980-2024", "HURSAT 1981-2017", "IBTracs 1981-2017"),
            `Change` = c(mean(ibtracs_sp_results$data$Intense_Storms[(ibtracs_sp_results$intense_pois_chpt_test[2]+1):length(ibtracs_sp_results$data$Intense_Storms)]) - mean(ibtracs_sp_results$data$Intense_Storms[1:ibtracs_sp_results$intense_pois_chpt_test[2]]),
                         mean(hursat_sp_results$data$Intense_Storms[(hursat_sp_results$intense_pois_chpt_test[2]+1):length(hursat_sp_results$data$Intense_Storms)]) - mean(hursat_sp_results$data$Intense_Storms[1:hursat_sp_results$intense_pois_chpt_test[2]]),
                         mean(trimmed_sp_results$data$Intense_Storms[(trimmed_sp_results$intense_pois_chpt_test[2]+1):length(trimmed_sp_results$data$Intense_Storms)]) - mean(trimmed_sp_results$data$Intense_Storms[1:trimmed_sp_results$intense_pois_chpt_test[2]]) ) ) |>
+  mutate(Perc_Change = Change/`Regime.1`*100) |>
   knitr::kable(digits=5)
 ```
 
@@ -779,7 +782,7 @@ data.frame(Data=c("IBTracs 1980-2024", "HURSAT 1981-2017", "IBTracs 1981-2017"),
 **Logistic Regression**
 
 ```{r, echo=FALSE}
-data.frame(Data=c("IBTracs 1980-2024", "HURSAT 1981-2017", "IBTracs 1981-2017"),
+data.frame(Data=c("IBTracs 1980-2025", "HURSAT 1981-2017", "IBTracs 1981-2017"),
            Coefficent = c(coef(ibtracs_sp_results$intense_logit_fit)[2],coef(hursat_sp_results$intense_logit_fit)[2],coef(trimmed_sp_results$intense_logit_fit)[2]),
            `p-value` = c(anova(ibtracs_sp_results$intense_logit_fit)$`Pr(>Chi)`[2], anova(hursat_sp_results$intense_logit_fit)$`Pr(>Chi)`[2], anova(trimmed_sp_results$intense_logit_fit)$`Pr(>Chi)`[2]),
                       `Start` = c(predict(ibtracs_sp_results$intense_logit_fit, type="response")[1]*100, 
@@ -797,7 +800,7 @@ data.frame(Data=c("IBTracs 1980-2024", "HURSAT 1981-2017", "IBTracs 1981-2017"),
 **SCUSUM Change Point Test**
 
 ```{r, echo=FALSE}
-data.frame(Data=c("IBTracs 1980-2024", "HURSAT 1981-2017", "IBTracs 1981-2017"),
+data.frame(Data=c("IBTracs 1980-2025", "HURSAT 1981-2017", "IBTracs 1981-2017"),
            `Chpt Location` = c(ibtracs_sp_results$prop_intense_chpt_test[2]+1980,hursat_sp_results$prop_intense_chpt_test[2]+1981,trimmed_sp_results$prop_intense_chpt_test[2]+1981),
            `p-value` =c(ibtracs_sp_results$prop_intense_chpt_test[3],hursat_sp_results$prop_intense_chpt_test[3],trimmed_sp_results$prop_intense_chpt_test[3]),
            `Regime 1 %` = c(sum(ibtracs_sp_results$data$Intense_Storms[1:ibtracs_sp_results$prop_intense_chpt_test[2]])/sum(ibtracs_sp_results$data$Total_Storms[1:ibtracs_sp_results$prop_intense_chpt_test[2]])*100,

@@ -32,13 +32,13 @@ library(tidyverse)
 ## Uncomment out the lines below to fetch the data
 ##    and save the result
 
-# URL <- "https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r01/access/csv/ibtracs.since1980.list.v04r01.csv"
-# storm_col_names <- read_csv(URL,
-#                             n_max = 0)
-# 
-# storms_raw <- read_csv(URL,
-#                        skip = 2, col_names = names(storm_col_names), na="" )
-# 
+URL <- "https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r01/access/csv/ibtracs.since1980.list.v04r01.csv"
+storm_col_names <- read_csv(URL,
+                            n_max = 0)
+
+storms_raw <- read_csv(URL,
+                       skip = 2, col_names = names(storm_col_names), na="" )
+
 # save(storms_raw, file="./data/ibtracs_rawData.RData")
 
 #######################################################
@@ -86,7 +86,7 @@ current_year <- year(Sys.time())
 ##   and classifications
 
 storms_fct <- storms_raw %>%
-  mutate(SEASON=as.numeric(SEASON)) |>
+  mutate(SEASON=year(ISO_TIME) ) |>
   mutate(Wind = pmax(WMO_WIND, USA_WIND, TOKYO_WIND, CMA_WIND, HKO_WIND, NEWDELHI_WIND, REUNION_WIND, BOM_WIND, NADI_WIND, WELLINGTON_WIND, DS824_WIND, TD9636_WIND, NEUMANN_WIND, MLC_WIND, na.rm=TRUE) ) |>
   dplyr::filter(Wind > 34,
                 SEASON < current_year) |>
