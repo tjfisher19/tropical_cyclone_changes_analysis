@@ -394,7 +394,7 @@ plot_basin_prop_major <- ggplot(storm_counts) +
                                              y=PropMajorStorms, yend=PropMajorStorms, group=Regime),
                color=seg_line, linewidth=1.25) +
   facet_wrap(~BASIN, scales="free") +
-  labs(title="Changes in Propotion of Major Cyclones by Basin",
+  labs(title="Changes in Proportion of Major Cyclones by Basin",
        subtitle="Segmentations based on SCUSUM Change Point Test",
        caption=caption_text) +
   theme_minimal() + 
@@ -506,7 +506,7 @@ plot_basin_prop_intense <- ggplot(storm_counts) +
                                              y=PropIntenseStorms, yend=PropIntenseStorms, group=Regime),
                color=seg_line, linewidth=1.25) +
   facet_wrap(~BASIN, scales="free") +
-  labs(title="Changes in Propotion of Intense Cyclones by Basin",
+  labs(title="Changes in Proportion of Intense Cyclones by Basin",
        subtitle="Segmentations based on SCUSUM Change Point Test",
        caption=caption_text) +
   theme_minimal() + 
