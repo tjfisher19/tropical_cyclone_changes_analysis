@@ -2,6 +2,7 @@
 title: "Tropical Cyclone Analysis"
 subtitle: "Single Change Point & Regression Methods"
 author: "Tom Fisher"
+date: today
 format:
   html:
     toc: true
@@ -20,8 +21,10 @@ ibtracs_data <- non_shorty_for_props
 load("./data/hursat_nonShortiesForProportions.RData")
 hursat_data <- non_shorty_for_props
 
+# Load cusum test
 source("cusumBasedChangePointsTest.R")
 
+## Add the "Global" basin to each dataset
 ibtracs_all_basins <- ibtracs_data |>
   group_by(SEASON) |>
   summarize(Major_Storms = sum(Major_Storms),
@@ -30,8 +33,7 @@ ibtracs_all_basins <- ibtracs_data |>
   mutate(BASIN = "Global") |>
   bind_rows(ibtracs_data)
 
-num_years_ibtracs <- length(unique(ibtracs_data$SEASON))
-
+## Now with the HURSAT data
 hursat_all_basins <- hursat_data |>
   group_by(SEASON) |>
   summarize(Major_Storms = sum(Major_Storms),
@@ -40,21 +42,31 @@ hursat_all_basins <- hursat_data |>
   mutate(BASIN = "Global") |>
   bind_rows(hursat_data)
 
+num_years_ibtracs <- length(unique(ibtracs_data$SEASON))
 num_years_hursat <- length(unique(hursat_data$SEASON) )
 
-ibtracs_trimmed <- ibtracs_all_basins |>
+## Trimmed version of IBTraCs matching HURSAT years
+ibtracs_trimmed_all_basins <- ibtracs_all_basins |>
   dplyr::filter(SEASON %in% unique(hursat_all_basins$SEASON) )
 ```
 
 ```{r, echo=FALSE}
-get_report_basin <- function(basin="Global", all_basins=ibtracs_all_basins, runs=50000) {
+## Main analysis function
+##
+## Specify a Basin and dataset (IBTracs vs HURSAT vs Trimmed IBTracs)
+## All analysis we need is reported.
+get_report_basin <- function(basin="Global", all_basins=ibtracs_all_basins) {
   ## Some Data Processing for plots and summary statistics
+  ##   and used in our analysis
+  ## Note: YearsSinceStart is just a number counting the number of years
+  ##   since the beginning of our record (1980 or 1981, depending on source)
   storm_basin <- all_basins |>
     dplyr::filter(BASIN==basin) |>
     mutate(YearsSinceStart = SEASON - min(SEASON)) |>
     mutate(Prop_Major = Major_Storms/Total_Storms,
            Prop_Intense = Intense_Storms/Total_Storms)
   
+  ## Put data in a tall (or long) format for plotting
   storm_basin_long <- storm_basin |>
     dplyr::select(SEASON, Total_Storms, Major_Storms, Prop_Major, Intense_Storms, Prop_Intense, BASIN) |>
     pivot_longer(c(Total_Storms, Major_Storms, Prop_Major, Intense_Storms, Prop_Intense), names_to="Measure", values_to="values") |>
@@ -73,7 +85,7 @@ get_report_basin <- function(basin="Global", all_basins=ibtracs_all_basins, runs
     theme_bw() + 
     theme(axis.title = element_blank() )
   
-  ## Summary statistics
+  ## Summary statistics (Full data aggregate)
   summary_stat <- storm_basin |>
     summarise(`Total Storms (Avg)` = mean(Total_Storms),
               `Total Storms (stddev)` = sd(Total_Storms),
@@ -126,135 +138,7 @@ get_report_basin <- function(basin="Global", all_basins=ibtracs_all_basins, runs
   
   prop_intense_chpt_test <- scusumTestProportion(cbind(prop_data$Intense_Storms, prop_data$Total_Storms) )
   
-  ## Here we do some segmenting for the plots
-  ##   with the changepoint segmentations
-  
-  if(pois_chpt_test[3]<0.10 ) {
-    mean1 <- mean(storm_basin$Total_Storms[1:pois_chpt_test[2]])
-    mean2 <- mean(storm_basin$Total_Storms[(pois_chpt_test[2]+1):dim(storm_basin)[1]])
-    df_total_seg <- data.frame(
-      SEASON = c(min(storm_basin$SEASON)-0.4, storm_basin$SEASON[pois_chpt_test[2]]+0.4,
-                 storm_basin$SEASON[pois_chpt_test[2]]+0.6, max(storm_basin$SEASON)+0.4),
-      Group = c(rep("seg1", 2),
-                rep("seg2", 2) ),
-      Mean = c(rep(mean1, 2),
-               rep(mean2, 2) ),
-      Measure = "Total_Storms"
-    )
-  } else {
-    df_total_seg <- data.frame(
-      SEASON = c(min(storm_basin$SEASON)-0.4, max(storm_basin$SEASON)+0.4),
-      Group = c(rep("seg2", 2) ),
-      Mean = c(rep(mean(storm_basin$Total_Storms), 2) ),
-      Measure = "Total_Storms"
-    )
-  }
-  
-  
-  if(major_pois_chpt_test[3]<0.10) {
-    mean1 <- mean(storm_basin$Major_Storms[1:major_pois_chpt_test[2]])
-    mean2 <- mean(storm_basin$Major_Storms[(major_pois_chpt_test[2]+1):dim(storm_basin)[1]])
-    df_major_seg <- data.frame(
-      SEASON = c(min(storm_basin$SEASON)-0.4, storm_basin$SEASON[major_pois_chpt_test[2]]+0.4,
-                 storm_basin$SEASON[major_pois_chpt_test[2]]+0.6, max(storm_basin$SEASON)+0.4),
-      Group = c(rep("seg1", 2),
-                rep("seg2", 2) ),
-      Mean = c(rep(mean1, 2),
-               rep(mean2, 2) ),
-      Measure = "Major_Storms"
-    )
-  } else {
-    df_major_seg <- data.frame(
-      SEASON = c(min(storm_basin$SEASON)-0.4, max(storm_basin$SEASON)+0.4),
-      Group = c(rep("seg2", 2) ),
-      Mean = c(rep(mean(storm_basin$Major_Storms), 2) ),
-      Measure = "Major_Storms"
-    )
-  }
-  
-  
-  if(intense_pois_chpt_test[3]<0.10) {
-    mean1 <- mean(storm_basin$Intense_Storms[1:intense_pois_chpt_test[2]])
-    mean2 <- mean(storm_basin$Intense_Storms[(intense_pois_chpt_test[2]+1):dim(storm_basin)[1]])
-    df_intense_seg <- data.frame(
-      SEASON = c(min(storm_basin$SEASON)-0.4, storm_basin$SEASON[intense_pois_chpt_test[2]]+0.4,
-                 storm_basin$SEASON[intense_pois_chpt_test[2]]+0.6, max(storm_basin$SEASON)+0.4),
-      Group = c(rep("seg1", 2),
-                rep("seg2", 2) ),
-      Mean = c(rep(mean1, 2),
-               rep(mean2, 2) ),
-      Measure = "Intense_Storms"
-    )
-  } else {
-    df_intense_seg <- data.frame(
-      SEASON = c(min(storm_basin$SEASON)-0.4, max(storm_basin$SEASON)+0.4),
-      Group = c(rep("seg2", 2) ),
-      Mean = c(rep(mean(storm_basin$Intense_Storms), 2) ),
-      Measure = "Intense_Storms"
-    )
-  }
-  
-  if(prop_major_chpt_test[3]<0.10) {
-    mean1 <- sum(storm_basin$Major_Storms[1:prop_major_chpt_test[2]])/
-      sum(storm_basin$Total_Storms[1:prop_major_chpt_test[2]])
-    mean2 <- sum(storm_basin$Major_Storms[(prop_major_chpt_test[2]+1):dim(storm_basin)[1]])/
-      sum(storm_basin$Total_Storms[(prop_major_chpt_test[2]+1):dim(storm_basin)[1]])
-    df_prop_major_seg <- data.frame(
-      SEASON = c(min(storm_basin$SEASON)-0.4, storm_basin$SEASON[prop_major_chpt_test[2]]+0.4,
-                 storm_basin$SEASON[prop_major_chpt_test[2]]+0.6, max(storm_basin$SEASON)+0.4),
-      Group = c(rep("seg1", 2),
-                rep("seg2", 2) ),
-      Mean = c(rep(mean1, 2),
-               rep(mean2, 2) ),
-      Measure = "Prop_Major"
-    )
-  } else {
-    df_prop_major_seg <- data.frame(
-      SEASON = c(min(storm_basin$SEASON)-0.4, max(storm_basin$SEASON)+0.4),
-      Group = c(rep("seg2", 2) ),
-      Mean = c(rep(sum(storm_basin$Major_Storms)/sum(storm_basin$Total_Storms), 
-                   2 ) ),
-      Measure = "Prop_Major"
-    )
-  }
-  
-    
-  if(prop_intense_chpt_test[3]<0.10) {
-    mean1 <- sum(storm_basin$Intense_Storms[1:prop_intense_chpt_test[2]])/
-      sum(storm_basin$Total_Storms[1:prop_intense_chpt_test[2]])
-    mean2 <- sum(storm_basin$Intense_Storms[(prop_intense_chpt_test[2]+1):dim(storm_basin)[1]])/
-      sum(storm_basin$Total_Storms[(prop_intense_chpt_test[2]+1):dim(storm_basin)[1]])
-    df_prop_intense_seg <- data.frame(
-      SEASON = c(min(storm_basin$SEASON)-0.4, storm_basin$SEASON[prop_intense_chpt_test[2]]+0.4,
-                 storm_basin$SEASON[prop_intense_chpt_test[2]]+0.6, max(storm_basin$SEASON)+0.4),
-      Group = c(rep("seg1", 2),
-                rep("seg2", 2) ),
-      Mean = c(rep(mean1, 2),
-               rep(mean2, 2) ),
-      Measure = "Prop_Intense"
-    )
-  } else {
-    df_prop_intense_seg <- data.frame(
-      SEASON = c(min(storm_basin$SEASON)-0.4, max(storm_basin$SEASON)+0.4),
-      Group = c(rep("seg2", 2) ),
-      Mean = c(rep(sum(storm_basin$Intense_Storms)/sum(storm_basin$Total_Storms), 
-                   2 ) ),
-      Measure = "Prop_Intense"
-    )
-  }
-  df_segments <- bind_rows(
-    df_total_seg, df_major_seg, df_prop_major_seg, df_intense_seg, df_prop_intense_seg) |>
-    mutate(Measure = factor(Measure, levels=c("Total_Storms", "Major_Storms", "Prop_Major", "Intense_Storms", "Prop_Intense"),
-                            labels=c("Total Non-Shorties",
-                                     "Major Storms",
-                                     "Proportion of Major Storms",
-                                     "Intense Storms",
-                                     "Proportion of Intense Storms")))
-  
-  plot_seg_fits <- plot_data +
-    geom_line(data=df_segments, aes(x=SEASON, y=Mean, group=Group),
-              linewidth=1.2)
-  
+  ## Output all results in a useful list
   list(summary_stat = summary_stat,
        
        pois_fit = count_pois_fit,
@@ -272,7 +156,6 @@ get_report_basin <- function(basin="Global", all_basins=ibtracs_all_basins, runs
        prop_intense_chpt_test = prop_intense_chpt_test,
        
        plot_data = plot_data,
-       plot_seg_fits = plot_seg_fits,
        
        data=storm_basin)
 }
@@ -324,28 +207,59 @@ It is worth noting that CUSUM based tests can be conservative in practice (repor
 
 We coded up a SCUSUM test for the proportion using standard Intro Stat binomial distribution theory. This is not all that different than the MDL search performed earlier. However, unlike the counts (or total number of storms), now the parameter of interest is $p$, the proportion of major storms or proportion of intense storms.
 
-{{< include ./report_analysis_code/cyclone_report_global.qmd >}}
+# Global Cyclone Record
 
-{{< include ./report_analysis_code/cyclone_report_north_atlantic.qmd >}}
+We begin with a study of the record across the entire globe -- the Global "basin". Our analysis looks at all non-shorties (storms that lasted at least 48 hours) and achieved tropical storm strength. We also look at those storms that achieved major hurricane strength.
 
-{{< include ./report_analysis_code/cyclone_report_eastern_pacific.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_global_ibtracs.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_global_hursat.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_global_trimmed.qmd >}}
 
-{{< include ./report_analysis_code/cyclone_report_western_pacific.qmd >}}
+# North Atlantic
 
-{{< include ./report_analysis_code/cyclone_report_north_indian.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_north_atlantic_ibtracs.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_north_atlantic_hursat.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_north_atlantic_trimmed.qmd >}}
 
-{{< include ./report_analysis_code/cyclone_report_southern_indian.qmd >}}
+# Eastern North Pacific
 
-{{< include ./report_analysis_code/cyclone_report_southern_pacific.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_eastern_pacific_ibtracs.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_eastern_pacific_hursat.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_eastern_pacific_trimmed.qmd >}}
+
+# Western North Pacific
+
+{{< include ./report_analysis_code/cyclone_report_western_pacific_ibtracs.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_western_pacific_hursat.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_western_pacific_trimmed.qmd >}}
+
+# North Indian
+
+{{< include ./report_analysis_code/cyclone_report_north_indian_ibtracs.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_north_indian_hursat.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_north_indian_trimmed.qmd >}}
+
+# South Indian
+
+{{< include ./report_analysis_code/cyclone_report_southern_indian_ibtracs.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_southern_indian_hursat.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_southern_indian_trimmed.qmd >}}
+
+# South Pacific
+
+{{< include ./report_analysis_code/cyclone_report_southern_pacific_ibtracs.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_southern_pacific_hursat.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_southern_pacific_trimmed.qmd >}}
+
 
 ```{r, echo=FALSE}
-save(ibtracs_global_results, ibtracs_na_results, ibtracs_ep_results, 
-     ibtracs_wp_results, ibtracs_ni_results, ibtracs_si_results, ibtracs_sp_results,
-     file="./data/results_ibtracs.RData")
-save(hursat_global_results, hursat_na_results, hursat_ep_results, 
-     hursat_wp_results, hursat_ni_results, hursat_si_results, hursat_sp_results,
-     file="./data/results_hursat.RData")
-save(trimmed_global_results, trimmed_na_results, trimmed_ep_results, 
-     trimmed_wp_results, trimmed_ni_results, trimmed_si_results, trimmed_sp_results,
-     file="./data/results_trimmed.RData")
+# save(ibtracs_global_results, ibtracs_na_results, ibtracs_ep_results, 
+#      ibtracs_wp_results, ibtracs_ni_results, ibtracs_si_results, ibtracs_sp_results,
+#      file="./data/results_ibtracs.RData")
+# save(hursat_global_results, hursat_na_results, hursat_ep_results, 
+#      hursat_wp_results, hursat_ni_results, hursat_si_results, hursat_sp_results,
+#      file="./data/results_hursat.RData")
+# save(trimmed_global_results, trimmed_na_results, trimmed_ep_results, 
+#      trimmed_wp_results, trimmed_ni_results, trimmed_si_results, trimmed_sp_results,
+#      file="./data/results_trimmed.RData")
 ```

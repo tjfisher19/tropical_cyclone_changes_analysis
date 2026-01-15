@@ -1,0 +1,215 @@
+
+## HURSAT Full Analysis
+
+```{r, echo=FALSE}
+hursat_si_results <- get_report_basin(basin="Southern Indian", all_basins=hursat_all_basins)
+```
+
+### Summary Statistics (overall)
+
+```{r, echo=FALSE}
+hursat_si_results$summary_stat |>
+  knitr::kable()
+```
+
+```{r, echo=FALSE}
+hursat_si_results$plot_data
+```
+
+
+### Regression Methods
+
+#### Poisson Regression on non-Shorties
+
+```{r, echo=FALSE}
+summary(hursat_si_results$pois_fit)
+```
+
+
+
+Note, this says a decrease of `r abs(coef(hursat_si_results$pois_fit)[2])` log-storms per year. This corresponds to a `r (1-exp(coef(hursat_si_results$pois_fit)[2]))*100` percent decrease per season. So over `r num_years_hursat` years, that is a decrease of `r (1-exp(coef(hursat_si_results$pois_fit)[2])^num_years_hursat)*100` percent.
+
+Using this model, we would predict `r predict(hursat_si_results$pois_fit, type="response")[1]` storms in `r min(hursat_si_results$data$SEASON)` and `r predict(hursat_si_results$pois_fit, type="response")[num_years_hursat]` storms in `r max(hursat_si_results$data$SEASON)`.
+
+That is a change of `r (predict(hursat_si_results$pois_fit, type="response")[num_years_hursat]-predict(hursat_si_results$pois_fit, type="response")[1])/num_years_hursat*10` storms per decade.
+
+#### Poisson Regression on Major Storms
+
+```{r, echo=FALSE}
+summary(hursat_si_results$major_fit)
+```
+
+Using this model the number of a major storm in `r min(hursat_si_results$data$SEASON)` was `r predict(hursat_si_results$major_fit, type="response")[1]` and `r predict(hursat_si_results$major_fit, type="response")[num_years_hursat]` in `r max(hursat_si_results$data$SEASON)`.
+
+That is a change of `r (predict(hursat_si_results$major_fit, type="response")[num_years_hursat]-predict(hursat_si_results$major_fit, type="response")[1])/num_years_hursat*10` storms per decade.
+
+#### Poisson Regression on Intense Storms
+
+```{r, echo=FALSE}
+summary(hursat_si_results$intense_fit)
+```
+
+
+Using this model the number of a major storm in `r min(hursat_si_results$data$SEASON)` was `r predict(hursat_si_results$intense_fit, type="response")[1]` and `r predict(hursat_si_results$intense_fit, type="response")[num_years_hursat]` in `r max(hursat_si_results$data$SEASON)`.
+
+That is a change of `r (predict(hursat_si_results$intense_fit, type="response")[num_years_hursat]-predict(hursat_si_results$intense_fit, type="response")[1])/num_years_hursat*10` storms per decade.
+
+#### Logistic Regression on Proportions of Major
+
+```{r, echo=FALSE}
+summary(hursat_si_results$major_logit_fit)
+```
+
+We see a significant result with a positive coefficient, so the log-odds of major storms has increased. This tells us the proportion of major storms has increased.
+
+Specifically, using this model the probability of a major storm in `r min(hursat_si_results$data$SEASON)` was `r predict(hursat_si_results$major_logit_fit, type="response")[1]` and `r predict(hursat_si_results$major_logit_fit, type="response")[num_years_hursat]` in `r max(hursat_si_results$data$SEASON)`.
+
+That is a change of `r (predict(hursat_si_results$major_logit_fit, type="response")[num_years_hursat]-predict(hursat_si_results$major_logit_fit, type="response")[1])/num_years_hursat*10*100` percent per decade.
+
+#### Logistic Regression on Proportions of Intense
+
+```{r, echo=FALSE}
+summary(hursat_si_results$intense_logit_fit)
+```
+
+
+Specifically, using this model the probability of a major storm in `r min(hursat_si_results$data$SEASON)` was `r predict(hursat_si_results$intense_logit_fit, type="response")[1]` and `r predict(hursat_si_results$intense_logit_fit, type="response")[num_years_hursat]` in `r max(hursat_si_results$data$SEASON)`.
+
+That is a change of `r (predict(hursat_si_results$intense_logit_fit, type="response")[num_years_hursat]-predict(hursat_si_results$intense_logit_fit, type="response")[1])/num_years_hursat*10*100` percent per decade.
+
+### Change Point Methods
+
+#### Change in Non-Shorty Counts
+
+```{r, echo=FALSE}
+hursat_si_results$pois_chpt_test
+```
+
+The dates suggest the changepoint would occur from `r 1980+hursat_si_results$pois_chpt_test[2]` to `r 1980+hursat_si_results$pois_chpt_test[2]+1` with $p$-value `r hursat_si_results$pois_chpt_test[3]`.
+
+In regime one, the mean number of total storms is `r mean(hursat_si_results$data$Total_Storms[1:hursat_si_results$pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(hursat_si_results$data$Total_Storms[(hursat_si_results$pois_chpt_test[2]+1):num_years_hursat])`; a change of `r mean(hursat_si_results$data$Total_Storms[(hursat_si_results$pois_chpt_test[2]+1):num_years_hursat]) - mean(hursat_si_results$data$Total_Storms[1:hursat_si_results$pois_chpt_test[2]])`.
+
+#### Change in counts of major storms
+
+```{r, echo=FALSE}
+hursat_si_results$major_pois_chpt_test
+```
+
+The dates suggest the changepoint would occur from `r 1980+hursat_si_results$major_pois_chpt_test[2]` to `r 1980+hursat_si_results$major_pois_chpt_test[2]+1` with $p$-value `r hursat_si_results$major_pois_chpt_test[3]`.
+
+In regime one, the mean number of major storms is `r mean(hursat_si_results$data$Major_Storms[1:hursat_si_results$major_pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(hursat_si_results$data$Major_Storms[(hursat_si_results$major_pois_chpt_test[2]+1):num_years_hursat])`; a change of `r mean(hursat_si_results$data$Major_Storms[(hursat_si_results$major_pois_chpt_test[2]+1):num_years_hursat]) - mean(hursat_si_results$data$Major_Storms[1:hursat_si_results$major_pois_chpt_test[2]])`.
+
+#### Change in counts of intense storms
+
+```{r, echo=FALSE}
+hursat_si_results$intense_pois_chpt_test
+```
+
+
+The dates suggest the changepoint would occur from `r 1980+hursat_si_results$intense_pois_chpt_test[2]` to `r 1980+hursat_si_results$intense_pois_chpt_test[2]+1` with $p$-value `r hursat_si_results$intense_pois_chpt_test[3]`.
+
+In regime one, the mean number of intense storms is `r mean(hursat_si_results$data$Intense_Storms[1:hursat_si_results$intense_pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(hursat_si_results$data$Intense_Storms[(hursat_si_results$intense_pois_chpt_test[2]+1):num_years_hursat])`; a change of `r mean(hursat_si_results$data$Intense_Storms[(hursat_si_results$intense_pois_chpt_test[2]+1):num_years_hursat]) - mean(hursat_si_results$data$Intense_Storms[1:hursat_si_results$intense_pois_chpt_test[2]])`.
+
+#### Proportion of major storms
+
+A change in the proportion of major storms?
+  
+```{r, echo=FALSE}
+hursat_si_results$prop_major_chpt_test
+```
+
+The change in proportions occurs `r 1980+hursat_si_results$prop_major_chpt_test[2]` to `r 1980+hursat_si_results$prop_major_chpt_test[2]+1` with $p$-value `r hursat_si_results$prop_major_chpt_test[3]`. 
+
+In regime one, the proportion of major storms is `r sum(hursat_si_results$data$Major_Storms[1:hursat_si_results$prop_major_chpt_test[2]])/sum(hursat_si_results$data$Total_Storms[1:hursat_si_results$prop_major_chpt_test[2]])` and in regime two, the proportion of major storms is `r sum(hursat_si_results$data$Major_Storms[(hursat_si_results$prop_major_chpt_test[2]+1):num_years_hursat])/sum(hursat_si_results$data$Total_Storms[(hursat_si_results$prop_major_chpt_test[2]+1):num_years_hursat])`; a change of `r sum(hursat_si_results$data$Major_Storms[(hursat_si_results$prop_major_chpt_test[2]+1):num_years_hursat])/sum(hursat_si_results$data$Total_Storms[(hursat_si_results$prop_major_chpt_test[2]+1):num_years_hursat]) - sum(hursat_si_results$data$Major_Storms[1:hursat_si_results$prop_major_chpt_test[2]])/sum(hursat_si_results$data$Total_Storms[1:hursat_si_results$prop_major_chpt_test[2]])`.
+
+#### Proportion of intense storms
+
+A change in the proportion of major storms?
+  
+```{r, echo=FALSE}
+hursat_si_results$prop_intense_chpt_test
+```
+
+The change in proportions occurs `r 1980+hursat_si_results$prop_intense_chpt_test[2]` to `r 1980+hursat_si_results$prop_intense_chpt_test[2]+1` with $p$-value `r hursat_si_results$prop_intense_chpt_test[3]`.
+
+
+In regime one, the proportion of major storms is `r sum(hursat_si_results$data$Intense_Storms[1:hursat_si_results$prop_intense_chpt_test[2]])/sum(hursat_si_results$data$Total_Storms[1:hursat_si_results$prop_intense_chpt_test[2]])` and in regime two, the proportion of major storms is `r sum(hursat_si_results$data$Intense_Storms[(hursat_si_results$prop_intense_chpt_test[2]+1):num_years_hursat])/sum(hursat_si_results$data$Total_Storms[(hursat_si_results$prop_intense_chpt_test[2]+1):num_years_hursat])`; a change of `r sum(hursat_si_results$data$Intense_Storms[(hursat_si_results$prop_intense_chpt_test[2]+1):num_years_hursat])/sum(hursat_si_results$data$Total_Storms[(hursat_si_results$prop_intense_chpt_test[2]+1):num_years_hursat]) - sum(hursat_si_results$data$Intense_Storms[1:hursat_si_results$prop_intense_chpt_test[2]])/sum(hursat_si_results$data$Total_Storms[1:hursat_si_results$prop_intense_chpt_test[2]])`.
+
+
+
+## HURSAT Test Results
+
+Regression Results (reported in paper)
+
+
+**Generalized Linear Model Approaches**
+
+Note:
+
+* we report the Likelihood Ratio Test for the generalized linear models, this is better to use than the default $Z$-test provided in the `summary()` output.
+* the Change per decade is found by comparing the predicted value at the start time (`r min(hursat_si_results$data$SEASON)`) and end time (`r max(hursat_si_results$data$SEASON)`) and scaling by the number of years $\times 10$.
+
+```{r, echo=FALSE}
+df <- data.frame(
+  Response = c("Cyclone Freq", "Major Freq", "Prop Major", "Intense Freq", "Prop Freq"),
+  Coefficent = c(coef(hursat_si_results$pois_fit)[2], 
+                 coef(hursat_si_results$major_fit)[2], 
+                 coef(hursat_si_results$major_logit_fit)[2], 
+                 coef(hursat_si_results$intense_fit)[2], 
+                 coef(hursat_si_results$intense_logit_fit)[2] ),
+  `p-value` = c(anova(hursat_si_results$pois_fit)$`Pr(>Chi)`[2], 
+                anova(hursat_si_results$major_fit)$`Pr(>Chi)`[2], 
+                anova(hursat_si_results$major_logit_fit)$`Pr(>Chi)`[2], 
+                anova(hursat_si_results$intense_fit)$`Pr(>Chi)`[2], 
+                anova(hursat_si_results$intense_logit_fit)$`Pr(>Chi)`[2]),
+  `Start` = c(predict(hursat_si_results$pois_fit, type="response")[1], 
+              predict(hursat_si_results$major_fit, type="response")[1], 
+              predict(hursat_si_results$major_logit_fit, type="response")[1]*100, 
+              predict(hursat_si_results$intense_fit, type="response")[1],
+              predict(hursat_si_results$intense_logit_fit, type="response")[1]*100 ),
+  `End` = c(predict(hursat_si_results$pois_fit, type="response")[num_years_hursat],
+            predict(hursat_si_results$major_fit, type="response")[num_years_hursat],
+            predict(hursat_si_results$major_logit_fit, type="response")[num_years_hursat]*100,
+            predict(hursat_si_results$intense_fit, type="response")[num_years_hursat],
+            predict(hursat_si_results$intense_logit_fit, type="response")[num_years_hursat]*100)
+)
+
+df |>
+  mutate(`Change per Decade` = (End- Start)/num_years_hursat*10) |>
+  knitr::kable(digits=5)
+```
+
+**Changepoint Methods**
+
+```{r, echo=FALSE}
+df <- data.frame(
+  Response = c("Cyclone Freq", "Major Freq", "Prop Major", "Intense Freq", "Prop Freq"),
+  `Chpt Location` = c(hursat_si_results$pois_chpt_test[2]+1981,
+                      hursat_si_results$major_pois_chpt_test[2]+1981,
+                      hursat_si_results$prop_major_chpt_test[2]+1981,
+                      hursat_si_results$intense_pois_chpt_test[2]+1981,
+                      hursat_si_results$prop_intense_chpt_test[2]+1981),
+  `p-value` =c(hursat_si_results$pois_chpt_test[3],
+               hursat_si_results$major_pois_chpt_test[3],
+               hursat_si_results$prop_major_chpt_test[3],
+               hursat_si_results$intense_pois_chpt_test[3],
+               hursat_si_results$prop_intense_chpt_test[3] ),
+  `Regime1` = c(mean(hursat_si_results$data$Total_Storms[1:hursat_si_results$pois_chpt_test[2]]),
+                mean(hursat_si_results$data$Major_Storms[1:hursat_si_results$major_pois_chpt_test[2]]),
+                sum(hursat_si_results$data$Major_Storms[1:hursat_si_results$prop_major_chpt_test[2]])/sum(hursat_si_results$data$Total_Storms[1:hursat_si_results$prop_major_chpt_test[2]])*100,
+                mean(hursat_si_results$data$Intense_Storms[1:hursat_si_results$intense_pois_chpt_test[2]]),
+                sum(hursat_si_results$data$Intense_Storms[1:hursat_si_results$prop_intense_chpt_test[2]])/sum(hursat_si_results$data$Total_Storms[1:hursat_si_results$prop_intense_chpt_test[2]])*100 ),
+  `Regime2` = c(mean(hursat_si_results$data$Total_Storms[(hursat_si_results$pois_chpt_test[2]+1):num_years_hursat]),
+                mean(hursat_si_results$data$Major_Storms[(hursat_si_results$major_pois_chpt_test[2]+1):num_years_hursat]),
+                sum(hursat_si_results$data$Major_Storms[(hursat_si_results$prop_major_chpt_test[2]+1):num_years_hursat])/sum(hursat_si_results$data$Total_Storms[(hursat_si_results$prop_major_chpt_test[2]+1):num_years_hursat])*100,
+                mean(hursat_si_results$data$Intense_Storms[(hursat_si_results$intense_pois_chpt_test[2]+1):num_years_hursat]),
+                sum(hursat_si_results$data$Intense_Storms[(hursat_si_results$prop_intense_chpt_test[2]+1):num_years_hursat])/sum(hursat_si_results$data$Total_Storms[(hursat_si_results$prop_intense_chpt_test[2]+1):num_years_hursat])*100)
+  )
+
+df |>
+  mutate(Change = Regime2-Regime1,
+         Perc_Change = Change/Regime1*100) |>
+  knitr::kable(digits=5)
+  
+```
+

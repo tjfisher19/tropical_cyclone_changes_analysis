@@ -97,21 +97,21 @@ global_basin_tall <- global_basin |>
   pivot_longer(-SEASON, names_to="Measure", values_to="Value") |>
   mutate(Measure = factor(Measure, 
                           levels=c("Total_Storms", "Major_Storms", "Prop_Major", "Intense_Storms", "Prop_Intense"),
-                          labels=c("Total Non-Shorties",
-                                   "Major Storms",
-                                   "Proportion of Major Storms",
-                                   "Intense Storms",
-                                   "Proportion of Intense Storms") ) )
+                          labels=c("Total Cyclones",
+                                   "Major Cyclones",
+                                   "Proportion of Major Cyclones",
+                                   "Intense Cyclones",
+                                   "Proportion of Intense Cyclones") ) )
 
-# Total Storms - change at time 20
+# Total Cyclones - change at time 20
 hursat_global_results$pois_chpt_test
-# Major Storms - no change
+# Major Cyclones - no change
 hursat_global_results$major_pois_chpt_test
-# Proportion Major Storms - change at time 21
+# Proportion Major Cyclones - change at time 21
 hursat_global_results$prop_major_chpt_test
-# Intense Storms - no change
+# Intense Cyclones - no change
 hursat_global_results$intense_pois_chpt_test
-# Proportion Intense Storms - change at 21
+# Proportion Intense Cyclones - change at 21
 hursat_global_results$prop_intense_chpt_test
 
 mean1 <- mean(global_basin$Total_Storms[1:hursat_global_results$pois_chpt_test[2]])
@@ -172,11 +172,11 @@ df_prop_intense_seg <- data.frame(
 df_segments <- bind_rows(
   df_total_seg, df_major_seg, df_prop_major_seg, df_intense_seg, df_prop_intense_seg) |>
   mutate(Measure = factor(Measure, levels=c("Total_Storms", "Major_Storms", "Prop_Major", "Intense_Storms", "Prop_Intense"),
-                          labels=c("Total Non-Shorties",
-                                   "Major Storms",
-                                   "Proportion of Major Storms",
-                                   "Intense Storms",
-                                   "Proportion of Intense Storms")))
+                          labels=c("Total Cyclones",
+                                   "Major Cyclones",
+                                   "Proportion of Major Cyclones",
+                                   "Intense Cyclones",
+                                   "Proportion of Intense Cyclones")))
 
 plot_global_findings <- ggplot(global_basin_tall, aes(x=SEASON, y=Value) ) +
   geom_line(color=data_line) + 
@@ -218,9 +218,9 @@ ggsave(filename="./plots/result_hursat_global_findings.png",
 ######### Proportions
 ####################################################
 
-title_text <- "Proportion of Major Storms to all non-'shorty' Cyclones per Season"
-subtitle_text <- "Proportion of storms attaining at least 96 knots, with BIC segmentation restricted to regimes of at least"
-subtitle_text_norestrict <- "Proportion of storms attaining at least 96 knots with BIC segmentation"
+title_text <- "Proportion of Major Cyclones to all non-'shorty' Cyclones per Season"
+subtitle_text <- "Proportion of Cyclones attaining at least 96 knots, with BIC segmentation restricted to regimes of at least"
+subtitle_text_norestrict <- "Proportion of Cyclones attaining at least 96 knots with BIC segmentation"
 file_name <- "propMajor"
 
 N <- length(unique(non_shorty_for_props$SEASON))
@@ -242,7 +242,7 @@ global_counts <- non_shorty_for_props %>%
 #####
 ################################################################################
 ################################################################################
-## Total Storms per Basin
+## Total Cyclones per Basin
 ################################################################################
 ################################################################################
 
@@ -278,7 +278,7 @@ plot_basin_totals <- ggplot(storm_counts) +
                                              y=AvgTotalStorms, yend=AvgTotalStorms, group=Regime),
                color=seg_line, linewidth=1.25) +
   facet_wrap(~BASIN, scales="free") +
-  labs(title="Changes in Non-Shorties by Basin",
+  labs(title="Changes in Cyclone Frequency by Basin",
        subtitle="Segmentations based on SCUSUM Change Point Test",
        caption=caption_text) +
   theme_minimal() + 
@@ -299,7 +299,7 @@ ggsave(filename="./plots/result_hursat_basin_nonshortiesfindings.png",
 #####
 ################################################################################
 ################################################################################
-## Major Storms per Basin
+## Major Cyclones per Basin
 ################################################################################
 ################################################################################
 
@@ -319,8 +319,8 @@ storm_basin_regimes <- storm_counts %>%
   mutate(Regime = c(findInterval(1:N, hursat_na_results$major_pois_chpt_test[2]+1),
                     findInterval(1:N, hursat_ep_results$major_pois_chpt_test[2]+1),
                     findInterval(1:N, hursat_wp_results$major_pois_chpt_test[2]+1),
-                    findInterval(1:N, hursat_ni_results$major_pois_chpt_test[2]+1),
                     findInterval(1:N, NULL),
+                    findInterval(1:N, hursat_si_results$major_pois_chpt_test[2]+1),
                     findInterval(1:N, hursat_sp_results$major_pois_chpt_test[2]+1) ) ) %>%
   group_by(BASIN, Regime) %>%
   summarize(Regime_Length = max(SEASON)-min(SEASON)+1,
@@ -354,7 +354,7 @@ ggsave(filename="./plots/result_hursat_basin_major_findings.png",
 #####
 ################################################################################
 ################################################################################
-## Proportion Major Storms per Basin
+## Proportion Major Cyclones per Basin
 ################################################################################
 ################################################################################
 
@@ -411,7 +411,7 @@ ggsave(filename="./plots/result_hursat_basin_prop_major_findings.png",
 #####
 ################################################################################
 ################################################################################
-## Intense Storms per Basin
+## Intense Cyclones per Basin
 ################################################################################
 ################################################################################
 
@@ -466,7 +466,7 @@ ggsave(filename="./plots/result_hursat_basin_intense_findings.png",
 #####
 ################################################################################
 ################################################################################
-## Proportion Intense Storms per Basin
+## Proportion Intense Cyclones per Basin
 ################################################################################
 ################################################################################
 
