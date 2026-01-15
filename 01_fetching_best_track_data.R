@@ -9,6 +9,7 @@
 ##  Author: Tom Fisher (fishert4@miamioh.edu)
 ##
 ##  Code tested on 2025-11-12
+##     Last ran on 2026-01-15
 
 
 
@@ -32,13 +33,13 @@ library(tidyverse)
 ## Uncomment out the lines below to fetch the data
 ##    and save the result
 
-URL <- "https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r01/access/csv/ibtracs.since1980.list.v04r01.csv"
-storm_col_names <- read_csv(URL,
-                            n_max = 0)
-
-storms_raw <- read_csv(URL,
-                       skip = 2, col_names = names(storm_col_names), na="" )
-
+# URL <- "https://www.ncei.noaa.gov/data/international-best-track-archive-for-climate-stewardship-ibtracs/v04r01/access/csv/ibtracs.since1980.list.v04r01.csv"
+# storm_col_names <- read_csv(URL,
+#                             n_max = 0)
+# 
+# storms_raw <- read_csv(URL,
+#                        skip = 2, col_names = names(storm_col_names), na="" )
+# 
 # save(storms_raw, file="./data/ibtracs_rawData.RData")
 
 #######################################################

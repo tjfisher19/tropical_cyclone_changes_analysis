@@ -7,6 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Tom Fisher">
+<meta name="dcterms.date" content="2026-01-15">
 
 <title>Simulation for Methods</title>
 <style>
@@ -2569,6 +2570,12 @@ window.Quarto = {
           </div>
   </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 15, 2026</p>
+    </div>
+  </div>
   
     
   </div>
@@ -2581,8 +2588,8 @@ window.Quarto = {
 <section id="simulation-setup" class="level1">
 <h1>Simulation Setup</h1>
 <p>This file provides a simulation study for the statistical methods used for the analysis of the tropical cyclone record.</p>
-<p>In the <strong>Empirical Size</strong> studies we simulate Poisson data (or Poisson+Binomial data for the proportion study), under the “null” distribution of no change points or trends. We simulate based on the observed values in the dataset; so for example, for the global total non-shorties, we simulate sample sizes of <span class="math inline">\(n=45\)</span> from a Poisson distribution with <span class="math inline">\(\lambda=69.9\)</span>, which is the average number of non-shorties across the entire IBTracs. Ideally, the reported rejection rates should match the nominal levels and the “average” <span class="math inline">\(p\)</span>-value should be about 0.50 in the empirial size studies.</p>
-<p>In the <strong>Power Studies</strong> we simulate under the alternative hypothesis where a change point exist. Again, we use the data to pick the parameter values for which we simulate. As an example, in the total non-shorties we simulate series of length <span class="math inline">\(n=45\)</span> with a change point occurring at time point <span class="math inline">\(18\)</span> with the mean in the first regime is <span class="math inline">\(74\)</span> and the mean in the second regime is <span class="math inline">\(67.15\)</span>. These studies essentially provide a measure of <strong>power</strong> for the results found in the analysis.</p>
+<p>In the <strong>Empirical Size</strong> studies we simulate Poisson data (or Poisson+Binomial data for the proportion study), under the “null” distribution of no change points or trends. We simulate based on the observed values in the dataset; so for example, for the global total non-shorties, we simulate sample sizes of <span class="math inline">\(n=46\)</span> from a Poisson distribution with <span class="math inline">\(\lambda=70.1087\)</span>, which is the average number of non-shorties across the entire IBTracs. Ideally, the reported rejection rates should match the nominal levels and the “average” <span class="math inline">\(p\)</span>-value should be about 0.50 in the empirial size studies.</p>
+<p>In the <strong>Power Studies</strong> we simulate under the alternative hypothesis where a change point exist. Again, we use the data to pick the parameter values for which we simulate. As an example, in the total non-shorties we simulate series of length <span class="math inline">\(n=46\)</span> with a change point occurring at time point <span class="math inline">\(18\)</span> (1998) with the mean in the first regime is <span class="math inline">\(73.66429\)</span> and the mean in the second regime is <span class="math inline">\(66.66690\)</span>. These studies essentially provide a measure of <strong>power</strong> for the results found in the analysis.</p>
 <p>Overall we make the following conclusions</p>
 <ul>
 <li>Both the Regression methods and Change point methods provide adequate Type I error rates.
@@ -2618,69 +2625,69 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.03</td>
-<td style="text-align: right;">1.05</td>
-<td style="text-align: right;">5.18</td>
-<td style="text-align: right;">10.06</td>
-<td style="text-align: right;">34.10</td>
-<td style="text-align: right;">0.494</td>
-<td style="text-align: right;">0.288</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">4.69</td>
+<td style="text-align: right;">9.43</td>
+<td style="text-align: right;">32.79</td>
+<td style="text-align: right;">0.503</td>
+<td style="text-align: right;">0.286</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.03</td>
-<td style="text-align: right;">0.91</td>
-<td style="text-align: right;">4.63</td>
-<td style="text-align: right;">9.56</td>
-<td style="text-align: right;">30.30</td>
-<td style="text-align: right;">0.513</td>
-<td style="text-align: right;">0.279</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">4.20</td>
+<td style="text-align: right;">8.44</td>
+<td style="text-align: right;">29.24</td>
+<td style="text-align: right;">0.521</td>
+<td style="text-align: right;">0.277</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Major Storms</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.11</td>
-<td style="text-align: right;">1.16</td>
-<td style="text-align: right;">5.50</td>
-<td style="text-align: right;">10.22</td>
-<td style="text-align: right;">33.48</td>
-<td style="text-align: right;">0.500</td>
-<td style="text-align: right;">0.291</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: right;">4.86</td>
+<td style="text-align: right;">9.88</td>
+<td style="text-align: right;">33.15</td>
+<td style="text-align: right;">0.502</td>
+<td style="text-align: right;">0.290</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
 <td style="text-align: right;">0.10</td>
-<td style="text-align: right;">1.06</td>
-<td style="text-align: right;">5.25</td>
-<td style="text-align: right;">9.49</td>
-<td style="text-align: right;">29.50</td>
-<td style="text-align: right;">0.516</td>
-<td style="text-align: right;">0.280</td>
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">4.50</td>
+<td style="text-align: right;">8.79</td>
+<td style="text-align: right;">29.68</td>
+<td style="text-align: right;">0.520</td>
+<td style="text-align: right;">0.281</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Major Storms</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.06</td>
-<td style="text-align: right;">1.04</td>
-<td style="text-align: right;">5.09</td>
-<td style="text-align: right;">9.80</td>
-<td style="text-align: right;">33.54</td>
-<td style="text-align: right;">0.498</td>
-<td style="text-align: right;">0.289</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">1.02</td>
+<td style="text-align: right;">4.87</td>
+<td style="text-align: right;">9.66</td>
+<td style="text-align: right;">33.11</td>
+<td style="text-align: right;">0.501</td>
+<td style="text-align: right;">0.288</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.09</td>
-<td style="text-align: right;">1.03</td>
-<td style="text-align: right;">4.81</td>
-<td style="text-align: right;">9.12</td>
-<td style="text-align: right;">30.01</td>
-<td style="text-align: right;">0.516</td>
-<td style="text-align: right;">0.280</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">4.35</td>
+<td style="text-align: right;">9.03</td>
+<td style="text-align: right;">29.72</td>
+<td style="text-align: right;">0.518</td>
+<td style="text-align: right;">0.277</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Intense Storms</strong></td>
@@ -2688,21 +2695,21 @@ window.Quarto = {
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
 <td style="text-align: right;">0.09</td>
-<td style="text-align: right;">1.03</td>
-<td style="text-align: right;">5.12</td>
-<td style="text-align: right;">9.94</td>
-<td style="text-align: right;">32.72</td>
-<td style="text-align: right;">0.506</td>
-<td style="text-align: right;">0.289</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">4.90</td>
+<td style="text-align: right;">10.04</td>
+<td style="text-align: right;">33.02</td>
+<td style="text-align: right;">0.502</td>
+<td style="text-align: right;">0.287</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
 <td style="text-align: right;">0.07</td>
-<td style="text-align: right;">0.84</td>
-<td style="text-align: right;">4.61</td>
-<td style="text-align: right;">9.19</td>
-<td style="text-align: right;">29.30</td>
-<td style="text-align: right;">0.521</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">4.37</td>
+<td style="text-align: right;">8.88</td>
+<td style="text-align: right;">29.42</td>
+<td style="text-align: right;">0.520</td>
 <td style="text-align: right;">0.279</td>
 </tr>
 <tr class="odd" data-grouplength="2">
@@ -2710,21 +2717,21 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.08</td>
-<td style="text-align: right;">0.93</td>
-<td style="text-align: right;">4.93</td>
-<td style="text-align: right;">10.25</td>
-<td style="text-align: right;">34.29</td>
-<td style="text-align: right;">0.495</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: right;">5.04</td>
+<td style="text-align: right;">10.18</td>
+<td style="text-align: right;">34.20</td>
+<td style="text-align: right;">0.494</td>
 <td style="text-align: right;">0.288</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.07</td>
-<td style="text-align: right;">0.86</td>
-<td style="text-align: right;">4.75</td>
-<td style="text-align: right;">9.23</td>
-<td style="text-align: right;">30.36</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: right;">4.72</td>
+<td style="text-align: right;">9.44</td>
+<td style="text-align: right;">30.28</td>
 <td style="text-align: right;">0.512</td>
 <td style="text-align: right;">0.279</td>
 </tr>
@@ -2757,115 +2764,115 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">15.72</td>
-<td style="text-align: right;">38.70</td>
-<td style="text-align: right;">62.11</td>
-<td style="text-align: right;">73.30</td>
-<td style="text-align: right;">90.29</td>
-<td style="text-align: right;">0.104</td>
-<td style="text-align: right;">0.182</td>
+<td style="text-align: right;">19.32</td>
+<td style="text-align: right;">42.75</td>
+<td style="text-align: right;">67.62</td>
+<td style="text-align: right;">78.11</td>
+<td style="text-align: right;">92.74</td>
+<td style="text-align: right;">0.083</td>
+<td style="text-align: right;">0.161</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">17.94</td>
-<td style="text-align: right;">41.63</td>
-<td style="text-align: right;">64.26</td>
-<td style="text-align: right;">75.16</td>
-<td style="text-align: right;">90.19</td>
-<td style="text-align: right;">0.098</td>
-<td style="text-align: right;">0.174</td>
+<td style="text-align: right;">21.62</td>
+<td style="text-align: right;">46.26</td>
+<td style="text-align: right;">70.08</td>
+<td style="text-align: right;">80.05</td>
+<td style="text-align: right;">93.17</td>
+<td style="text-align: right;">0.076</td>
+<td style="text-align: right;">0.152</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Major Storms</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">2.11</td>
-<td style="text-align: right;">10.03</td>
-<td style="text-align: right;">25.38</td>
-<td style="text-align: right;">36.63</td>
-<td style="text-align: right;">64.29</td>
+<td style="text-align: right;">1.66</td>
+<td style="text-align: right;">7.65</td>
+<td style="text-align: right;">21.09</td>
+<td style="text-align: right;">31.83</td>
+<td style="text-align: right;">59.89</td>
+<td style="text-align: right;">0.323</td>
 <td style="text-align: right;">0.293</td>
-<td style="text-align: right;">0.286</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">2.05</td>
-<td style="text-align: right;">10.04</td>
-<td style="text-align: right;">25.49</td>
-<td style="text-align: right;">36.52</td>
-<td style="text-align: right;">63.53</td>
-<td style="text-align: right;">0.289</td>
-<td style="text-align: right;">0.276</td>
+<td style="text-align: right;">1.57</td>
+<td style="text-align: right;">7.50</td>
+<td style="text-align: right;">20.61</td>
+<td style="text-align: right;">31.79</td>
+<td style="text-align: right;">59.87</td>
+<td style="text-align: right;">0.315</td>
+<td style="text-align: right;">0.277</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Major Storms</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">21.79</td>
-<td style="text-align: right;">47.55</td>
-<td style="text-align: right;">71.24</td>
-<td style="text-align: right;">80.98</td>
-<td style="text-align: right;">93.78</td>
-<td style="text-align: right;">0.072</td>
-<td style="text-align: right;">0.146</td>
+<td style="text-align: right;">19.16</td>
+<td style="text-align: right;">43.93</td>
+<td style="text-align: right;">67.89</td>
+<td style="text-align: right;">78.14</td>
+<td style="text-align: right;">92.76</td>
+<td style="text-align: right;">0.084</td>
+<td style="text-align: right;">0.162</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">22.87</td>
-<td style="text-align: right;">50.42</td>
-<td style="text-align: right;">73.79</td>
-<td style="text-align: right;">83.27</td>
-<td style="text-align: right;">95.48</td>
-<td style="text-align: right;">0.060</td>
-<td style="text-align: right;">0.123</td>
+<td style="text-align: right;">19.85</td>
+<td style="text-align: right;">45.74</td>
+<td style="text-align: right;">70.25</td>
+<td style="text-align: right;">80.52</td>
+<td style="text-align: right;">94.39</td>
+<td style="text-align: right;">0.070</td>
+<td style="text-align: right;">0.135</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Intense Storms</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">54.29</td>
-<td style="text-align: right;">79.90</td>
-<td style="text-align: right;">92.89</td>
-<td style="text-align: right;">96.33</td>
-<td style="text-align: right;">99.44</td>
-<td style="text-align: right;">0.015</td>
-<td style="text-align: right;">0.053</td>
+<td style="text-align: right;">48.70</td>
+<td style="text-align: right;">76.16</td>
+<td style="text-align: right;">90.94</td>
+<td style="text-align: right;">95.21</td>
+<td style="text-align: right;">99.06</td>
+<td style="text-align: right;">0.019</td>
+<td style="text-align: right;">0.065</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">61.28</td>
-<td style="text-align: right;">85.64</td>
-<td style="text-align: right;">95.83</td>
-<td style="text-align: right;">98.06</td>
-<td style="text-align: right;">99.83</td>
-<td style="text-align: right;">0.009</td>
-<td style="text-align: right;">0.033</td>
+<td style="text-align: right;">54.96</td>
+<td style="text-align: right;">81.85</td>
+<td style="text-align: right;">94.46</td>
+<td style="text-align: right;">97.49</td>
+<td style="text-align: right;">99.71</td>
+<td style="text-align: right;">0.011</td>
+<td style="text-align: right;">0.039</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Intense Storms</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">90.17</td>
-<td style="text-align: right;">97.80</td>
-<td style="text-align: right;">99.57</td>
-<td style="text-align: right;">99.87</td>
-<td style="text-align: right;">99.99</td>
+<td style="text-align: right;">88.59</td>
+<td style="text-align: right;">97.44</td>
+<td style="text-align: right;">99.54</td>
+<td style="text-align: right;">99.82</td>
+<td style="text-align: right;">99.97</td>
 <td style="text-align: right;">0.001</td>
-<td style="text-align: right;">0.010</td>
+<td style="text-align: right;">0.011</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">94.07</td>
-<td style="text-align: right;">99.02</td>
-<td style="text-align: right;">99.91</td>
-<td style="text-align: right;">99.97</td>
+<td style="text-align: right;">92.46</td>
+<td style="text-align: right;">98.85</td>
+<td style="text-align: right;">99.84</td>
+<td style="text-align: right;">99.96</td>
 <td style="text-align: right;">100.00</td>
-<td style="text-align: right;">0.000</td>
-<td style="text-align: right;">0.004</td>
+<td style="text-align: right;">0.001</td>
+<td style="text-align: right;">0.005</td>
 </tr>
 </tbody>
 </table>
@@ -2898,22 +2905,22 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.12</td>
-<td style="text-align: right;">1.09</td>
-<td style="text-align: right;">5.27</td>
-<td style="text-align: right;">10.01</td>
-<td style="text-align: right;">32.67</td>
-<td style="text-align: right;">0.503</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">1.04</td>
+<td style="text-align: right;">5.00</td>
+<td style="text-align: right;">10.16</td>
+<td style="text-align: right;">33.51</td>
+<td style="text-align: right;">0.498</td>
 <td style="text-align: right;">0.288</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.12</td>
-<td style="text-align: right;">1.05</td>
-<td style="text-align: right;">4.78</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: right;">4.64</td>
 <td style="text-align: right;">9.24</td>
-<td style="text-align: right;">29.19</td>
-<td style="text-align: right;">0.521</td>
+<td style="text-align: right;">29.55</td>
+<td style="text-align: right;">0.518</td>
 <td style="text-align: right;">0.279</td>
 </tr>
 <tr class="even" data-grouplength="2">
@@ -2921,69 +2928,69 @@ window.Quarto = {
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.08</td>
-<td style="text-align: right;">0.81</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">1.14</td>
 <td style="text-align: right;">4.97</td>
-<td style="text-align: right;">10.09</td>
-<td style="text-align: right;">33.54</td>
-<td style="text-align: right;">0.497</td>
-<td style="text-align: right;">0.289</td>
+<td style="text-align: right;">9.35</td>
+<td style="text-align: right;">33.09</td>
+<td style="text-align: right;">0.502</td>
+<td style="text-align: right;">0.287</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.07</td>
-<td style="text-align: right;">0.81</td>
-<td style="text-align: right;">4.64</td>
-<td style="text-align: right;">9.23</td>
-<td style="text-align: right;">30.31</td>
-<td style="text-align: right;">0.514</td>
-<td style="text-align: right;">0.278</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">4.59</td>
+<td style="text-align: right;">8.58</td>
+<td style="text-align: right;">29.61</td>
+<td style="text-align: right;">0.519</td>
+<td style="text-align: right;">0.279</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Major Storms</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.11</td>
-<td style="text-align: right;">0.98</td>
-<td style="text-align: right;">4.88</td>
-<td style="text-align: right;">10.20</td>
-<td style="text-align: right;">32.83</td>
-<td style="text-align: right;">0.502</td>
-<td style="text-align: right;">0.289</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.80</td>
+<td style="text-align: right;">4.66</td>
+<td style="text-align: right;">10.07</td>
+<td style="text-align: right;">33.91</td>
+<td style="text-align: right;">0.496</td>
+<td style="text-align: right;">0.288</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.09</td>
-<td style="text-align: right;">0.89</td>
-<td style="text-align: right;">4.41</td>
-<td style="text-align: right;">8.93</td>
-<td style="text-align: right;">29.72</td>
-<td style="text-align: right;">0.516</td>
-<td style="text-align: right;">0.278</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.71</td>
+<td style="text-align: right;">4.29</td>
+<td style="text-align: right;">9.21</td>
+<td style="text-align: right;">30.31</td>
+<td style="text-align: right;">0.514</td>
+<td style="text-align: right;">0.279</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Intense Storms</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.10</td>
-<td style="text-align: right;">1.04</td>
-<td style="text-align: right;">5.02</td>
-<td style="text-align: right;">10.11</td>
-<td style="text-align: right;">32.52</td>
-<td style="text-align: right;">0.503</td>
-<td style="text-align: right;">0.288</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">1.19</td>
+<td style="text-align: right;">5.41</td>
+<td style="text-align: right;">10.54</td>
+<td style="text-align: right;">33.59</td>
+<td style="text-align: right;">0.499</td>
+<td style="text-align: right;">0.292</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.07</td>
-<td style="text-align: right;">1.03</td>
-<td style="text-align: right;">4.55</td>
-<td style="text-align: right;">8.98</td>
-<td style="text-align: right;">29.03</td>
-<td style="text-align: right;">0.521</td>
-<td style="text-align: right;">0.277</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">1.15</td>
+<td style="text-align: right;">4.82</td>
+<td style="text-align: right;">9.52</td>
+<td style="text-align: right;">29.77</td>
+<td style="text-align: right;">0.517</td>
+<td style="text-align: right;">0.282</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Intense Storms</strong></td>
@@ -2991,22 +2998,22 @@ window.Quarto = {
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
 <td style="text-align: right;">0.09</td>
-<td style="text-align: right;">1.01</td>
-<td style="text-align: right;">4.86</td>
-<td style="text-align: right;">9.59</td>
-<td style="text-align: right;">32.81</td>
-<td style="text-align: right;">0.502</td>
-<td style="text-align: right;">0.286</td>
+<td style="text-align: right;">1.05</td>
+<td style="text-align: right;">5.03</td>
+<td style="text-align: right;">10.28</td>
+<td style="text-align: right;">33.49</td>
+<td style="text-align: right;">0.497</td>
+<td style="text-align: right;">0.289</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.11</td>
-<td style="text-align: right;">0.97</td>
-<td style="text-align: right;">4.48</td>
-<td style="text-align: right;">8.61</td>
-<td style="text-align: right;">29.13</td>
-<td style="text-align: right;">0.518</td>
-<td style="text-align: right;">0.278</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">4.74</td>
+<td style="text-align: right;">9.43</td>
+<td style="text-align: right;">30.24</td>
+<td style="text-align: right;">0.514</td>
+<td style="text-align: right;">0.280</td>
 </tr>
 </tbody>
 </table>
@@ -3036,115 +3043,115 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">91.41</td>
-<td style="text-align: right;">98.29</td>
-<td style="text-align: right;">99.76</td>
-<td style="text-align: right;">99.92</td>
-<td style="text-align: right;">99.97</td>
+<td style="text-align: right;">90.12</td>
+<td style="text-align: right;">97.91</td>
+<td style="text-align: right;">99.59</td>
+<td style="text-align: right;">99.91</td>
+<td style="text-align: right;">100.00</td>
 <td style="text-align: right;">0.001</td>
-<td style="text-align: right;">0.013</td>
+<td style="text-align: right;">0.007</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">95.03</td>
-<td style="text-align: right;">99.22</td>
-<td style="text-align: right;">99.91</td>
-<td style="text-align: right;">99.96</td>
+<td style="text-align: right;">94.36</td>
+<td style="text-align: right;">99.04</td>
+<td style="text-align: right;">99.92</td>
+<td style="text-align: right;">99.97</td>
 <td style="text-align: right;">100.00</td>
 <td style="text-align: right;">0.000</td>
-<td style="text-align: right;">0.004</td>
+<td style="text-align: right;">0.003</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Major Storms</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">47.42</td>
-<td style="text-align: right;">76.08</td>
-<td style="text-align: right;">91.72</td>
-<td style="text-align: right;">95.94</td>
-<td style="text-align: right;">99.38</td>
-<td style="text-align: right;">0.017</td>
+<td style="text-align: right;">48.77</td>
+<td style="text-align: right;">76.55</td>
+<td style="text-align: right;">92.24</td>
+<td style="text-align: right;">96.25</td>
+<td style="text-align: right;">99.39</td>
+<td style="text-align: right;">0.016</td>
 <td style="text-align: right;">0.054</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">53.48</td>
-<td style="text-align: right;">81.96</td>
-<td style="text-align: right;">95.02</td>
-<td style="text-align: right;">97.75</td>
-<td style="text-align: right;">99.76</td>
-<td style="text-align: right;">0.011</td>
-<td style="text-align: right;">0.036</td>
+<td style="text-align: right;">54.92</td>
+<td style="text-align: right;">82.40</td>
+<td style="text-align: right;">95.35</td>
+<td style="text-align: right;">98.01</td>
+<td style="text-align: right;">99.72</td>
+<td style="text-align: right;">0.010</td>
+<td style="text-align: right;">0.037</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Major Storms</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.67</td>
-<td style="text-align: right;">3.64</td>
-<td style="text-align: right;">12.75</td>
-<td style="text-align: right;">20.48</td>
-<td style="text-align: right;">47.85</td>
-<td style="text-align: right;">0.405</td>
-<td style="text-align: right;">0.301</td>
+<td style="text-align: right;">1.11</td>
+<td style="text-align: right;">6.49</td>
+<td style="text-align: right;">18.75</td>
+<td style="text-align: right;">29.03</td>
+<td style="text-align: right;">56.70</td>
+<td style="text-align: right;">0.343</td>
+<td style="text-align: right;">0.296</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.78</td>
-<td style="text-align: right;">4.79</td>
-<td style="text-align: right;">15.71</td>
-<td style="text-align: right;">25.10</td>
-<td style="text-align: right;">55.20</td>
-<td style="text-align: right;">0.340</td>
-<td style="text-align: right;">0.268</td>
+<td style="text-align: right;">1.76</td>
+<td style="text-align: right;">8.98</td>
+<td style="text-align: right;">24.54</td>
+<td style="text-align: right;">36.10</td>
+<td style="text-align: right;">64.50</td>
+<td style="text-align: right;">0.282</td>
+<td style="text-align: right;">0.263</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Intense Storms</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">1.53</td>
-<td style="text-align: right;">8.28</td>
-<td style="text-align: right;">22.19</td>
-<td style="text-align: right;">33.56</td>
-<td style="text-align: right;">61.66</td>
-<td style="text-align: right;">0.311</td>
-<td style="text-align: right;">0.290</td>
+<td style="text-align: right;">40.48</td>
+<td style="text-align: right;">70.94</td>
+<td style="text-align: right;">88.79</td>
+<td style="text-align: right;">94.06</td>
+<td style="text-align: right;">98.90</td>
+<td style="text-align: right;">0.024</td>
+<td style="text-align: right;">0.071</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">1.42</td>
-<td style="text-align: right;">8.36</td>
-<td style="text-align: right;">22.37</td>
-<td style="text-align: right;">33.10</td>
-<td style="text-align: right;">60.62</td>
-<td style="text-align: right;">0.313</td>
-<td style="text-align: right;">0.285</td>
+<td style="text-align: right;">45.49</td>
+<td style="text-align: right;">75.85</td>
+<td style="text-align: right;">92.24</td>
+<td style="text-align: right;">95.78</td>
+<td style="text-align: right;">99.18</td>
+<td style="text-align: right;">0.018</td>
+<td style="text-align: right;">0.059</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Intense Storms</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">1.73</td>
-<td style="text-align: right;">8.54</td>
-<td style="text-align: right;">23.99</td>
-<td style="text-align: right;">35.56</td>
-<td style="text-align: right;">63.22</td>
-<td style="text-align: right;">0.299</td>
-<td style="text-align: right;">0.287</td>
+<td style="text-align: right;">2.48</td>
+<td style="text-align: right;">10.69</td>
+<td style="text-align: right;">27.66</td>
+<td style="text-align: right;">39.51</td>
+<td style="text-align: right;">66.92</td>
+<td style="text-align: right;">0.274</td>
+<td style="text-align: right;">0.280</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">2.20</td>
-<td style="text-align: right;">11.17</td>
-<td style="text-align: right;">29.17</td>
-<td style="text-align: right;">41.62</td>
-<td style="text-align: right;">68.90</td>
-<td style="text-align: right;">0.253</td>
-<td style="text-align: right;">0.259</td>
+<td style="text-align: right;">3.23</td>
+<td style="text-align: right;">14.16</td>
+<td style="text-align: right;">33.55</td>
+<td style="text-align: right;">46.31</td>
+<td style="text-align: right;">72.92</td>
+<td style="text-align: right;">0.228</td>
+<td style="text-align: right;">0.251</td>
 </tr>
 </tbody>
 </table>
@@ -3177,92 +3184,92 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.11</td>
-<td style="text-align: right;">1.02</td>
-<td style="text-align: right;">4.82</td>
-<td style="text-align: right;">9.53</td>
-<td style="text-align: right;">32.98</td>
-<td style="text-align: right;">0.500</td>
-<td style="text-align: right;">0.286</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">1.03</td>
+<td style="text-align: right;">4.95</td>
+<td style="text-align: right;">9.65</td>
+<td style="text-align: right;">33.39</td>
+<td style="text-align: right;">0.499</td>
+<td style="text-align: right;">0.287</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.10</td>
-<td style="text-align: right;">0.94</td>
-<td style="text-align: right;">4.57</td>
-<td style="text-align: right;">8.67</td>
-<td style="text-align: right;">29.49</td>
-<td style="text-align: right;">0.518</td>
-<td style="text-align: right;">0.277</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">4.66</td>
+<td style="text-align: right;">8.99</td>
+<td style="text-align: right;">29.66</td>
+<td style="text-align: right;">0.516</td>
+<td style="text-align: right;">0.278</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Major Storms</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.10</td>
-<td style="text-align: right;">1.07</td>
-<td style="text-align: right;">5.02</td>
-<td style="text-align: right;">10.41</td>
-<td style="text-align: right;">34.29</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">1.11</td>
+<td style="text-align: right;">5.16</td>
+<td style="text-align: right;">10.35</td>
+<td style="text-align: right;">33.62</td>
 <td style="text-align: right;">0.496</td>
-<td style="text-align: right;">0.291</td>
+<td style="text-align: right;">0.288</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.06</td>
-<td style="text-align: right;">0.94</td>
-<td style="text-align: right;">4.77</td>
-<td style="text-align: right;">9.49</td>
-<td style="text-align: right;">30.25</td>
-<td style="text-align: right;">0.514</td>
-<td style="text-align: right;">0.281</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: right;">4.84</td>
+<td style="text-align: right;">9.28</td>
+<td style="text-align: right;">29.98</td>
+<td style="text-align: right;">0.515</td>
+<td style="text-align: right;">0.279</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Major Storms</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.08</td>
-<td style="text-align: right;">1.02</td>
-<td style="text-align: right;">4.82</td>
-<td style="text-align: right;">9.97</td>
-<td style="text-align: right;">33.16</td>
-<td style="text-align: right;">0.500</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">1.10</td>
+<td style="text-align: right;">4.91</td>
+<td style="text-align: right;">10.01</td>
+<td style="text-align: right;">33.82</td>
+<td style="text-align: right;">0.498</td>
 <td style="text-align: right;">0.289</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.07</td>
-<td style="text-align: right;">0.88</td>
-<td style="text-align: right;">4.38</td>
-<td style="text-align: right;">8.84</td>
-<td style="text-align: right;">30.07</td>
-<td style="text-align: right;">0.513</td>
-<td style="text-align: right;">0.278</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">4.62</td>
+<td style="text-align: right;">9.21</td>
+<td style="text-align: right;">30.16</td>
+<td style="text-align: right;">0.514</td>
+<td style="text-align: right;">0.279</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Intense Storms</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.09</td>
-<td style="text-align: right;">1.21</td>
-<td style="text-align: right;">5.23</td>
-<td style="text-align: right;">10.47</td>
-<td style="text-align: right;">34.20</td>
-<td style="text-align: right;">0.492</td>
-<td style="text-align: right;">0.289</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">1.02</td>
+<td style="text-align: right;">5.02</td>
+<td style="text-align: right;">10.23</td>
+<td style="text-align: right;">33.61</td>
+<td style="text-align: right;">0.499</td>
+<td style="text-align: right;">0.290</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.08</td>
-<td style="text-align: right;">0.99</td>
-<td style="text-align: right;">4.70</td>
-<td style="text-align: right;">9.28</td>
-<td style="text-align: right;">30.74</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.88</td>
+<td style="text-align: right;">4.63</td>
+<td style="text-align: right;">9.23</td>
+<td style="text-align: right;">30.02</td>
 <td style="text-align: right;">0.513</td>
-<td style="text-align: right;">0.280</td>
+<td style="text-align: right;">0.278</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Intense Storms</strong></td>
@@ -3270,22 +3277,22 @@ window.Quarto = {
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
 <td style="text-align: right;">0.11</td>
-<td style="text-align: right;">1.10</td>
-<td style="text-align: right;">4.87</td>
-<td style="text-align: right;">9.77</td>
-<td style="text-align: right;">32.92</td>
-<td style="text-align: right;">0.500</td>
-<td style="text-align: right;">0.288</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">4.90</td>
+<td style="text-align: right;">10.35</td>
+<td style="text-align: right;">33.57</td>
+<td style="text-align: right;">0.497</td>
+<td style="text-align: right;">0.289</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
 <td style="text-align: right;">0.10</td>
-<td style="text-align: right;">1.04</td>
-<td style="text-align: right;">4.62</td>
-<td style="text-align: right;">9.26</td>
-<td style="text-align: right;">29.37</td>
-<td style="text-align: right;">0.517</td>
-<td style="text-align: right;">0.277</td>
+<td style="text-align: right;">0.87</td>
+<td style="text-align: right;">4.68</td>
+<td style="text-align: right;">9.21</td>
+<td style="text-align: right;">30.19</td>
+<td style="text-align: right;">0.513</td>
+<td style="text-align: right;">0.279</td>
 </tr>
 </tbody>
 </table>
@@ -3315,45 +3322,45 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">25.44</td>
-<td style="text-align: right;">51.92</td>
-<td style="text-align: right;">74.33</td>
-<td style="text-align: right;">83.42</td>
-<td style="text-align: right;">95.05</td>
-<td style="text-align: right;">0.063</td>
-<td style="text-align: right;">0.139</td>
+<td style="text-align: right;">22.60</td>
+<td style="text-align: right;">47.80</td>
+<td style="text-align: right;">70.96</td>
+<td style="text-align: right;">81.21</td>
+<td style="text-align: right;">93.45</td>
+<td style="text-align: right;">0.074</td>
+<td style="text-align: right;">0.153</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">28.55</td>
-<td style="text-align: right;">55.33</td>
-<td style="text-align: right;">77.18</td>
-<td style="text-align: right;">85.72</td>
-<td style="text-align: right;">95.88</td>
-<td style="text-align: right;">0.053</td>
-<td style="text-align: right;">0.118</td>
+<td style="text-align: right;">25.04</td>
+<td style="text-align: right;">50.83</td>
+<td style="text-align: right;">74.39</td>
+<td style="text-align: right;">83.29</td>
+<td style="text-align: right;">94.48</td>
+<td style="text-align: right;">0.064</td>
+<td style="text-align: right;">0.136</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Major Storms</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">5.24</td>
-<td style="text-align: right;">18.14</td>
-<td style="text-align: right;">38.45</td>
-<td style="text-align: right;">50.72</td>
-<td style="text-align: right;">75.95</td>
-<td style="text-align: right;">0.211</td>
-<td style="text-align: right;">0.256</td>
+<td style="text-align: right;">5.20</td>
+<td style="text-align: right;">18.88</td>
+<td style="text-align: right;">39.75</td>
+<td style="text-align: right;">51.91</td>
+<td style="text-align: right;">76.51</td>
+<td style="text-align: right;">0.208</td>
+<td style="text-align: right;">0.258</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">5.75</td>
-<td style="text-align: right;">19.49</td>
-<td style="text-align: right;">39.47</td>
-<td style="text-align: right;">50.91</td>
-<td style="text-align: right;">74.95</td>
-<td style="text-align: right;">0.213</td>
+<td style="text-align: right;">6.04</td>
+<td style="text-align: right;">20.34</td>
+<td style="text-align: right;">40.54</td>
+<td style="text-align: right;">52.21</td>
+<td style="text-align: right;">75.28</td>
+<td style="text-align: right;">0.208</td>
 <td style="text-align: right;">0.255</td>
 </tr>
 <tr class="odd" data-grouplength="2">
@@ -3361,69 +3368,69 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">1.18</td>
-<td style="text-align: right;">5.53</td>
-<td style="text-align: right;">16.66</td>
-<td style="text-align: right;">26.05</td>
-<td style="text-align: right;">53.94</td>
-<td style="text-align: right;">0.366</td>
-<td style="text-align: right;">0.301</td>
+<td style="text-align: right;">1.15</td>
+<td style="text-align: right;">6.27</td>
+<td style="text-align: right;">17.94</td>
+<td style="text-align: right;">27.31</td>
+<td style="text-align: right;">54.96</td>
+<td style="text-align: right;">0.355</td>
+<td style="text-align: right;">0.297</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">1.43</td>
-<td style="text-align: right;">6.41</td>
-<td style="text-align: right;">18.37</td>
-<td style="text-align: right;">28.47</td>
-<td style="text-align: right;">56.20</td>
-<td style="text-align: right;">0.338</td>
-<td style="text-align: right;">0.282</td>
+<td style="text-align: right;">1.01</td>
+<td style="text-align: right;">5.86</td>
+<td style="text-align: right;">16.51</td>
+<td style="text-align: right;">25.58</td>
+<td style="text-align: right;">51.58</td>
+<td style="text-align: right;">0.371</td>
+<td style="text-align: right;">0.293</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Intense Storms</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">29.54</td>
-<td style="text-align: right;">55.39</td>
-<td style="text-align: right;">76.58</td>
-<td style="text-align: right;">84.59</td>
-<td style="text-align: right;">95.06</td>
-<td style="text-align: right;">0.060</td>
-<td style="text-align: right;">0.139</td>
+<td style="text-align: right;">25.08</td>
+<td style="text-align: right;">50.81</td>
+<td style="text-align: right;">72.95</td>
+<td style="text-align: right;">81.88</td>
+<td style="text-align: right;">94.44</td>
+<td style="text-align: right;">0.069</td>
+<td style="text-align: right;">0.147</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">32.29</td>
-<td style="text-align: right;">59.15</td>
-<td style="text-align: right;">79.54</td>
-<td style="text-align: right;">86.97</td>
-<td style="text-align: right;">96.05</td>
-<td style="text-align: right;">0.049</td>
-<td style="text-align: right;">0.115</td>
+<td style="text-align: right;">27.58</td>
+<td style="text-align: right;">53.54</td>
+<td style="text-align: right;">75.63</td>
+<td style="text-align: right;">84.39</td>
+<td style="text-align: right;">95.06</td>
+<td style="text-align: right;">0.060</td>
+<td style="text-align: right;">0.132</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Intense Storms</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">5.75</td>
-<td style="text-align: right;">18.85</td>
-<td style="text-align: right;">39.57</td>
-<td style="text-align: right;">51.95</td>
-<td style="text-align: right;">76.39</td>
-<td style="text-align: right;">0.208</td>
-<td style="text-align: right;">0.256</td>
+<td style="text-align: right;">21.17</td>
+<td style="text-align: right;">46.94</td>
+<td style="text-align: right;">71.07</td>
+<td style="text-align: right;">80.91</td>
+<td style="text-align: right;">93.89</td>
+<td style="text-align: right;">0.072</td>
+<td style="text-align: right;">0.147</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">5.06</td>
-<td style="text-align: right;">17.69</td>
-<td style="text-align: right;">37.95</td>
-<td style="text-align: right;">49.65</td>
-<td style="text-align: right;">73.78</td>
-<td style="text-align: right;">0.218</td>
-<td style="text-align: right;">0.254</td>
+<td style="text-align: right;">21.12</td>
+<td style="text-align: right;">47.70</td>
+<td style="text-align: right;">72.36</td>
+<td style="text-align: right;">82.32</td>
+<td style="text-align: right;">94.81</td>
+<td style="text-align: right;">0.065</td>
+<td style="text-align: right;">0.130</td>
 </tr>
 </tbody>
 </table>
@@ -3456,23 +3463,23 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.06</td>
-<td style="text-align: right;">1.01</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">1.03</td>
 <td style="text-align: right;">4.95</td>
-<td style="text-align: right;">9.78</td>
-<td style="text-align: right;">32.99</td>
-<td style="text-align: right;">0.502</td>
-<td style="text-align: right;">0.289</td>
+<td style="text-align: right;">10.49</td>
+<td style="text-align: right;">33.44</td>
+<td style="text-align: right;">0.501</td>
+<td style="text-align: right;">0.290</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.05</td>
-<td style="text-align: right;">0.97</td>
-<td style="text-align: right;">4.60</td>
-<td style="text-align: right;">9.04</td>
-<td style="text-align: right;">29.80</td>
-<td style="text-align: right;">0.517</td>
-<td style="text-align: right;">0.279</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.91</td>
+<td style="text-align: right;">4.50</td>
+<td style="text-align: right;">9.53</td>
+<td style="text-align: right;">29.73</td>
+<td style="text-align: right;">0.518</td>
+<td style="text-align: right;">0.281</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Major Storms</strong></td>
@@ -3480,91 +3487,91 @@ window.Quarto = {
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
 <td style="text-align: right;">0.08</td>
-<td style="text-align: right;">0.85</td>
-<td style="text-align: right;">5.13</td>
-<td style="text-align: right;">10.18</td>
-<td style="text-align: right;">33.86</td>
-<td style="text-align: right;">0.496</td>
-<td style="text-align: right;">0.290</td>
+<td style="text-align: right;">1.15</td>
+<td style="text-align: right;">5.01</td>
+<td style="text-align: right;">9.61</td>
+<td style="text-align: right;">33.31</td>
+<td style="text-align: right;">0.498</td>
+<td style="text-align: right;">0.286</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.08</td>
-<td style="text-align: right;">0.85</td>
-<td style="text-align: right;">4.73</td>
-<td style="text-align: right;">9.10</td>
-<td style="text-align: right;">29.88</td>
-<td style="text-align: right;">0.513</td>
-<td style="text-align: right;">0.279</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">1.11</td>
+<td style="text-align: right;">4.79</td>
+<td style="text-align: right;">9.00</td>
+<td style="text-align: right;">29.96</td>
+<td style="text-align: right;">0.517</td>
+<td style="text-align: right;">0.278</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Major Storms</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.10</td>
-<td style="text-align: right;">1.07</td>
-<td style="text-align: right;">4.69</td>
-<td style="text-align: right;">9.29</td>
-<td style="text-align: right;">33.39</td>
-<td style="text-align: right;">0.501</td>
-<td style="text-align: right;">0.288</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.82</td>
+<td style="text-align: right;">5.21</td>
+<td style="text-align: right;">10.42</td>
+<td style="text-align: right;">33.57</td>
+<td style="text-align: right;">0.496</td>
+<td style="text-align: right;">0.289</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
 <td style="text-align: right;">0.09</td>
-<td style="text-align: right;">0.97</td>
-<td style="text-align: right;">4.41</td>
-<td style="text-align: right;">8.70</td>
-<td style="text-align: right;">30.02</td>
-<td style="text-align: right;">0.517</td>
-<td style="text-align: right;">0.278</td>
+<td style="text-align: right;">0.76</td>
+<td style="text-align: right;">4.74</td>
+<td style="text-align: right;">9.69</td>
+<td style="text-align: right;">30.37</td>
+<td style="text-align: right;">0.512</td>
+<td style="text-align: right;">0.280</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Intense Storms</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.14</td>
-<td style="text-align: right;">1.10</td>
-<td style="text-align: right;">4.53</td>
-<td style="text-align: right;">9.72</td>
-<td style="text-align: right;">33.67</td>
-<td style="text-align: right;">0.502</td>
-<td style="text-align: right;">0.291</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: right;">4.96</td>
+<td style="text-align: right;">9.68</td>
+<td style="text-align: right;">33.36</td>
+<td style="text-align: right;">0.500</td>
+<td style="text-align: right;">0.288</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.11</td>
-<td style="text-align: right;">0.96</td>
-<td style="text-align: right;">4.23</td>
-<td style="text-align: right;">9.06</td>
-<td style="text-align: right;">29.54</td>
-<td style="text-align: right;">0.518</td>
-<td style="text-align: right;">0.279</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.88</td>
+<td style="text-align: right;">4.44</td>
+<td style="text-align: right;">9.02</td>
+<td style="text-align: right;">29.60</td>
+<td style="text-align: right;">0.517</td>
+<td style="text-align: right;">0.277</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Intense Storms</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.12</td>
-<td style="text-align: right;">1.16</td>
-<td style="text-align: right;">5.15</td>
-<td style="text-align: right;">10.31</td>
-<td style="text-align: right;">34.44</td>
-<td style="text-align: right;">0.495</td>
-<td style="text-align: right;">0.290</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.95</td>
+<td style="text-align: right;">5.13</td>
+<td style="text-align: right;">10.38</td>
+<td style="text-align: right;">33.79</td>
+<td style="text-align: right;">0.496</td>
+<td style="text-align: right;">0.289</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.10</td>
-<td style="text-align: right;">1.09</td>
-<td style="text-align: right;">4.97</td>
-<td style="text-align: right;">9.41</td>
-<td style="text-align: right;">30.64</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.93</td>
+<td style="text-align: right;">4.72</td>
+<td style="text-align: right;">9.30</td>
+<td style="text-align: right;">30.00</td>
 <td style="text-align: right;">0.511</td>
-<td style="text-align: right;">0.280</td>
+<td style="text-align: right;">0.278</td>
 </tr>
 </tbody>
 </table>
@@ -3594,115 +3601,115 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">45.35</td>
-<td style="text-align: right;">72.75</td>
-<td style="text-align: right;">88.33</td>
-<td style="text-align: right;">93.29</td>
-<td style="text-align: right;">98.52</td>
+<td style="text-align: right;">46.05</td>
+<td style="text-align: right;">72.74</td>
+<td style="text-align: right;">88.91</td>
+<td style="text-align: right;">93.40</td>
+<td style="text-align: right;">98.51</td>
 <td style="text-align: right;">0.025</td>
-<td style="text-align: right;">0.078</td>
+<td style="text-align: right;">0.080</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">50.20</td>
-<td style="text-align: right;">76.34</td>
-<td style="text-align: right;">90.48</td>
-<td style="text-align: right;">94.42</td>
-<td style="text-align: right;">98.85</td>
+<td style="text-align: right;">51.57</td>
+<td style="text-align: right;">76.90</td>
+<td style="text-align: right;">90.82</td>
+<td style="text-align: right;">94.87</td>
+<td style="text-align: right;">98.70</td>
 <td style="text-align: right;">0.021</td>
-<td style="text-align: right;">0.070</td>
+<td style="text-align: right;">0.074</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Major Storms</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.97</td>
-<td style="text-align: right;">4.91</td>
-<td style="text-align: right;">15.27</td>
-<td style="text-align: right;">23.81</td>
-<td style="text-align: right;">51.17</td>
-<td style="text-align: right;">0.381</td>
-<td style="text-align: right;">0.301</td>
+<td style="text-align: right;">1.79</td>
+<td style="text-align: right;">8.42</td>
+<td style="text-align: right;">22.65</td>
+<td style="text-align: right;">33.31</td>
+<td style="text-align: right;">62.76</td>
+<td style="text-align: right;">0.309</td>
+<td style="text-align: right;">0.289</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.86</td>
-<td style="text-align: right;">4.57</td>
-<td style="text-align: right;">14.41</td>
-<td style="text-align: right;">23.01</td>
-<td style="text-align: right;">50.65</td>
-<td style="text-align: right;">0.372</td>
-<td style="text-align: right;">0.283</td>
+<td style="text-align: right;">1.63</td>
+<td style="text-align: right;">8.14</td>
+<td style="text-align: right;">22.22</td>
+<td style="text-align: right;">33.09</td>
+<td style="text-align: right;">63.03</td>
+<td style="text-align: right;">0.294</td>
+<td style="text-align: right;">0.266</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Major Storms</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">21.98</td>
-<td style="text-align: right;">47.72</td>
-<td style="text-align: right;">70.37</td>
-<td style="text-align: right;">80.48</td>
-<td style="text-align: right;">93.90</td>
-<td style="text-align: right;">0.074</td>
-<td style="text-align: right;">0.152</td>
+<td style="text-align: right;">16.22</td>
+<td style="text-align: right;">38.83</td>
+<td style="text-align: right;">62.91</td>
+<td style="text-align: right;">74.75</td>
+<td style="text-align: right;">91.04</td>
+<td style="text-align: right;">0.098</td>
+<td style="text-align: right;">0.175</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">25.50</td>
-<td style="text-align: right;">51.12</td>
-<td style="text-align: right;">73.51</td>
-<td style="text-align: right;">82.27</td>
-<td style="text-align: right;">93.98</td>
-<td style="text-align: right;">0.069</td>
-<td style="text-align: right;">0.146</td>
+<td style="text-align: right;">18.77</td>
+<td style="text-align: right;">41.85</td>
+<td style="text-align: right;">65.52</td>
+<td style="text-align: right;">75.98</td>
+<td style="text-align: right;">90.86</td>
+<td style="text-align: right;">0.094</td>
+<td style="text-align: right;">0.172</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Intense Storms</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">2.84</td>
-<td style="text-align: right;">12.35</td>
-<td style="text-align: right;">30.18</td>
-<td style="text-align: right;">42.47</td>
-<td style="text-align: right;">70.69</td>
-<td style="text-align: right;">0.250</td>
-<td style="text-align: right;">0.268</td>
+<td style="text-align: right;">2.62</td>
+<td style="text-align: right;">11.27</td>
+<td style="text-align: right;">28.79</td>
+<td style="text-align: right;">40.27</td>
+<td style="text-align: right;">68.80</td>
+<td style="text-align: right;">0.263</td>
+<td style="text-align: right;">0.274</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">2.68</td>
-<td style="text-align: right;">11.74</td>
-<td style="text-align: right;">29.98</td>
-<td style="text-align: right;">42.94</td>
-<td style="text-align: right;">74.35</td>
-<td style="text-align: right;">0.220</td>
-<td style="text-align: right;">0.229</td>
+<td style="text-align: right;">2.46</td>
+<td style="text-align: right;">10.73</td>
+<td style="text-align: right;">28.26</td>
+<td style="text-align: right;">40.79</td>
+<td style="text-align: right;">72.53</td>
+<td style="text-align: right;">0.232</td>
+<td style="text-align: right;">0.234</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Intense Storms</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">48.54</td>
-<td style="text-align: right;">75.46</td>
-<td style="text-align: right;">90.47</td>
-<td style="text-align: right;">94.86</td>
-<td style="text-align: right;">98.92</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">0.068</td>
+<td style="text-align: right;">43.15</td>
+<td style="text-align: right;">70.30</td>
+<td style="text-align: right;">87.26</td>
+<td style="text-align: right;">92.87</td>
+<td style="text-align: right;">98.45</td>
+<td style="text-align: right;">0.027</td>
+<td style="text-align: right;">0.079</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">54.66</td>
-<td style="text-align: right;">79.66</td>
-<td style="text-align: right;">92.41</td>
-<td style="text-align: right;">95.87</td>
-<td style="text-align: right;">99.10</td>
-<td style="text-align: right;">0.017</td>
-<td style="text-align: right;">0.061</td>
+<td style="text-align: right;">49.05</td>
+<td style="text-align: right;">74.74</td>
+<td style="text-align: right;">89.30</td>
+<td style="text-align: right;">94.07</td>
+<td style="text-align: right;">98.65</td>
+<td style="text-align: right;">0.023</td>
+<td style="text-align: right;">0.072</td>
 </tr>
 </tbody>
 </table>
@@ -3735,46 +3742,46 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.05</td>
-<td style="text-align: right;">0.94</td>
-<td style="text-align: right;">4.80</td>
-<td style="text-align: right;">10.26</td>
-<td style="text-align: right;">33.40</td>
-<td style="text-align: right;">0.498</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">0.99</td>
+<td style="text-align: right;">4.99</td>
+<td style="text-align: right;">10.31</td>
+<td style="text-align: right;">33.66</td>
+<td style="text-align: right;">0.496</td>
 <td style="text-align: right;">0.287</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.08</td>
-<td style="text-align: right;">0.94</td>
-<td style="text-align: right;">4.45</td>
-<td style="text-align: right;">8.99</td>
-<td style="text-align: right;">29.39</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.98</td>
+<td style="text-align: right;">4.56</td>
+<td style="text-align: right;">9.07</td>
+<td style="text-align: right;">29.97</td>
 <td style="text-align: right;">0.516</td>
-<td style="text-align: right;">0.278</td>
+<td style="text-align: right;">0.279</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Major Storms</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.10</td>
-<td style="text-align: right;">1.01</td>
-<td style="text-align: right;">4.98</td>
-<td style="text-align: right;">10.15</td>
-<td style="text-align: right;">33.85</td>
-<td style="text-align: right;">0.497</td>
-<td style="text-align: right;">0.290</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">0.92</td>
+<td style="text-align: right;">4.88</td>
+<td style="text-align: right;">10.18</td>
+<td style="text-align: right;">33.68</td>
+<td style="text-align: right;">0.496</td>
+<td style="text-align: right;">0.289</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.07</td>
-<td style="text-align: right;">0.91</td>
-<td style="text-align: right;">4.36</td>
-<td style="text-align: right;">9.06</td>
-<td style="text-align: right;">30.29</td>
-<td style="text-align: right;">0.515</td>
-<td style="text-align: right;">0.279</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">4.30</td>
+<td style="text-align: right;">9.28</td>
+<td style="text-align: right;">30.12</td>
+<td style="text-align: right;">0.514</td>
+<td style="text-align: right;">0.278</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Major Storms</strong></td>
@@ -3782,68 +3789,68 @@ window.Quarto = {
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
 <td style="text-align: right;">0.11</td>
-<td style="text-align: right;">1.41</td>
-<td style="text-align: right;">5.78</td>
-<td style="text-align: right;">10.60</td>
-<td style="text-align: right;">34.03</td>
+<td style="text-align: right;">0.93</td>
+<td style="text-align: right;">5.15</td>
+<td style="text-align: right;">10.22</td>
+<td style="text-align: right;">33.92</td>
 <td style="text-align: right;">0.496</td>
-<td style="text-align: right;">0.291</td>
+<td style="text-align: right;">0.289</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.14</td>
-<td style="text-align: right;">1.31</td>
-<td style="text-align: right;">5.23</td>
-<td style="text-align: right;">9.76</td>
-<td style="text-align: right;">31.26</td>
-<td style="text-align: right;">0.504</td>
-<td style="text-align: right;">0.279</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.91</td>
+<td style="text-align: right;">4.56</td>
+<td style="text-align: right;">9.47</td>
+<td style="text-align: right;">30.63</td>
+<td style="text-align: right;">0.506</td>
+<td style="text-align: right;">0.275</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Intense Storms</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.06</td>
-<td style="text-align: right;">0.92</td>
-<td style="text-align: right;">5.35</td>
-<td style="text-align: right;">10.12</td>
-<td style="text-align: right;">33.87</td>
-<td style="text-align: right;">0.498</td>
-<td style="text-align: right;">0.289</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">1.26</td>
+<td style="text-align: right;">5.42</td>
+<td style="text-align: right;">10.25</td>
+<td style="text-align: right;">33.91</td>
+<td style="text-align: right;">0.494</td>
+<td style="text-align: right;">0.287</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.04</td>
-<td style="text-align: right;">0.81</td>
-<td style="text-align: right;">4.65</td>
-<td style="text-align: right;">9.14</td>
-<td style="text-align: right;">30.17</td>
-<td style="text-align: right;">0.515</td>
-<td style="text-align: right;">0.278</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">4.77</td>
+<td style="text-align: right;">9.37</td>
+<td style="text-align: right;">29.77</td>
+<td style="text-align: right;">0.514</td>
+<td style="text-align: right;">0.277</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Intense Storms</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.14</td>
 <td style="text-align: right;">1.17</td>
-<td style="text-align: right;">5.30</td>
-<td style="text-align: right;">10.38</td>
-<td style="text-align: right;">33.56</td>
-<td style="text-align: right;">0.499</td>
+<td style="text-align: right;">5.29</td>
+<td style="text-align: right;">10.67</td>
+<td style="text-align: right;">34.43</td>
+<td style="text-align: right;">0.495</td>
 <td style="text-align: right;">0.291</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.11</td>
-<td style="text-align: right;">1.03</td>
-<td style="text-align: right;">4.83</td>
-<td style="text-align: right;">9.64</td>
-<td style="text-align: right;">30.74</td>
-<td style="text-align: right;">0.505</td>
-<td style="text-align: right;">0.276</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">1.02</td>
+<td style="text-align: right;">4.75</td>
+<td style="text-align: right;">9.84</td>
+<td style="text-align: right;">31.56</td>
+<td style="text-align: right;">0.502</td>
+<td style="text-align: right;">0.278</td>
 </tr>
 </tbody>
 </table>
@@ -3873,114 +3880,114 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">1.83</td>
-<td style="text-align: right;">8.47</td>
-<td style="text-align: right;">23.09</td>
-<td style="text-align: right;">34.19</td>
-<td style="text-align: right;">62.12</td>
-<td style="text-align: right;">0.310</td>
-<td style="text-align: right;">0.291</td>
+<td style="text-align: right;">1.73</td>
+<td style="text-align: right;">8.42</td>
+<td style="text-align: right;">22.45</td>
+<td style="text-align: right;">33.29</td>
+<td style="text-align: right;">61.46</td>
+<td style="text-align: right;">0.313</td>
+<td style="text-align: right;">0.289</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">1.65</td>
-<td style="text-align: right;">8.40</td>
-<td style="text-align: right;">22.72</td>
-<td style="text-align: right;">34.27</td>
-<td style="text-align: right;">62.45</td>
-<td style="text-align: right;">0.299</td>
-<td style="text-align: right;">0.274</td>
+<td style="text-align: right;">1.72</td>
+<td style="text-align: right;">8.16</td>
+<td style="text-align: right;">22.28</td>
+<td style="text-align: right;">32.92</td>
+<td style="text-align: right;">61.61</td>
+<td style="text-align: right;">0.304</td>
+<td style="text-align: right;">0.275</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Major Storms</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.11</td>
-<td style="text-align: right;">1.55</td>
-<td style="text-align: right;">6.43</td>
-<td style="text-align: right;">11.62</td>
-<td style="text-align: right;">35.43</td>
-<td style="text-align: right;">0.485</td>
-<td style="text-align: right;">0.293</td>
+<td style="text-align: right;">7.11</td>
+<td style="text-align: right;">21.90</td>
+<td style="text-align: right;">42.38</td>
+<td style="text-align: right;">54.20</td>
+<td style="text-align: right;">77.94</td>
+<td style="text-align: right;">0.196</td>
+<td style="text-align: right;">0.250</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.10</td>
-<td style="text-align: right;">1.32</td>
-<td style="text-align: right;">5.62</td>
-<td style="text-align: right;">10.63</td>
-<td style="text-align: right;">31.83</td>
-<td style="text-align: right;">0.502</td>
-<td style="text-align: right;">0.283</td>
+<td style="text-align: right;">7.04</td>
+<td style="text-align: right;">22.61</td>
+<td style="text-align: right;">42.76</td>
+<td style="text-align: right;">54.41</td>
+<td style="text-align: right;">77.13</td>
+<td style="text-align: right;">0.194</td>
+<td style="text-align: right;">0.245</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Major Storms</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">7.60</td>
-<td style="text-align: right;">23.57</td>
-<td style="text-align: right;">45.77</td>
-<td style="text-align: right;">57.99</td>
-<td style="text-align: right;">81.10</td>
-<td style="text-align: right;">0.174</td>
-<td style="text-align: right;">0.238</td>
+<td style="text-align: right;">5.57</td>
+<td style="text-align: right;">19.93</td>
+<td style="text-align: right;">40.40</td>
+<td style="text-align: right;">52.87</td>
+<td style="text-align: right;">78.18</td>
+<td style="text-align: right;">0.197</td>
+<td style="text-align: right;">0.248</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">7.45</td>
-<td style="text-align: right;">23.87</td>
-<td style="text-align: right;">46.42</td>
-<td style="text-align: right;">58.40</td>
-<td style="text-align: right;">80.87</td>
-<td style="text-align: right;">0.173</td>
-<td style="text-align: right;">0.232</td>
+<td style="text-align: right;">5.48</td>
+<td style="text-align: right;">20.10</td>
+<td style="text-align: right;">41.30</td>
+<td style="text-align: right;">53.56</td>
+<td style="text-align: right;">76.84</td>
+<td style="text-align: right;">0.198</td>
+<td style="text-align: right;">0.247</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Intense Storms</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">1.35</td>
-<td style="text-align: right;">6.71</td>
-<td style="text-align: right;">18.70</td>
-<td style="text-align: right;">28.13</td>
-<td style="text-align: right;">55.94</td>
-<td style="text-align: right;">0.349</td>
-<td style="text-align: right;">0.297</td>
+<td style="text-align: right;">0.88</td>
+<td style="text-align: right;">4.89</td>
+<td style="text-align: right;">14.83</td>
+<td style="text-align: right;">24.11</td>
+<td style="text-align: right;">50.87</td>
+<td style="text-align: right;">0.383</td>
+<td style="text-align: right;">0.301</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">1.13</td>
-<td style="text-align: right;">6.60</td>
-<td style="text-align: right;">18.20</td>
-<td style="text-align: right;">27.53</td>
-<td style="text-align: right;">53.19</td>
-<td style="text-align: right;">0.359</td>
-<td style="text-align: right;">0.293</td>
+<td style="text-align: right;">0.79</td>
+<td style="text-align: right;">4.61</td>
+<td style="text-align: right;">14.42</td>
+<td style="text-align: right;">22.55</td>
+<td style="text-align: right;">47.57</td>
+<td style="text-align: right;">0.394</td>
+<td style="text-align: right;">0.294</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Intense Storms</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">1.09</td>
-<td style="text-align: right;">5.69</td>
-<td style="text-align: right;">16.71</td>
-<td style="text-align: right;">25.69</td>
-<td style="text-align: right;">53.81</td>
-<td style="text-align: right;">0.366</td>
-<td style="text-align: right;">0.299</td>
+<td style="text-align: right;">0.91</td>
+<td style="text-align: right;">4.05</td>
+<td style="text-align: right;">12.85</td>
+<td style="text-align: right;">20.68</td>
+<td style="text-align: right;">48.83</td>
+<td style="text-align: right;">0.401</td>
+<td style="text-align: right;">0.302</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.76</td>
-<td style="text-align: right;">5.04</td>
-<td style="text-align: right;">15.64</td>
-<td style="text-align: right;">24.63</td>
-<td style="text-align: right;">50.74</td>
-<td style="text-align: right;">0.375</td>
+<td style="text-align: right;">0.60</td>
+<td style="text-align: right;">3.56</td>
+<td style="text-align: right;">12.19</td>
+<td style="text-align: right;">19.88</td>
+<td style="text-align: right;">45.72</td>
+<td style="text-align: right;">0.408</td>
 <td style="text-align: right;">0.291</td>
 </tr>
 </tbody>
@@ -4014,92 +4021,92 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.13</td>
-<td style="text-align: right;">0.93</td>
-<td style="text-align: right;">5.19</td>
-<td style="text-align: right;">10.31</td>
-<td style="text-align: right;">33.27</td>
-<td style="text-align: right;">0.500</td>
-<td style="text-align: right;">0.290</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">0.88</td>
+<td style="text-align: right;">4.84</td>
+<td style="text-align: right;">9.60</td>
+<td style="text-align: right;">32.69</td>
+<td style="text-align: right;">0.503</td>
+<td style="text-align: right;">0.287</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.15</td>
-<td style="text-align: right;">0.84</td>
-<td style="text-align: right;">4.68</td>
-<td style="text-align: right;">9.44</td>
-<td style="text-align: right;">30.01</td>
-<td style="text-align: right;">0.515</td>
-<td style="text-align: right;">0.280</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">0.78</td>
+<td style="text-align: right;">4.21</td>
+<td style="text-align: right;">8.80</td>
+<td style="text-align: right;">29.51</td>
+<td style="text-align: right;">0.521</td>
+<td style="text-align: right;">0.278</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Major Storms</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.15</td>
-<td style="text-align: right;">1.07</td>
-<td style="text-align: right;">5.08</td>
-<td style="text-align: right;">9.77</td>
-<td style="text-align: right;">33.10</td>
-<td style="text-align: right;">0.504</td>
-<td style="text-align: right;">0.291</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">1.03</td>
+<td style="text-align: right;">5.30</td>
+<td style="text-align: right;">10.16</td>
+<td style="text-align: right;">33.49</td>
+<td style="text-align: right;">0.496</td>
+<td style="text-align: right;">0.287</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.14</td>
-<td style="text-align: right;">1.07</td>
-<td style="text-align: right;">4.64</td>
-<td style="text-align: right;">8.82</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: right;">4.84</td>
+<td style="text-align: right;">9.48</td>
 <td style="text-align: right;">29.72</td>
-<td style="text-align: right;">0.519</td>
-<td style="text-align: right;">0.279</td>
+<td style="text-align: right;">0.515</td>
+<td style="text-align: right;">0.278</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Major Storms</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.16</td>
-<td style="text-align: right;">1.14</td>
-<td style="text-align: right;">5.09</td>
-<td style="text-align: right;">9.92</td>
-<td style="text-align: right;">32.74</td>
-<td style="text-align: right;">0.501</td>
-<td style="text-align: right;">0.286</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.84</td>
+<td style="text-align: right;">4.97</td>
+<td style="text-align: right;">9.69</td>
+<td style="text-align: right;">33.19</td>
+<td style="text-align: right;">0.502</td>
+<td style="text-align: right;">0.288</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.14</td>
-<td style="text-align: right;">1.11</td>
-<td style="text-align: right;">4.43</td>
-<td style="text-align: right;">9.12</td>
-<td style="text-align: right;">29.63</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: right;">4.63</td>
+<td style="text-align: right;">9.05</td>
+<td style="text-align: right;">29.72</td>
 <td style="text-align: right;">0.516</td>
-<td style="text-align: right;">0.277</td>
+<td style="text-align: right;">0.279</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Intense Storms</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.12</td>
-<td style="text-align: right;">1.00</td>
-<td style="text-align: right;">4.69</td>
-<td style="text-align: right;">9.87</td>
-<td style="text-align: right;">33.12</td>
-<td style="text-align: right;">0.501</td>
-<td style="text-align: right;">0.288</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.97</td>
+<td style="text-align: right;">4.91</td>
+<td style="text-align: right;">10.01</td>
+<td style="text-align: right;">33.01</td>
+<td style="text-align: right;">0.503</td>
+<td style="text-align: right;">0.289</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.13</td>
-<td style="text-align: right;">1.00</td>
-<td style="text-align: right;">4.21</td>
-<td style="text-align: right;">8.59</td>
-<td style="text-align: right;">29.05</td>
-<td style="text-align: right;">0.519</td>
-<td style="text-align: right;">0.277</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">4.33</td>
+<td style="text-align: right;">9.30</td>
+<td style="text-align: right;">29.38</td>
+<td style="text-align: right;">0.520</td>
+<td style="text-align: right;">0.279</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Intense Storms</strong></td>
@@ -4107,21 +4114,21 @@ window.Quarto = {
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
 <td style="text-align: right;">0.09</td>
-<td style="text-align: right;">0.93</td>
-<td style="text-align: right;">4.81</td>
-<td style="text-align: right;">10.07</td>
-<td style="text-align: right;">33.17</td>
+<td style="text-align: right;">0.86</td>
+<td style="text-align: right;">4.66</td>
+<td style="text-align: right;">9.82</td>
+<td style="text-align: right;">33.09</td>
 <td style="text-align: right;">0.503</td>
 <td style="text-align: right;">0.290</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.14</td>
 <td style="text-align: right;">0.82</td>
-<td style="text-align: right;">4.47</td>
-<td style="text-align: right;">9.15</td>
-<td style="text-align: right;">29.80</td>
-<td style="text-align: right;">0.514</td>
+<td style="text-align: right;">4.29</td>
+<td style="text-align: right;">8.68</td>
+<td style="text-align: right;">29.96</td>
+<td style="text-align: right;">0.517</td>
 <td style="text-align: right;">0.278</td>
 </tr>
 </tbody>
@@ -4152,115 +4159,115 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">6.46</td>
-<td style="text-align: right;">20.63</td>
-<td style="text-align: right;">42.32</td>
-<td style="text-align: right;">54.92</td>
-<td style="text-align: right;">79.50</td>
-<td style="text-align: right;">0.187</td>
-<td style="text-align: right;">0.243</td>
+<td style="text-align: right;">6.04</td>
+<td style="text-align: right;">19.90</td>
+<td style="text-align: right;">40.57</td>
+<td style="text-align: right;">52.97</td>
+<td style="text-align: right;">77.42</td>
+<td style="text-align: right;">0.199</td>
+<td style="text-align: right;">0.248</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">7.16</td>
-<td style="text-align: right;">22.08</td>
-<td style="text-align: right;">44.02</td>
-<td style="text-align: right;">55.95</td>
-<td style="text-align: right;">78.89</td>
-<td style="text-align: right;">0.186</td>
-<td style="text-align: right;">0.240</td>
+<td style="text-align: right;">6.58</td>
+<td style="text-align: right;">21.17</td>
+<td style="text-align: right;">41.52</td>
+<td style="text-align: right;">53.86</td>
+<td style="text-align: right;">76.68</td>
+<td style="text-align: right;">0.198</td>
+<td style="text-align: right;">0.246</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Major Storms</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.63</td>
-<td style="text-align: right;">3.86</td>
-<td style="text-align: right;">13.04</td>
-<td style="text-align: right;">21.41</td>
-<td style="text-align: right;">48.98</td>
-<td style="text-align: right;">0.397</td>
-<td style="text-align: right;">0.300</td>
+<td style="text-align: right;">1.35</td>
+<td style="text-align: right;">6.39</td>
+<td style="text-align: right;">18.68</td>
+<td style="text-align: right;">28.94</td>
+<td style="text-align: right;">57.13</td>
+<td style="text-align: right;">0.343</td>
+<td style="text-align: right;">0.295</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.63</td>
-<td style="text-align: right;">3.81</td>
-<td style="text-align: right;">12.63</td>
-<td style="text-align: right;">20.98</td>
-<td style="text-align: right;">46.97</td>
-<td style="text-align: right;">0.401</td>
-<td style="text-align: right;">0.291</td>
+<td style="text-align: right;">1.32</td>
+<td style="text-align: right;">6.34</td>
+<td style="text-align: right;">18.34</td>
+<td style="text-align: right;">28.36</td>
+<td style="text-align: right;">55.53</td>
+<td style="text-align: right;">0.345</td>
+<td style="text-align: right;">0.286</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Major Storms</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">4.89</td>
-<td style="text-align: right;">16.88</td>
-<td style="text-align: right;">35.98</td>
-<td style="text-align: right;">48.26</td>
-<td style="text-align: right;">74.05</td>
-<td style="text-align: right;">0.225</td>
-<td style="text-align: right;">0.264</td>
+<td style="text-align: right;">6.18</td>
+<td style="text-align: right;">20.33</td>
+<td style="text-align: right;">42.44</td>
+<td style="text-align: right;">55.28</td>
+<td style="text-align: right;">79.67</td>
+<td style="text-align: right;">0.187</td>
+<td style="text-align: right;">0.242</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">4.76</td>
-<td style="text-align: right;">16.45</td>
-<td style="text-align: right;">35.42</td>
-<td style="text-align: right;">48.03</td>
-<td style="text-align: right;">73.37</td>
-<td style="text-align: right;">0.223</td>
-<td style="text-align: right;">0.253</td>
+<td style="text-align: right;">6.29</td>
+<td style="text-align: right;">20.97</td>
+<td style="text-align: right;">42.95</td>
+<td style="text-align: right;">55.41</td>
+<td style="text-align: right;">79.14</td>
+<td style="text-align: right;">0.183</td>
+<td style="text-align: right;">0.233</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Intense Storms</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">14.11</td>
-<td style="text-align: right;">37.97</td>
-<td style="text-align: right;">64.06</td>
-<td style="text-align: right;">76.35</td>
-<td style="text-align: right;">92.74</td>
+<td style="text-align: right;">15.23</td>
+<td style="text-align: right;">39.56</td>
+<td style="text-align: right;">65.42</td>
+<td style="text-align: right;">76.97</td>
+<td style="text-align: right;">92.67</td>
 <td style="text-align: right;">0.087</td>
-<td style="text-align: right;">0.154</td>
+<td style="text-align: right;">0.161</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">15.00</td>
-<td style="text-align: right;">40.84</td>
-<td style="text-align: right;">68.98</td>
-<td style="text-align: right;">81.00</td>
-<td style="text-align: right;">95.12</td>
-<td style="text-align: right;">0.068</td>
-<td style="text-align: right;">0.124</td>
+<td style="text-align: right;">16.68</td>
+<td style="text-align: right;">42.46</td>
+<td style="text-align: right;">69.27</td>
+<td style="text-align: right;">80.48</td>
+<td style="text-align: right;">94.67</td>
+<td style="text-align: right;">0.070</td>
+<td style="text-align: right;">0.132</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Intense Storms</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">37.48</td>
-<td style="text-align: right;">66.43</td>
-<td style="text-align: right;">85.05</td>
-<td style="text-align: right;">91.28</td>
-<td style="text-align: right;">98.03</td>
-<td style="text-align: right;">0.032</td>
-<td style="text-align: right;">0.090</td>
+<td style="text-align: right;">41.53</td>
+<td style="text-align: right;">70.25</td>
+<td style="text-align: right;">87.92</td>
+<td style="text-align: right;">93.32</td>
+<td style="text-align: right;">98.59</td>
+<td style="text-align: right;">0.026</td>
+<td style="text-align: right;">0.077</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">39.25</td>
-<td style="text-align: right;">70.07</td>
-<td style="text-align: right;">88.06</td>
-<td style="text-align: right;">93.59</td>
-<td style="text-align: right;">98.88</td>
-<td style="text-align: right;">0.024</td>
-<td style="text-align: right;">0.069</td>
+<td style="text-align: right;">43.73</td>
+<td style="text-align: right;">73.79</td>
+<td style="text-align: right;">90.80</td>
+<td style="text-align: right;">95.48</td>
+<td style="text-align: right;">99.46</td>
+<td style="text-align: right;">0.018</td>
+<td style="text-align: right;">0.052</td>
 </tr>
 </tbody>
 </table>
@@ -4293,23 +4300,23 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.18</td>
-<td style="text-align: right;">1.07</td>
-<td style="text-align: right;">5.09</td>
-<td style="text-align: right;">10.13</td>
-<td style="text-align: right;">33.56</td>
-<td style="text-align: right;">0.501</td>
-<td style="text-align: right;">0.290</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">1.17</td>
+<td style="text-align: right;">5.17</td>
+<td style="text-align: right;">9.85</td>
+<td style="text-align: right;">33.23</td>
+<td style="text-align: right;">0.499</td>
+<td style="text-align: right;">0.287</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.15</td>
-<td style="text-align: right;">0.98</td>
-<td style="text-align: right;">4.74</td>
-<td style="text-align: right;">9.00</td>
-<td style="text-align: right;">29.95</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">0.96</td>
+<td style="text-align: right;">4.50</td>
+<td style="text-align: right;">9.12</td>
+<td style="text-align: right;">29.70</td>
 <td style="text-align: right;">0.517</td>
-<td style="text-align: right;">0.281</td>
+<td style="text-align: right;">0.277</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Major Storms</strong></td>
@@ -4317,91 +4324,91 @@ window.Quarto = {
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
 <td style="text-align: right;">0.13</td>
-<td style="text-align: right;">0.96</td>
-<td style="text-align: right;">4.79</td>
-<td style="text-align: right;">9.97</td>
-<td style="text-align: right;">32.84</td>
-<td style="text-align: right;">0.501</td>
-<td style="text-align: right;">0.287</td>
+<td style="text-align: right;">1.16</td>
+<td style="text-align: right;">5.35</td>
+<td style="text-align: right;">10.23</td>
+<td style="text-align: right;">33.66</td>
+<td style="text-align: right;">0.495</td>
+<td style="text-align: right;">0.288</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.11</td>
-<td style="text-align: right;">0.91</td>
-<td style="text-align: right;">4.64</td>
-<td style="text-align: right;">8.89</td>
-<td style="text-align: right;">29.42</td>
-<td style="text-align: right;">0.519</td>
-<td style="text-align: right;">0.278</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">1.02</td>
+<td style="text-align: right;">4.83</td>
+<td style="text-align: right;">9.39</td>
+<td style="text-align: right;">30.08</td>
+<td style="text-align: right;">0.512</td>
+<td style="text-align: right;">0.279</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Major Storms</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.14</td>
-<td style="text-align: right;">0.87</td>
-<td style="text-align: right;">4.96</td>
-<td style="text-align: right;">9.81</td>
-<td style="text-align: right;">32.95</td>
-<td style="text-align: right;">0.505</td>
-<td style="text-align: right;">0.289</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.93</td>
+<td style="text-align: right;">5.10</td>
+<td style="text-align: right;">10.30</td>
+<td style="text-align: right;">33.32</td>
+<td style="text-align: right;">0.497</td>
+<td style="text-align: right;">0.288</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.13</td>
-<td style="text-align: right;">0.86</td>
-<td style="text-align: right;">4.42</td>
-<td style="text-align: right;">9.24</td>
-<td style="text-align: right;">29.37</td>
-<td style="text-align: right;">0.517</td>
-<td style="text-align: right;">0.277</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.83</td>
+<td style="text-align: right;">4.61</td>
+<td style="text-align: right;">9.59</td>
+<td style="text-align: right;">30.17</td>
+<td style="text-align: right;">0.510</td>
+<td style="text-align: right;">0.278</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Intense Storms</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.14</td>
-<td style="text-align: right;">1.07</td>
-<td style="text-align: right;">5.30</td>
-<td style="text-align: right;">10.44</td>
-<td style="text-align: right;">32.63</td>
-<td style="text-align: right;">0.502</td>
-<td style="text-align: right;">0.288</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">1.03</td>
+<td style="text-align: right;">5.12</td>
+<td style="text-align: right;">10.29</td>
+<td style="text-align: right;">34.22</td>
+<td style="text-align: right;">0.495</td>
+<td style="text-align: right;">0.290</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.11</td>
-<td style="text-align: right;">0.93</td>
-<td style="text-align: right;">4.70</td>
-<td style="text-align: right;">9.33</td>
-<td style="text-align: right;">29.13</td>
-<td style="text-align: right;">0.520</td>
-<td style="text-align: right;">0.278</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">4.68</td>
+<td style="text-align: right;">9.35</td>
+<td style="text-align: right;">30.52</td>
+<td style="text-align: right;">0.514</td>
+<td style="text-align: right;">0.281</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Intense Storms</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.12</td>
-<td style="text-align: right;">1.06</td>
-<td style="text-align: right;">5.09</td>
-<td style="text-align: right;">10.44</td>
-<td style="text-align: right;">33.59</td>
-<td style="text-align: right;">0.498</td>
-<td style="text-align: right;">0.291</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">1.07</td>
+<td style="text-align: right;">5.01</td>
+<td style="text-align: right;">10.14</td>
+<td style="text-align: right;">34.26</td>
+<td style="text-align: right;">0.496</td>
+<td style="text-align: right;">0.290</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.12</td>
-<td style="text-align: right;">0.98</td>
-<td style="text-align: right;">4.66</td>
-<td style="text-align: right;">9.23</td>
-<td style="text-align: right;">30.34</td>
-<td style="text-align: right;">0.513</td>
-<td style="text-align: right;">0.280</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">0.94</td>
+<td style="text-align: right;">4.50</td>
+<td style="text-align: right;">9.34</td>
+<td style="text-align: right;">30.51</td>
+<td style="text-align: right;">0.512</td>
+<td style="text-align: right;">0.279</td>
 </tr>
 </tbody>
 </table>
@@ -4431,115 +4438,115 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">63.74</td>
-<td style="text-align: right;">85.87</td>
-<td style="text-align: right;">95.50</td>
-<td style="text-align: right;">97.82</td>
-<td style="text-align: right;">99.58</td>
-<td style="text-align: right;">0.010</td>
-<td style="text-align: right;">0.042</td>
+<td style="text-align: right;">67.53</td>
+<td style="text-align: right;">87.83</td>
+<td style="text-align: right;">96.10</td>
+<td style="text-align: right;">98.21</td>
+<td style="text-align: right;">99.74</td>
+<td style="text-align: right;">0.008</td>
+<td style="text-align: right;">0.036</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">69.58</td>
-<td style="text-align: right;">88.94</td>
-<td style="text-align: right;">96.55</td>
-<td style="text-align: right;">98.30</td>
-<td style="text-align: right;">99.66</td>
-<td style="text-align: right;">0.008</td>
-<td style="text-align: right;">0.038</td>
+<td style="text-align: right;">72.55</td>
+<td style="text-align: right;">90.42</td>
+<td style="text-align: right;">97.28</td>
+<td style="text-align: right;">98.66</td>
+<td style="text-align: right;">99.81</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">0.030</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Major Storms</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">0.96</td>
-<td style="text-align: right;">6.09</td>
-<td style="text-align: right;">18.21</td>
-<td style="text-align: right;">28.37</td>
-<td style="text-align: right;">56.52</td>
-<td style="text-align: right;">0.346</td>
-<td style="text-align: right;">0.296</td>
+<td style="text-align: right;">2.77</td>
+<td style="text-align: right;">11.06</td>
+<td style="text-align: right;">29.14</td>
+<td style="text-align: right;">41.20</td>
+<td style="text-align: right;">69.34</td>
+<td style="text-align: right;">0.261</td>
+<td style="text-align: right;">0.275</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">0.89</td>
-<td style="text-align: right;">5.52</td>
-<td style="text-align: right;">17.40</td>
-<td style="text-align: right;">27.96</td>
-<td style="text-align: right;">57.10</td>
-<td style="text-align: right;">0.331</td>
-<td style="text-align: right;">0.273</td>
+<td style="text-align: right;">2.38</td>
+<td style="text-align: right;">10.79</td>
+<td style="text-align: right;">28.39</td>
+<td style="text-align: right;">41.65</td>
+<td style="text-align: right;">71.61</td>
+<td style="text-align: right;">0.237</td>
+<td style="text-align: right;">0.243</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Major Storms</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">10.82</td>
-<td style="text-align: right;">30.00</td>
-<td style="text-align: right;">53.32</td>
-<td style="text-align: right;">65.77</td>
-<td style="text-align: right;">85.93</td>
-<td style="text-align: right;">0.138</td>
-<td style="text-align: right;">0.210</td>
+<td style="text-align: right;">7.75</td>
+<td style="text-align: right;">24.04</td>
+<td style="text-align: right;">45.87</td>
+<td style="text-align: right;">58.60</td>
+<td style="text-align: right;">81.36</td>
+<td style="text-align: right;">0.171</td>
+<td style="text-align: right;">0.233</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">14.40</td>
-<td style="text-align: right;">35.54</td>
-<td style="text-align: right;">58.35</td>
-<td style="text-align: right;">69.05</td>
-<td style="text-align: right;">87.00</td>
-<td style="text-align: right;">0.125</td>
-<td style="text-align: right;">0.202</td>
+<td style="text-align: right;">10.62</td>
+<td style="text-align: right;">28.58</td>
+<td style="text-align: right;">50.30</td>
+<td style="text-align: right;">61.98</td>
+<td style="text-align: right;">81.97</td>
+<td style="text-align: right;">0.160</td>
+<td style="text-align: right;">0.226</td>
 </tr>
 <tr class="even" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Intense Storms</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">5.48</td>
-<td style="text-align: right;">18.60</td>
-<td style="text-align: right;">38.80</td>
-<td style="text-align: right;">51.78</td>
-<td style="text-align: right;">77.51</td>
-<td style="text-align: right;">0.201</td>
-<td style="text-align: right;">0.245</td>
+<td style="text-align: right;">3.31</td>
+<td style="text-align: right;">12.21</td>
+<td style="text-align: right;">29.19</td>
+<td style="text-align: right;">41.51</td>
+<td style="text-align: right;">68.33</td>
+<td style="text-align: right;">0.265</td>
+<td style="text-align: right;">0.279</td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">5.73</td>
-<td style="text-align: right;">19.21</td>
-<td style="text-align: right;">39.62</td>
-<td style="text-align: right;">51.99</td>
-<td style="text-align: right;">76.67</td>
-<td style="text-align: right;">0.204</td>
-<td style="text-align: right;">0.248</td>
+<td style="text-align: right;">3.47</td>
+<td style="text-align: right;">12.74</td>
+<td style="text-align: right;">29.91</td>
+<td style="text-align: right;">41.17</td>
+<td style="text-align: right;">66.72</td>
+<td style="text-align: right;">0.269</td>
+<td style="text-align: right;">0.276</td>
 </tr>
 <tr class="odd" data-grouplength="2">
 <td colspan="8" style="border-bottom: 1px solid"><strong>Proportion of Intense Storms</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">Regression</td>
-<td style="text-align: right;">49.58</td>
-<td style="text-align: right;">75.50</td>
-<td style="text-align: right;">90.18</td>
-<td style="text-align: right;">94.59</td>
-<td style="text-align: right;">98.87</td>
-<td style="text-align: right;">0.021</td>
-<td style="text-align: right;">0.068</td>
+<td style="text-align: right;">14.77</td>
+<td style="text-align: right;">38.18</td>
+<td style="text-align: right;">62.97</td>
+<td style="text-align: right;">74.64</td>
+<td style="text-align: right;">91.46</td>
+<td style="text-align: right;">0.096</td>
+<td style="text-align: right;">0.170</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; padding-left: 2em;" data-indentlevel="1">CUSUM-Test</td>
-<td style="text-align: right;">59.99</td>
-<td style="text-align: right;">81.86</td>
-<td style="text-align: right;">93.23</td>
-<td style="text-align: right;">96.28</td>
-<td style="text-align: right;">99.23</td>
-<td style="text-align: right;">0.015</td>
-<td style="text-align: right;">0.057</td>
+<td style="text-align: right;">17.59</td>
+<td style="text-align: right;">43.19</td>
+<td style="text-align: right;">67.58</td>
+<td style="text-align: right;">77.83</td>
+<td style="text-align: right;">91.95</td>
+<td style="text-align: right;">0.086</td>
+<td style="text-align: right;">0.161</td>
 </tr>
 </tbody>
 </table>

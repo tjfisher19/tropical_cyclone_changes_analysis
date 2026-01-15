@@ -36,7 +36,7 @@
 ##
 ##  Author: Tom Fisher (fishert4@miamioh.edu)
 ##
-##  Code tested on 2025-11-30
+##  Code tested on 2026-01-15
 
 
 source("cusumBasedChangePointsTest.R")
@@ -44,7 +44,8 @@ source("cusumBasedChangePointsTest.R")
 ##########################
 ## Constants
 runs=10000
-n=45
+n=length(1980:2025)
+
 df_reject_rates <- data.frame(
   System = rep(c("Total Storms", "Major Storms", "Proportion Major", "Intense Storms", "Proportion Intense"),
                each=2),
@@ -125,17 +126,17 @@ sim_study_prop <- function(runs=1000, n=45, chpt_loc = 15, lambda=c(25,25), prop
 ## Global "basin"
 #############
 ## Null hypothesis values (no changes)
-##  Total: 69.9
-##  Major: 24.667
-##    Prop Major: 0.353
-##  Intense: 16.89
-##    Prop Intense: 0.242
+##  Total: 70.1087
+##  Major: 24.69565
+##    Prop Major: 0.3522481
+##  Intense: 16.95652
+##    Prop Intense: 0.2418605
 
-global_total_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(69.9, 69.9))
-global_major_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(24.667, 24.667))
-global_major_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(69.9, 69.9), prop=c(0.353, 0.353))
-global_intense_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(16.89, 16.89))
-global_intense_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(69.9, 69.9), prop=c(0.242, 0.242))
+global_total_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(70.1087, 70.1087))
+global_major_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(24.69565, 24.69565))
+global_major_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(70.1087, 70.1087), prop=c(0.3522481, 0.3522481))
+global_intense_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(16.95652, 16.95652))
+global_intense_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(70.1087, 70.1087), prop=c(0.2418605, 0.2418605))
 
 global_null_reject_rates <- bind_cols(df_reject_rates,
                                       rbind(global_total_null, global_major_null, global_major_prop_null, 
@@ -146,11 +147,11 @@ global_null_reject_rates
 #####################
 ## Alternative hypothesis
 
-global_total_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 18, lambda=c(74, 67.15))
-global_major_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 12, lambda=c(22.58, 25.42))
-global_major_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 11, lambda=c(73.82, 68.65), prop=c(0.304, 0.369))
-global_intense_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 12, lambda=c(12.42, 18.56))
-global_intense_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 12, lambda=c(72.83, 68.85), prop=c(0.17, 0.27))
+global_total_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 18, lambda=c(74.50000, 67.28571))
+global_major_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 11, lambda=c(22.63636, 25.34286))
+global_major_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 11, lambda=c(74.50000, 67.28571), prop=c(0.3055215, 0.3680498))
+global_intense_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 12, lambda=c(12.58333, 18.50000))
+global_intense_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 12, lambda=c(74.50000, 67.28571), prop=c(0.1712018, 0.2684592))
 
 global_alt_reject_rates <- bind_cols(df_reject_rates,
                                       rbind(global_total_alt, global_major_alt, global_major_prop_alt, 
@@ -165,17 +166,17 @@ global_alt_reject_rates
 ## North Atlantic
 #############
 ## Null hypothesis values (no changes)
-##  Total: 10.467
-##  Major: 2.888
-##    Prop Major: 0.276
-##  Intense: 1.5
-##    Prop Intense: 0.172
+##  Total: 10.45652
+##  Major: 2.913044
+##    Prop Major: 0.2785863
+##  Intense: 1.847826
+##    Prop Intense: 0.1767152
 
-na_total_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(10.467, 10.467))
-na_major_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(2.888, 2.888))
-na_major_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(10.467, 10.467), prop=c(0.276, 0.276))
-na_intense_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(1.5, 1.5))
-na_intense_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(10.467, 10.467), prop=c(0.172, 0.172))
+na_total_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(10.45652, 10.45652))
+na_major_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(2.913044, 2.913044))
+na_major_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(10.45652, 10.45652), prop=c(0.2785863, 0.2785863))
+na_intense_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(1.847826, 1.847826))
+na_intense_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(10.45652, 10.45652), prop=c(0.1767152, 0.1767152))
 
 na_null_reject_rates <- bind_cols(df_reject_rates,
                                       rbind(na_total_null, na_major_null, na_major_prop_null, 
@@ -187,11 +188,11 @@ na_null_reject_rates
 ## Alternative hypothesis
 ##  
 
-na_total_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 15, lambda=c(6.667, 12.367 ))
-na_major_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 15, lambda=c(1.467, 3.6))
-na_major_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 11, lambda=c(6.667, 12.367), prop=c(0.22, 0.29))
-na_intense_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 18, lambda=c(0.9444, 1.43))
-na_intense_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 18, lambda=c(6.667, 12.367), prop=c(0.127, 0.19))
+na_total_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 15, lambda=c(6.66667, 12.29032 ))
+na_major_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 15, lambda=c(1.46667, 3.61290))
+na_major_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 15, lambda=c(6.66667, 12.29032), prop=c(0.2200000, 0.2939633))
+na_intense_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 18, lambda=c(0.94444, 2.42857))
+na_intense_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 18, lambda=c(6.66667, 12.29032), prop=c(0.1268657, 0.1959654))
 
 na_alt_reject_rates <- bind_cols(df_reject_rates,
                                      rbind(na_total_alt, na_major_alt, na_major_prop_alt, 
@@ -207,17 +208,17 @@ na_alt_reject_rates
 ## Eastern Pacific
 #############
 ## Null hypothesis values (no changes)
-##  Total: 12.467
-##  Major: 4.688
+##  Total: 12.56522
+##  Major: 4.673913
 ##    Prop Major: 0.376
 ##  Intense: 2.537
 ##    Prop Intense: 0.257
 
-ep_total_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(12.467, 12.467))
-ep_major_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(4.688, 4.688))
-ep_major_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(12.467, 12.467), prop=c(0.376, 0.376))
-ep_intense_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(2.537, 2.537))
-ep_intense_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(12.467, 12.467), prop=c(0.257, 0.257))
+ep_total_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(12.56522, 12.56522))
+ep_major_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(4.673913, 4.673913))
+ep_major_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(12.56522, 12.56522), prop=c(0.3719723, 0.3719723))
+ep_intense_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(3.173913, 3.173913))
+ep_intense_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(12.56522, 12.56522), prop=c(0.2525952, 0.2525952))
 
 ep_null_reject_rates <- bind_cols(df_reject_rates,
                                       rbind(ep_total_null, ep_major_null, ep_major_prop_null, 
@@ -228,11 +229,11 @@ ep_null_reject_rates
 #####################
 ## Alternative hypothesis
 
-ep_total_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 13, lambda=c(15.23, 11.34))
-ep_major_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 19, lambda=c(5.42, 4.15))
-ep_major_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 34, lambda=c(15.23, 11.34), prop=c(0.358, 0.426))
-ep_intense_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 34, lambda=c(2.65, 4.9))
-ep_intense_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 12, lambda=c(15.23, 11.34), prop=c(0.218, 0.147))
+ep_total_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 13, lambda=c(15.23077, 11.51515))
+ep_major_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 19, lambda=c(5.42105, 4.14815))
+ep_major_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 11, lambda=c(15.23077, 11.51515), prop=c(0.3291925, 0.3884892))
+ep_intense_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 34, lambda=c(2.64706, 4.66667))
+ep_intense_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 12, lambda=c(15.23077, 11.51515), prop=c(0.1666667, 0.2896040))
 
 ep_alt_reject_rates <- bind_cols(df_reject_rates,
                                      rbind(ep_total_alt, ep_major_alt, ep_major_prop_alt, 
@@ -247,17 +248,17 @@ ep_alt_reject_rates
 ## Western Pacific
 #############
 ## Null hypothesis values (no changes)
-##  Total: 21.98
-##  Major: 8.87
-##    Prop Major: 0.403
-##  Intense: 2.8
+##  Total: 21.93478
+##  Major: 8.782609
+##    Prop Major: 0.4003964
+##  Intense: 6.804348
 ##    Prop Intense: 0.311
 
-wp_total_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(21.98, 21.98))
-wp_major_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(8.87, 8.87))
-wp_major_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(21.98, 21.98), prop=c(0.403, 0.403))
-wp_intense_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(2.8, 2.8))
-wp_intense_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(21.98, 21.98), prop=c(0.311, 0.311))
+wp_total_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(21.93478, 21.93478))
+wp_major_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(8.782609, 8.782609))
+wp_major_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(21.93478, 21.93478), prop=c(0.4003964, 0.4003964))
+wp_intense_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(6.804348, 6.804348))
+wp_intense_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(21.93478, 21.93478), prop=c(0.3102081, 0.3102081))
 
 wp_null_reject_rates <- bind_cols(df_reject_rates,
                                       rbind(wp_total_null, wp_major_null, wp_major_prop_null, 
@@ -268,11 +269,11 @@ wp_null_reject_rates
 #####################
 ## Alternative hypothesis
 
-wp_total_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 18, lambda=c(25.167, 19.85))
-wp_major_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 37, lambda=c(9.162, 7.5))
-wp_major_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 21, lambda=c(25.167, 19.85), prop=c(0.36, 0.45))
-wp_intense_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 7, lambda=c(4.71, 7.24))
-wp_intense_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 21, lambda=c(25.167, 19.85), prop=c(0.26, 0.37))
+wp_total_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 18, lambda=c(25.16667, 19.85714))
+wp_major_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 37, lambda=c(9.16216, 7.22222))
+wp_major_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 21, lambda=c(25.16667, 19.85714), prop=c(0.3598410, 0.4407115))
+wp_intense_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 7, lambda=c(4.71429, 7.17949))
+wp_intense_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 22, lambda=c(25.16667, 19.85714), prop=c(0.2604563, 0.3643892))
 
 wp_alt_reject_rates <- bind_cols(df_reject_rates,
                                      rbind(wp_total_alt, wp_major_alt, wp_major_prop_alt, 
@@ -290,17 +291,17 @@ wp_alt_reject_rates
 ## North Indian Basin
 #############
 ## Null hypothesis values (no changes)
-##  Total: 2.933
-##  Major: 0.911
-##    Prop Major: 0.310
-##  Intense: 0.622
-##    Prop Intense: 0.212
+##  Total: 2.934783
+##  Major: 0.8913043
+##    Prop Major: 0.3037037
+##  Intense: 0.6086957
+##    Prop Intense: 0.2074074
 
-ni_total_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(2.933, 2.933))
-ni_major_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(0.911, 0.911))
-ni_major_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(2.933, 2.933), prop=c(0.310, 0.310))
-ni_intense_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(0.622, 0.622))
-ni_intense_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(2.933, 2.933), prop=c(0.212, 0.212))
+ni_total_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(2.934783, 2.934783))
+ni_major_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(0.8913043, 0.8913043))
+ni_major_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(2.934783, 2.934783), prop=c(0.3037037, 0.3037037))
+ni_intense_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(0.6086957, 0.6086957))
+ni_intense_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(2.934783, 2.934783), prop=c(0.2074074, 0.2074074))
 
 ni_null_reject_rates <- bind_cols(df_reject_rates,
                                       rbind(ni_total_null, ni_major_null, ni_major_prop_null, 
@@ -311,11 +312,11 @@ ni_null_reject_rates
 #####################
 ## Alternative hypothesis
 
-ni_total_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 12, lambda=c(2.25, 3.18))
-ni_major_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 33, lambda=c(0.70, 0.80))
-ni_major_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 26, lambda=c(2.25, 3.18), prop=c(0.23, 0.41))
-ni_intense_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 26, lambda=c(0.5, 0.79))
-ni_intense_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 26, lambda=c(2.25, 3.18), prop=c(0.176, 0.26))
+ni_total_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 12, lambda=c(2.25000, 3.17647))
+ni_major_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 33, lambda=c(0.69697, 1.38462))
+ni_major_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 26, lambda=c(2.25000, 3.17647), prop=c(0.2297297, 0.3934426))
+ni_intense_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 26, lambda=c(0.50000, 0.75000))
+ni_intense_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 26, lambda=c(2.25000, 3.17647), prop=c(0.1756757, 0.2459016))
 
 ni_alt_reject_rates <- bind_cols(df_reject_rates,
                                      rbind(ni_total_alt, ni_major_alt, ni_major_prop_alt, 
@@ -330,17 +331,17 @@ ni_alt_reject_rates
 ## Southern Indian
 #############
 ## Null hypothesis values (no changes)
-##  Total: 13.89
-##  Major: 4.8
-##    Prop Major: 0.3456
-##  Intense: 3.044
-##    Prop Intense: 0.2192
+##  Total: 14.1087
+##  Major: 4.956522
+##    Prop Major: 0.3513097
+##  Intense: 3.152174
+##    Prop Intense: 0.2234206
 
-si_total_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(13.89, 13.89))
-si_major_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(4.8, 4.8))
-si_major_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(13.89, 13.89), prop=c(0.3456, 0.3456))
-si_intense_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(3.044, 3.044))
-si_intense_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(13.89, 13.89), prop=c(0.2192, 0.2192))
+si_total_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(14.1087, 14.1087))
+si_major_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(4.956522, 4.956522))
+si_major_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(14.1087, 14.1087), prop=c(0.3513097, 0.3513097))
+si_intense_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(3.152174, 3.152174))
+si_intense_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(14.1087, 14.1087), prop=c(0.2234206, 0.2234206))
 
 si_null_reject_rates <- bind_cols(df_reject_rates,
                                       rbind(si_total_null, si_major_null, si_major_prop_null, 
@@ -351,11 +352,11 @@ si_null_reject_rates
 #####################
 ## Alternative hypothesis
 
-si_total_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 26, lambda=c(14.88, 12.53))
-si_major_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 14, lambda=c(4.28, 5.03))
-si_major_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 12, lambda=c(14.88, 12.53), prop=c(0.283, 0.371))
-si_intense_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 12, lambda=c(1.75, 3.52))
-si_intense_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 12, lambda=c(14.88, 12.53), prop=c(0.12, 0.26))
+si_total_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 25, lambda=c(15.12000, 12.90476))
+si_major_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 14, lambda=c(4.28571, 5.25000))
+si_major_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 14, lambda=c(15.12000, 12.90476), prop=c(0.2912621, 0.3792325))
+si_intense_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 14, lambda=c(2.00000, 3.65625))
+si_intense_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 12, lambda=c(15.12000, 12.90476), prop=c(0.1195652, 0.2645161))
 
 si_alt_reject_rates <- bind_cols(df_reject_rates,
                                      rbind(si_total_alt, si_major_alt, si_major_prop_alt, 
@@ -371,17 +372,17 @@ si_alt_reject_rates
 ## South Pacific
 #############
 ## Null hypothesis values (no changes)
-##  Total: 8.18
-##  Major: 2.5
-##    Prop Major: 0.307
-##  Intense: 1.38
-##    Prop Intense: 0.168
+##  Total: 8.108696
+##  Major: 2.478261
+##    Prop Major: 0.30563
+##  Intense: 1.369565
+##    Prop Intense: 0.1689008
 
-sp_total_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(8.18, 8.18))
-sp_major_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(2.5, 2.5))
-sp_major_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(8.18, 8.18), prop=c(0.307, 0.307))
-sp_intense_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(1.38, 1.38))
-sp_intense_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(8.18, 8.18), prop=c(0.168, 0.168))
+sp_total_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(8.108696, 8.108696))
+sp_major_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(2.478261, 2.478261))
+sp_major_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(8.108696, 8.108696), prop=c(0.30563, 0.30563))
+sp_intense_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(1.369565, 1.369565))
+sp_intense_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(8.108696, 8.108696), prop=c(0.1689008, 0.1689008))
 
 sp_null_reject_rates <- bind_cols(df_reject_rates,
                                       rbind(sp_total_null, sp_major_null, sp_major_prop_null, 
@@ -392,11 +393,11 @@ sp_null_reject_rates
 #####################
 ## Alternative hypothesis
 
-sp_total_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 21, lambda=c(10.09, 6.5))
-sp_major_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 36, lambda=c(2.69, 1.77))
-sp_major_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 23, lambda=c(10.09, 6.5), prop=c(0.261, 0.377))
-sp_intense_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 23, lambda=c(1.04, 1.72))
-sp_intense_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 23, lambda=c(10.09, 6.5), prop=c(0.108, 0.26))
+sp_total_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 21, lambda=c(10.09524, 6.44000))
+sp_major_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 36, lambda=c(2.72222, 1.60000))
+sp_major_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 23, lambda=c(10.09524, 6.44000), prop=c(0.2633929, 0.3691275))
+sp_intense_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 23, lambda=c(1.08696, 1.65217))
+sp_intense_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 23, lambda=c(10.09524, 6.44000), prop=c(0.2550336, 0.1434264))
 
 sp_alt_reject_rates <- bind_cols(df_reject_rates,
                                      rbind(sp_total_alt, sp_major_alt, sp_major_prop_alt, 

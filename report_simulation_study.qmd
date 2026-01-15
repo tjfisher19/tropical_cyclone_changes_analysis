@@ -2,6 +2,7 @@
 title: "Simulation for Methods"
 subtitle: "Single Change Point & Regression Methods"
 author: "Tom Fisher"
+date: today
 format:
   html:
     toc: true
@@ -11,29 +12,26 @@ format:
 editor: visual
 ---
 
-
 ```{r setup, include=FALSE}
 library(tidyverse)
 library(knitr)
 library(kableExtra)
-load("data/simulateionStudyResults.RData")
+load("data/simulationStudyResults.RData")
 ```
 
 # Simulation Setup
 
-This file provides a simulation study for the statistical methods used for the analysis of the tropical cyclone record. 
+This file provides a simulation study for the statistical methods used for the analysis of the tropical cyclone record.
 
-In the **Empirical Size** studies we simulate Poisson data (or Poisson+Binomial data for the proportion study), under the "null" distribution of no change points or trends. We simulate based on the observed values in the dataset; so for example, for the global total non-shorties, we simulate sample sizes of $n=45$ from a Poisson distribution with $\lambda=69.9$, which is the average number of non-shorties across the entire IBTracs. Ideally, the reported rejection rates should match the nominal levels and the "average" $p$-value should be about 0.50 in the empirial size studies.
+In the **Empirical Size** studies we simulate Poisson data (or Poisson+Binomial data for the proportion study), under the "null" distribution of no change points or trends. We simulate based on the observed values in the dataset; so for example, for the global total non-shorties, we simulate sample sizes of $n=46$ from a Poisson distribution with $\lambda=70.1087$, which is the average number of non-shorties across the entire IBTracs. Ideally, the reported rejection rates should match the nominal levels and the "average" $p$-value should be about 0.50 in the empirial size studies.
 
-In the **Power Studies** we simulate under the alternative hypothesis where a change point exist. Again, we use the data to pick the parameter values for which we simulate. As an example, in the total non-shorties we simulate series of length $n=45$ with a change point occurring at time point $18$ with the mean in the first regime is $74$ and the mean in the second regime is $67.15$. These studies essentially provide a measure of **power** for the results found in the analysis.
+In the **Power Studies** we simulate under the alternative hypothesis where a change point exist. Again, we use the data to pick the parameter values for which we simulate. As an example, in the total non-shorties we simulate series of length $n=46$ with a change point occurring at time point $18$ (1998) with the mean in the first regime is $73.66429$ and the mean in the second regime is $66.66690$. These studies essentially provide a measure of **power** for the results found in the analysis.
 
 Overall we make the following conclusions
 
-* Both the Regression methods and Change point methods provide adequate Type I error rates. 
-   + The SCUSUM change point method is ever-so-slightly conservative.
-* In terms of power, the two methods provide similar power but the SCUSUM method is generally more powerful. 
-   
-
+-   Both the Regression methods and Change point methods provide adequate Type I error rates.
+    -   The SCUSUM change point method is ever-so-slightly conservative.
+-   In terms of power, the two methods provide similar power but the SCUSUM method is generally more powerful.
 
 # Global Series
 
@@ -52,11 +50,9 @@ global_null_reject_rates |>
   pack_rows("Proportion of Intense Storms", 9,10)
 ```
 
-
 ## Power Study
 
 Here, data is simulated with values consistent with the change points we found in our search. Even in the cases when we found no significant change, the simulation code still has a change implemented but it is likely not strong though to be detected. This table reports the empirical power of each method (rejecting the null hypothesis when the alternative is true).
-
 
 ```{r, echo=FALSE}
 global_alt_reject_rates |>
@@ -69,11 +65,9 @@ global_alt_reject_rates |>
   pack_rows("Proportion of Intense Storms", 9,10)
 ```
 
-
 # North Atlantic
 
 ## Empirical Size
-
 
 ```{r, echo=FALSE}
 na_null_reject_rates |>
@@ -86,9 +80,7 @@ na_null_reject_rates |>
   pack_rows("Proportion of Intense Storms", 9,10)
 ```
 
-
 ## Power Study
-
 
 ```{r, echo=FALSE}
 na_alt_reject_rates |>
@@ -101,15 +93,9 @@ na_alt_reject_rates |>
   pack_rows("Proportion of Intense Storms", 9,10)
 ```
 
-
-
-
-
-
 # Eastern North Pacific
 
 ## Empirical Size
-
 
 ```{r, echo=FALSE}
 ep_null_reject_rates |>
@@ -122,9 +108,7 @@ ep_null_reject_rates |>
   pack_rows("Proportion of Intense Storms", 9,10)
 ```
 
-
 ## Power Study
-
 
 ```{r, echo=FALSE}
 ep_alt_reject_rates |>
@@ -137,13 +121,9 @@ ep_alt_reject_rates |>
   pack_rows("Proportion of Intense Storms", 9,10)
 ```
 
-
-
-
 # Western North Pacific
 
 ## Empirical Size
-
 
 ```{r, echo=FALSE}
 wp_null_reject_rates |>
@@ -156,9 +136,7 @@ wp_null_reject_rates |>
   pack_rows("Proportion of Intense Storms", 9,10)
 ```
 
-
 ## Power Study
-
 
 ```{r, echo=FALSE}
 wp_alt_reject_rates |>
@@ -171,12 +149,9 @@ wp_alt_reject_rates |>
   pack_rows("Proportion of Intense Storms", 9,10)
 ```
 
-
-
 # North Indian
 
 ## Empirical Size
-
 
 ```{r, echo=FALSE}
 ni_null_reject_rates |>
@@ -189,9 +164,7 @@ ni_null_reject_rates |>
   pack_rows("Proportion of Intense Storms", 9,10)
 ```
 
-
 ## Power Study
-
 
 ```{r, echo=FALSE}
 ni_alt_reject_rates |>
@@ -204,14 +177,9 @@ ni_alt_reject_rates |>
   pack_rows("Proportion of Intense Storms", 9,10)
 ```
 
-
-
-
-
 # South Indian
 
 ## Empirical Size
-
 
 ```{r, echo=FALSE}
 si_null_reject_rates |>
@@ -224,9 +192,7 @@ si_null_reject_rates |>
   pack_rows("Proportion of Intense Storms", 9,10)
 ```
 
-
 ## Power Study
-
 
 ```{r, echo=FALSE}
 si_alt_reject_rates |>
@@ -239,13 +205,9 @@ si_alt_reject_rates |>
   pack_rows("Proportion of Intense Storms", 9,10)
 ```
 
-
-
-
 # South Pacific
 
 ## Empirical Size
-
 
 ```{r, echo=FALSE}
 sp_null_reject_rates |>
@@ -258,9 +220,7 @@ sp_null_reject_rates |>
   pack_rows("Proportion of Intense Storms", 9,10)
 ```
 
-
 ## Power Study
-
 
 ```{r, echo=FALSE}
 sp_alt_reject_rates |>
@@ -272,6 +232,3 @@ sp_alt_reject_rates |>
   pack_rows("Intense Storms", 7,8) |>
   pack_rows("Proportion of Intense Storms", 9,10)
 ```
-
-
-
