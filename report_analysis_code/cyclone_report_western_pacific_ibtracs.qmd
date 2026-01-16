@@ -3,7 +3,7 @@
 
 ## IBTracs Full Analysis
 
-```{r, echo=FALSE}
+```{r wp_ibtracs, echo=FALSE}
 ibtracs_wp_results <- get_report_basin(basin="Western North Pacific", all_basins=ibtracs_all_basins)
 ```
 
@@ -24,12 +24,10 @@ ibtracs_wp_results$plot_data
 #### Poisson Regression on non-Shorties
 
 ```{r, echo=FALSE}
-summary(ibtracs_wp_results$pois_fit)
+(ibtracs_wp_results$pois_fit)
+drop1(ibtracs_wp_results$pois_fit, test="LRT")
 ```
 
-
-
-Note, this says a decrease of `r abs(coef(ibtracs_wp_results$pois_fit)[2])` log-storms per year. This corresponds to a `r (1-exp(coef(ibtracs_wp_results$pois_fit)[2]))*100` percent decrease per season. So over `r num_years_ibtracs` years, that is a decrease of `r (1-exp(coef(ibtracs_wp_results$pois_fit)[2])^num_years_ibtracs)*100` percent.
 
 Using this model, we would predict `r predict(ibtracs_wp_results$pois_fit, type="response")[1]` storms in `r min(ibtracs_wp_results$data$SEASON)` and `r predict(ibtracs_wp_results$pois_fit, type="response")[num_years_ibtracs]` storms in `r max(ibtracs_wp_results$data$SEASON)`.
 
@@ -38,7 +36,8 @@ That is a change of `r (predict(ibtracs_wp_results$pois_fit, type="response")[nu
 #### Poisson Regression on Major Storms
 
 ```{r, echo=FALSE}
-summary(ibtracs_wp_results$major_fit)
+(ibtracs_wp_results$major_fit)
+drop1(ibtracs_wp_results$major_fit, test="LRT")
 ```
 
 Using this model the number of a major storm in `r min(ibtracs_wp_results$data$SEASON)` was `r predict(ibtracs_wp_results$major_fit, type="response")[1]` and `r predict(ibtracs_wp_results$major_fit, type="response")[num_years_ibtracs]` in `r max(ibtracs_wp_results$data$SEASON)`.
@@ -48,34 +47,36 @@ That is a change of `r (predict(ibtracs_wp_results$major_fit, type="response")[n
 #### Poisson Regression on Intense Storms
 
 ```{r, echo=FALSE}
-summary(ibtracs_wp_results$intense_fit)
+(ibtracs_wp_results$intense_fit)
+drop1(ibtracs_wp_results$intense_fit, test="LRT")
 ```
 
 
-Using this model the number of a major storm in `r min(ibtracs_wp_results$data$SEASON)` was `r predict(ibtracs_wp_results$intense_fit, type="response")[1]` and `r predict(ibtracs_wp_results$intense_fit, type="response")[num_years_ibtracs]` in `r max(ibtracs_wp_results$data$SEASON)`.
+Using this model the number of a intense storm in `r min(ibtracs_wp_results$data$SEASON)` was `r predict(ibtracs_wp_results$intense_fit, type="response")[1]` and `r predict(ibtracs_wp_results$intense_fit, type="response")[num_years_ibtracs]` in `r max(ibtracs_wp_results$data$SEASON)`.
 
 That is a change of `r (predict(ibtracs_wp_results$intense_fit, type="response")[num_years_ibtracs]-predict(ibtracs_wp_results$intense_fit, type="response")[1])/num_years_ibtracs*10` storms per decade.
 
 #### Logistic Regression on Proportions of Major
 
 ```{r, echo=FALSE}
-summary(ibtracs_wp_results$major_logit_fit)
+(ibtracs_wp_results$major_logit_fit)
+drop1(ibtracs_wp_results$major_logit_fit, test="LRT")
 ```
 
-We see a significant result with a positive coefficient, so the log-odds of major storms has increased. This tells us the proportion of major storms has increased.
 
-Specifically, using this model the probability of a major storm in `r min(ibtracs_wp_results$data$SEASON)` was `r predict(ibtracs_wp_results$major_logit_fit, type="response")[1]` and `r predict(ibtracs_wp_results$major_logit_fit, type="response")[num_years_ibtracs]` in `r max(ibtracs_wp_results$data$SEASON)`.
+Using this model the probability of a major storm in `r min(ibtracs_wp_results$data$SEASON)` was `r predict(ibtracs_wp_results$major_logit_fit, type="response")[1]` and `r predict(ibtracs_wp_results$major_logit_fit, type="response")[num_years_ibtracs]` in `r max(ibtracs_wp_results$data$SEASON)`.
 
 That is a change of `r (predict(ibtracs_wp_results$major_logit_fit, type="response")[num_years_ibtracs]-predict(ibtracs_wp_results$major_logit_fit, type="response")[1])/num_years_ibtracs*10*100` percent per decade.
 
 #### Logistic Regression on Proportions of Intense
 
 ```{r, echo=FALSE}
-summary(ibtracs_wp_results$intense_logit_fit)
+(ibtracs_wp_results$intense_logit_fit)
+drop1(ibtracs_wp_results$intense_logit_fit, test="LRT")
 ```
 
 
-Specifically, using this model the probability of a major storm in `r min(ibtracs_wp_results$data$SEASON)` was `r predict(ibtracs_wp_results$intense_logit_fit, type="response")[1]` and `r predict(ibtracs_wp_results$intense_logit_fit, type="response")[num_years_ibtracs]` in `r max(ibtracs_wp_results$data$SEASON)`.
+Using this model the probability of an intense storm in `r min(ibtracs_wp_results$data$SEASON)` was `r predict(ibtracs_wp_results$intense_logit_fit, type="response")[1]` and `r predict(ibtracs_wp_results$intense_logit_fit, type="response")[num_years_ibtracs]` in `r max(ibtracs_wp_results$data$SEASON)`.
 
 That is a change of `r (predict(ibtracs_wp_results$intense_logit_fit, type="response")[num_years_ibtracs]-predict(ibtracs_wp_results$intense_logit_fit, type="response")[1])/num_years_ibtracs*10*100` percent per decade.
 
@@ -135,13 +136,12 @@ ibtracs_wp_results$prop_intense_chpt_test
 The change in proportions occurs `r 1979+ibtracs_wp_results$prop_intense_chpt_test[2]` to `r 1979+ibtracs_wp_results$prop_intense_chpt_test[2]+1` with $p$-value `r ibtracs_wp_results$prop_intense_chpt_test[3]`.
 
 
-In regime one, the proportion of major storms is `r sum(ibtracs_wp_results$data$Intense_Storms[1:ibtracs_wp_results$prop_intense_chpt_test[2]])/sum(ibtracs_wp_results$data$Total_Storms[1:ibtracs_wp_results$prop_intense_chpt_test[2]])` and in regime two, the proportion of major storms is `r sum(ibtracs_wp_results$data$Intense_Storms[(ibtracs_wp_results$prop_intense_chpt_test[2]+1):num_years_ibtracs])/sum(ibtracs_wp_results$data$Total_Storms[(ibtracs_wp_results$prop_intense_chpt_test[2]+1):num_years_ibtracs])`; a change of `r sum(ibtracs_wp_results$data$Intense_Storms[(ibtracs_wp_results$prop_intense_chpt_test[2]+1):num_years_ibtracs])/sum(ibtracs_wp_results$data$Total_Storms[(ibtracs_wp_results$prop_intense_chpt_test[2]+1):num_years_ibtracs]) - sum(ibtracs_wp_results$data$Intense_Storms[1:ibtracs_wp_results$prop_intense_chpt_test[2]])/sum(ibtracs_wp_results$data$Total_Storms[1:ibtracs_wp_results$prop_intense_chpt_test[2]])`.
+In regime one, the proportion of intense storms is `r sum(ibtracs_wp_results$data$Intense_Storms[1:ibtracs_wp_results$prop_intense_chpt_test[2]])/sum(ibtracs_wp_results$data$Total_Storms[1:ibtracs_wp_results$prop_intense_chpt_test[2]])` and in regime two, the proportion of major storms is `r sum(ibtracs_wp_results$data$Intense_Storms[(ibtracs_wp_results$prop_intense_chpt_test[2]+1):num_years_ibtracs])/sum(ibtracs_wp_results$data$Total_Storms[(ibtracs_wp_results$prop_intense_chpt_test[2]+1):num_years_ibtracs])`; a change of `r sum(ibtracs_wp_results$data$Intense_Storms[(ibtracs_wp_results$prop_intense_chpt_test[2]+1):num_years_ibtracs])/sum(ibtracs_wp_results$data$Total_Storms[(ibtracs_wp_results$prop_intense_chpt_test[2]+1):num_years_ibtracs]) - sum(ibtracs_wp_results$data$Intense_Storms[1:ibtracs_wp_results$prop_intense_chpt_test[2]])/sum(ibtracs_wp_results$data$Total_Storms[1:ibtracs_wp_results$prop_intense_chpt_test[2]])`.
 
 
 
 ## IBTracs Test Results
 
-Regression Results (reported in paper)
 
 
 **Generalized Linear Model Approaches**
@@ -159,11 +159,11 @@ df <- data.frame(
                  coef(ibtracs_wp_results$major_logit_fit)[2], 
                  coef(ibtracs_wp_results$intense_fit)[2], 
                  coef(ibtracs_wp_results$intense_logit_fit)[2] ),
-  `p-value` = c(anova(ibtracs_wp_results$pois_fit)$`Pr(>Chi)`[2], 
-                anova(ibtracs_wp_results$major_fit)$`Pr(>Chi)`[2], 
-                anova(ibtracs_wp_results$major_logit_fit)$`Pr(>Chi)`[2], 
-                anova(ibtracs_wp_results$intense_fit)$`Pr(>Chi)`[2], 
-                anova(ibtracs_wp_results$intense_logit_fit)$`Pr(>Chi)`[2]),
+  `p-value` = c(anova(ibtracs_wp_results$pois_fit, test="LRT")$`Pr(>Chi)`[2], 
+                anova(ibtracs_wp_results$major_fit, test="LRT")$`Pr(>Chi)`[2], 
+                anova(ibtracs_wp_results$major_logit_fit, test="LRT")$`Pr(>Chi)`[2], 
+                anova(ibtracs_wp_results$intense_fit, test="LRT")$`Pr(>Chi)`[2], 
+                anova(ibtracs_wp_results$intense_logit_fit, test="LRT")$`Pr(>Chi)`[2]),
   `Start` = c(predict(ibtracs_wp_results$pois_fit, type="response")[1], 
               predict(ibtracs_wp_results$major_fit, type="response")[1], 
               predict(ibtracs_wp_results$major_logit_fit, type="response")[1]*100, 
