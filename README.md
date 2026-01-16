@@ -2,6 +2,10 @@
 
 This repository contains all the code and Quarto files (as well as the rendered version) for the statistical analysis accompanying the manuscript "Changepoint Analysis Confirms Decline in Observed Global Tropical Cyclone Frequency".
 
+The Plots in the manuscript (including the supplemental plots for the HURSAT and Trimmed IBTRacs data) can be found in the [plots folder](plots/).
+
+All the analysis can be found in the [Tropical Cyclone Analysis Report](report_tropical_cyclone_analysis.html).
+
 The repository contains the following:
 
 Preliminary Code:
