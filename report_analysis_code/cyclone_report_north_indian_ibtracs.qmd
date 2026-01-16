@@ -80,7 +80,7 @@ Using this model the probability of an intense storm in `r min(ibtracs_ni_result
 
 That is a change of `r (predict(ibtracs_ni_results$intense_logit_fit, type="response")[num_years_ibtracs]-predict(ibtracs_ni_results$intense_logit_fit, type="response")[1])/num_years_ibtracs*10*100` percent per decade.
 
-### Change Point Methods
+### Changepoint Methods
 
 #### Change in Non-Shorty Counts
 

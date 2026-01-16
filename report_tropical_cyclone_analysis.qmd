@@ -1,6 +1,6 @@
 ---
 title: "Tropical Cyclone Analysis"
-subtitle: "Single Change Point & Regression Methods"
+subtitle: "Single changepoint & Regression Methods"
 author: "Tom Fisher"
 date: today
 format:
@@ -109,7 +109,7 @@ get_report_basin <- function(basin="Global", all_basins=ibtracs_all_basins) {
   intense_pois_fit <- glm(Intense_Storms ~ YearsSinceStart, data=storm_basin,
                           family=poisson(link="log") )
 
-  ## Poisson SCUSUM AMOC Change Point Test
+  ## Poisson SCUSUM AMOC Changepoint Test
   ##  on totals, major, and intense
 
   pois_chpt_test <- scusumTestPoisson(storm_basin$Total_Storms)
@@ -185,7 +185,7 @@ So for the Poisson based method, all the effects we find are multiplicative.
 
 It is worth noting that the Poisson regression is arguably more reliable than standard linear regression (particularly in the six basins) since we are working with moderately small counts. Inference is done using a Likelihood Ratio test on the $\beta$ coefficient using the `drop1()` function in R.
 
-I also report values from the predictions based on these models. This provides some context of what the model is suggesting. We use the prediction at the first and last time points to find an *overall trend*, that trend is then scaled to the \#/decade level.
+I also report values from the predictions based on these models. This provides some context of what the model is suggesting. We use the prediction at the first and last time points to find an *overall trend*, that trend is then scaled to the #/decade level.
 
 ### For Proportions
 
@@ -193,89 +193,75 @@ For the proportional data (proportion of major storms and proportion of intense 
 
 $$\log\left(\frac{p}{1-p}\right) = \beta_0 + \beta_1\times Year$$
 
-So again, when interpreting we need to transform back to the original units. It is worth noting that the associated hypothesis test for this regression must be interpreted in terms of log-odds. It is also worth noting that when performing this logistic regression we are implicitly assuming that the process controlling the total counts of storms, is not changing. 
+So again, when interpreting we need to transform back to the original units. It is worth noting that the associated hypothesis test for this regression must be interpreted in terms of log-odds. It is also worth noting that when performing this logistic regression we are implicitly assuming that the process controlling the total counts of storms, is not changing.
 
-Again, a likelihood ratio test is used for significance of the $\beta_1$ coefficient. We provide predicted probability values at the first and last time point, and from those values find an *overall trend* (\%/decade).
+Again, a likelihood ratio test is used for significance of the $\beta_1$ coefficient. We provide predicted probability values at the first and last time point, and from those values find an *overall trend* (%/decade).
 
-## Change Point Approaches
+## Changepoint Approaches
 
-The regression approaches assume a fairly restrictive structure -- we are assuming some underlying linear model. That is, any changes we see in the record are following some underlying linear trend. In the change point approach, we are simply looking for shifts in the mean of the process.
+The regression approaches assume a fairly restrictive structure -- we are assuming some underlying linear model. That is, any changes we see in the record are following some underlying linear trend. In the changepoint approach, we are simply looking for shifts in the mean of the process.
 
-At some level, both methods looking for changes, or non-homegenieties in the data, but the change point approach doesn't require that linearity assumption.
+At some level, both methods looking for changes, or non-homegenieties in the data, but the changepoint approach doesn't require that linearity assumption.
 
-### At Most One Change Point (AMOC)
+### At Most One Changepoint (AMOC)
 
-We perform some iid **SCUSUM based-test** [@lund2023good] to look for at most one change point. The SCUSUM statistic is defined as
-$$\mbox{SCUSUM}=\frac{1}{n}\sum_{t=1}^n \mbox{CUSUM}(t)^2$$
-for sample size $n$, and where
-$$\mbox{CUSUM}(k) = \frac{k}{n}\left(1-\frac{k}{n}\right)\left[\frac{\sqrt{n}}{\hat{\sigma}_{\hat{\theta}}}\left(\hat{\theta}_k - \hat{\theta}_k^*\right)\right].$$
-The change point is found via
-$$k = \text{argmax} \left|\text{CUSUM}(k)\right|$$
-Under the null hypothesis of no changes, $\text{SCUSUM}$ converges to $\int_0^1 B^2(t)dt$, where $\{ B(t) \}_{t=0}^{t=1}$ is the classical Brownian bridge process of empirical statistics. We used the distribution approximations in [@Tolmatz2002] to compute $p$-values.
-This provides the most likely change point location (given only a single change point can occur) and its corresponding $p$-value.
+We perform some iid **SCUSUM test** [@lund2023good] to look for at most one changepoint. The SCUSUM statistic is defined as $$\mbox{SCUSUM}=\frac{1}{n}\sum_{t=1}^n \mbox{CUSUM}(t)^2$$ for sample size $n$, and where $$\mbox{CUSUM}(k) = \frac{k}{n}\left(1-\frac{k}{n}\right)\left[\frac{\sqrt{n}}{\hat{\sigma}_{\hat{\theta}}}\left(\hat{\theta}_k - \hat{\theta}_k^*\right)\right].$$ The changepoint is found via $$k = \text{argmax} \left|\text{CUSUM}(k)\right|$$ Under the null hypothesis of no changes, $\text{SCUSUM}$ converges to $\int_0^1 B^2(t)dt$, where $\{ B(t) \}_{t=0}^{t=1}$ is the classical Brownian bridge process of empirical statistics. We used the distribution approximations in [@Tolmatz2002] to compute $p$-values. This provides the most likely changepoint location (given only a single changepoint can occur) and its corresponding $p$-value.
 
 It is worth noting that CUSUM based tests can be conservative in practice (reported $p$-values may be slightly elevated) -- we see this a little bit in the simulation study report. If you want something more robust, a boostrapping/simulation type approach could be performed. For this report we use the asymptotic approach partially because it is conservative.
 
-### Change point for Frequencies
+### Changepoint for Frequencies
 
-When working with Poisson data (count data), we are looking for a change in the rate, or mean, parameter $\lambda_t$. The $\text{CUSUM}(k)$ statistic can be calculated via
-$$\mbox{CUSUM}(k)= \frac{1}{\hat{\sigma} \sqrt{n}}
-\left[ \sum_{t=1}^k  X_t - \frac{k}{n} \sum_{t=1}^{n} X_t \right]$$
-and the variance estimate is found via $\hat{\sigma}^2 = n^{-1} \sum_{t=1}^n X_t$ under the assumption of Poisson data [@robbins2011changepoints]
+When working with Poisson data (count data), we are looking for a change in the rate, or mean, parameter $\lambda_t$. The $\text{CUSUM}(k)$ statistic can be calculated via $$\mbox{CUSUM}(k)= \frac{1}{\hat{\sigma} \sqrt{n}}
+\left[ \sum_{t=1}^k  X_t - \frac{k}{n} \sum_{t=1}^{n} X_t \right]$$ and the variance estimate is found via $\hat{\sigma}^2 = n^{-1} \sum_{t=1}^n X_t$ under the assumption of Poisson data [@robbins2011changepoints]
 
-### Change point for Proportions
+### Changepoint for Proportions
 
-When working with the proportion of major (or intense) storms, we assume an underlying Binomial likelihood and the parameter of interested in $p$, the proportion of major (or intense) storms. Let $X_t$ be the number of major (or intense) storms in year $t$ and $T_t$ is the total number of storms in that year. Based on Binimial likelihood arguments we calculate
-$$\hat{\theta}_k = \hat{p}_k = \frac{\sum_{i=1}^k X_i}{\sum_{i=1}^k T_i}~~~~~\mbox{and}~~~~~\hat{\theta}_k^* = \hat{p}_k^* = \frac{\sum_{i=k+1}^n X_i}{\sum_{i=k+1}^n T_i}.$$
-For the variance estimate, $\sigma_{\hat{\theta}}$, we use the Wald estimate (covered in Intro Stat courses),
-$$\sigma_{\hat{p}} = \sqrt{\frac{\hat{p}_n(1-\hat{p}_n)}{\sum_{i=1}^n T_i}}$$
-
-
-
+When working with the proportion of major (or intense) storms, we assume an underlying Binomial likelihood and the parameter of interested in $p$, the proportion of major (or intense) storms. Let $X_t$ be the number of major (or intense) storms in year $t$ and $T_t$ is the total number of storms in that year. Based on Binimial likelihood arguments we calculate $$\hat{\theta}_k = \hat{p}_k = \frac{\sum_{i=1}^k X_i}{\sum_{i=1}^k T_i}~~~~~\mbox{and}~~~~~\hat{\theta}_k^* = \hat{p}_k^* = \frac{\sum_{i=k+1}^n X_i}{\sum_{i=k+1}^n T_i}.$$ For the variance estimate, $\sigma_{\hat{\theta}}$, we use the Wald estimate (covered in Intro Stat courses), $$\sigma_{\hat{p}} = \sqrt{\frac{\hat{p}_n(1-\hat{p}_n)}{\sum_{i=1}^n T_i}}$$
 
 # Global Cyclone Record
 
 We begin with a study of the record across the entire globe -- the Global "basin". Our analysis looks at all non-shorties (storms that lasted at least 48 hours) and achieved tropical storm strength. We also look at those storms that achieved major hurricane strength.
 
-{{< include ./report_analysis_code/cyclone_report_global_ibtracs.qmd >}}
-{{< include ./report_analysis_code/cyclone_report_global_hursat.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_global_ibtracs.qmd >}} 
+{{< include ./report_analysis_code/cyclone_report_global_hursat.qmd >}} 
 {{< include ./report_analysis_code/cyclone_report_global_trimmed.qmd >}}
 
 # North Atlantic
 
-{{< include ./report_analysis_code/cyclone_report_north_atlantic_ibtracs.qmd >}}
-{{< include ./report_analysis_code/cyclone_report_north_atlantic_hursat.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_north_atlantic_ibtracs.qmd >}} 
+{{< include ./report_analysis_code/cyclone_report_north_atlantic_hursat.qmd >}} 
 {{< include ./report_analysis_code/cyclone_report_north_atlantic_trimmed.qmd >}}
 
 # Eastern North Pacific
 
-{{< include ./report_analysis_code/cyclone_report_eastern_pacific_ibtracs.qmd >}}
-{{< include ./report_analysis_code/cyclone_report_eastern_pacific_hursat.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_eastern_pacific_ibtracs.qmd >}} 
+{{< include ./report_analysis_code/cyclone_report_eastern_pacific_hursat.qmd >}} 
 {{< include ./report_analysis_code/cyclone_report_eastern_pacific_trimmed.qmd >}}
 
 # Western North Pacific
 
-{{< include ./report_analysis_code/cyclone_report_western_pacific_ibtracs.qmd >}}
-{{< include ./report_analysis_code/cyclone_report_western_pacific_hursat.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_western_pacific_ibtracs.qmd >}} 
+{{< include ./report_analysis_code/cyclone_report_western_pacific_hursat.qmd >}} 
 {{< include ./report_analysis_code/cyclone_report_western_pacific_trimmed.qmd >}}
 
 # North Indian
 
-{{< include ./report_analysis_code/cyclone_report_north_indian_ibtracs.qmd >}}
-{{< include ./report_analysis_code/cyclone_report_north_indian_hursat.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_north_indian_ibtracs.qmd >}} 
+{{< include ./report_analysis_code/cyclone_report_north_indian_hursat.qmd >}} 
 {{< include ./report_analysis_code/cyclone_report_north_indian_trimmed.qmd >}}
 
 # South Indian
 
-{{< include ./report_analysis_code/cyclone_report_southern_indian_ibtracs.qmd >}}
-{{< include ./report_analysis_code/cyclone_report_southern_indian_hursat.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_southern_indian_ibtracs.qmd >}} 
+{{< include ./report_analysis_code/cyclone_report_southern_indian_hursat.qmd >}} 
 {{< include ./report_analysis_code/cyclone_report_southern_indian_trimmed.qmd >}}
 
 # South Pacific
 
-{{< include ./report_analysis_code/cyclone_report_southern_pacific_ibtracs.qmd >}}
-{{< include ./report_analysis_code/cyclone_report_southern_pacific_hursat.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_southern_pacific_ibtracs.qmd >}} 
+{{< include ./report_analysis_code/cyclone_report_southern_pacific_hursat.qmd >}} 
 {{< include ./report_analysis_code/cyclone_report_southern_pacific_trimmed.qmd >}}
+
 
 
 ```{r, echo=FALSE}

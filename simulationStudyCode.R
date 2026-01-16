@@ -43,13 +43,14 @@ source("cusumBasedChangePointsTest.R")
 
 ##########################
 ## Constants
+set.seed(12345)
 runs=10000
 n=length(1980:2025)
 
 df_reject_rates <- data.frame(
   System = rep(c("Total Storms", "Major Storms", "Proportion Major", "Intense Storms", "Proportion Intense"),
                each=2),
-  Method = rep(c("Regression", "CUSUM-Test"), 5)
+  Method = rep(c("GLM-LRT", "SCUSUM-Test"), 5)
 )
 
 ###########################################
@@ -82,7 +83,6 @@ sim_study_pois <- function(runs=1000, n=45, chpt_loc = 15, lambda=c(25,25) ) {
                  `Mean p-val` = mean(sample_pvals[2,]),
                  `SD p-val` = sd(sample_pvals[2,]))
   )
-  rownames(out) <- c("Poison Reg", "SCUSUM")
   out
 }
 
@@ -117,7 +117,6 @@ sim_study_prop <- function(runs=1000, n=45, chpt_loc = 15, lambda=c(25,25), prop
                  `Mean p-val` = mean(sample_pvals[2,]),
                  `SD p-val` = sd(sample_pvals[2,]))
   )
-  rownames(out) <- c("Logistic Reg", "SCUSUM")
   out
 }
 
@@ -138,10 +137,9 @@ global_major_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c
 global_intense_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(16.95652, 16.95652))
 global_intense_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(70.1087, 70.1087), prop=c(0.2418605, 0.2418605))
 
-global_null_reject_rates <- bind_cols(df_reject_rates,
+global_null_reject_rates <- cbind(df_reject_rates,
                                       rbind(global_total_null, global_major_null, global_major_prop_null, 
                                             global_intense_null, global_intense_prop_null))
-
 global_null_reject_rates
 
 #####################
@@ -153,7 +151,7 @@ global_major_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 11, lambda=c(
 global_intense_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 12, lambda=c(12.58333, 18.50000))
 global_intense_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 12, lambda=c(74.50000, 67.28571), prop=c(0.1712018, 0.2684592))
 
-global_alt_reject_rates <- bind_cols(df_reject_rates,
+global_alt_reject_rates <- cbind(df_reject_rates,
                                       rbind(global_total_alt, global_major_alt, global_major_prop_alt, 
                                             global_intense_alt, global_intense_prop_alt))
 
@@ -178,7 +176,7 @@ na_major_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(10.
 na_intense_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(1.847826, 1.847826))
 na_intense_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(10.45652, 10.45652), prop=c(0.1767152, 0.1767152))
 
-na_null_reject_rates <- bind_cols(df_reject_rates,
+na_null_reject_rates <- cbind(df_reject_rates,
                                       rbind(na_total_null, na_major_null, na_major_prop_null, 
                                             na_intense_null, na_intense_prop_null))
 
@@ -194,7 +192,7 @@ na_major_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 15, lambda=c(6.66
 na_intense_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 18, lambda=c(0.94444, 2.42857))
 na_intense_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 18, lambda=c(6.66667, 12.29032), prop=c(0.1268657, 0.1959654))
 
-na_alt_reject_rates <- bind_cols(df_reject_rates,
+na_alt_reject_rates <- cbind(df_reject_rates,
                                      rbind(na_total_alt, na_major_alt, na_major_prop_alt, 
                                            na_intense_alt, na_intense_prop_alt))
 
@@ -220,7 +218,7 @@ ep_major_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(12.
 ep_intense_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(3.173913, 3.173913))
 ep_intense_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(12.56522, 12.56522), prop=c(0.2525952, 0.2525952))
 
-ep_null_reject_rates <- bind_cols(df_reject_rates,
+ep_null_reject_rates <- cbind(df_reject_rates,
                                       rbind(ep_total_null, ep_major_null, ep_major_prop_null, 
                                             ep_intense_null, ep_intense_prop_null))
 
@@ -235,7 +233,7 @@ ep_major_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 11, lambda=c(15.2
 ep_intense_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 34, lambda=c(2.64706, 4.66667))
 ep_intense_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 12, lambda=c(15.23077, 11.51515), prop=c(0.1666667, 0.2896040))
 
-ep_alt_reject_rates <- bind_cols(df_reject_rates,
+ep_alt_reject_rates <- cbind(df_reject_rates,
                                      rbind(ep_total_alt, ep_major_alt, ep_major_prop_alt, 
                                            ep_intense_alt, ep_intense_prop_alt))
 
@@ -260,7 +258,7 @@ wp_major_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(21.
 wp_intense_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(6.804348, 6.804348))
 wp_intense_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(21.93478, 21.93478), prop=c(0.3102081, 0.3102081))
 
-wp_null_reject_rates <- bind_cols(df_reject_rates,
+wp_null_reject_rates <- cbind(df_reject_rates,
                                       rbind(wp_total_null, wp_major_null, wp_major_prop_null, 
                                             wp_intense_null, wp_intense_prop_null))
 
@@ -275,7 +273,7 @@ wp_major_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 21, lambda=c(25.1
 wp_intense_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 7, lambda=c(4.71429, 7.17949))
 wp_intense_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 22, lambda=c(25.16667, 19.85714), prop=c(0.2604563, 0.3643892))
 
-wp_alt_reject_rates <- bind_cols(df_reject_rates,
+wp_alt_reject_rates <- cbind(df_reject_rates,
                                      rbind(wp_total_alt, wp_major_alt, wp_major_prop_alt, 
                                            wp_intense_alt, wp_intense_prop_alt))
 
@@ -303,7 +301,7 @@ ni_major_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(2.9
 ni_intense_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(0.6086957, 0.6086957))
 ni_intense_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(2.934783, 2.934783), prop=c(0.2074074, 0.2074074))
 
-ni_null_reject_rates <- bind_cols(df_reject_rates,
+ni_null_reject_rates <- cbind(df_reject_rates,
                                       rbind(ni_total_null, ni_major_null, ni_major_prop_null, 
                                             ni_intense_null, ni_intense_prop_null))
 
@@ -318,7 +316,7 @@ ni_major_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 26, lambda=c(2.25
 ni_intense_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 26, lambda=c(0.50000, 0.75000))
 ni_intense_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 26, lambda=c(2.25000, 3.17647), prop=c(0.1756757, 0.2459016))
 
-ni_alt_reject_rates <- bind_cols(df_reject_rates,
+ni_alt_reject_rates <- cbind(df_reject_rates,
                                      rbind(ni_total_alt, ni_major_alt, ni_major_prop_alt, 
                                            ni_intense_alt, ni_intense_prop_alt))
 
@@ -343,7 +341,7 @@ si_major_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(14.
 si_intense_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(3.152174, 3.152174))
 si_intense_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(14.1087, 14.1087), prop=c(0.2234206, 0.2234206))
 
-si_null_reject_rates <- bind_cols(df_reject_rates,
+si_null_reject_rates <- cbind(df_reject_rates,
                                       rbind(si_total_null, si_major_null, si_major_prop_null, 
                                             si_intense_null, si_intense_prop_null))
 
@@ -358,7 +356,7 @@ si_major_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 14, lambda=c(15.1
 si_intense_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 14, lambda=c(2.00000, 3.65625))
 si_intense_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 12, lambda=c(15.12000, 12.90476), prop=c(0.1195652, 0.2645161))
 
-si_alt_reject_rates <- bind_cols(df_reject_rates,
+si_alt_reject_rates <- cbind(df_reject_rates,
                                      rbind(si_total_alt, si_major_alt, si_major_prop_alt, 
                                            si_intense_alt, si_intense_prop_alt))
 
@@ -384,7 +382,7 @@ sp_major_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(8.1
 sp_intense_null <- sim_study_pois(runs=runs, n=n, chpt_loc = 20, lambda=c(1.369565, 1.369565))
 sp_intense_prop_null <- sim_study_prop(runs=runs, n=n, chpt_loc = 20, lambda=c(8.108696, 8.108696), prop=c(0.1689008, 0.1689008))
 
-sp_null_reject_rates <- bind_cols(df_reject_rates,
+sp_null_reject_rates <- cbind(df_reject_rates,
                                       rbind(sp_total_null, sp_major_null, sp_major_prop_null, 
                                             sp_intense_null, sp_intense_prop_null))
 
@@ -399,7 +397,7 @@ sp_major_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 23, lambda=c(10.0
 sp_intense_alt <- sim_study_pois(runs=runs, n=n, chpt_loc = 23, lambda=c(1.08696, 1.65217))
 sp_intense_prop_alt <- sim_study_prop(runs=runs, n=n, chpt_loc = 23, lambda=c(10.09524, 6.44000), prop=c(0.2550336, 0.1434264))
 
-sp_alt_reject_rates <- bind_cols(df_reject_rates,
+sp_alt_reject_rates <- cbind(df_reject_rates,
                                      rbind(sp_total_alt, sp_major_alt, sp_major_prop_alt, 
                                            sp_intense_alt, sp_intense_prop_alt))
 
