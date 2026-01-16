@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Tom Fisher">
-<meta name="dcterms.date" content="2026-01-15">
+<meta name="dcterms.date" content="2026-01-16">
 
 <title>Tropical Cyclone Analysis</title>
 <style>
@@ -21,7 +21,27 @@ ul.task-list li input[type="checkbox"] {
 width: 0.8em;
 margin: 0 0.8em 0.2em -1em;  vertical-align: middle;
 }
-</style>
+
+div.csl-bib-body { }
+div.csl-entry {
+clear: both;
+margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+margin-left:2em;
+text-indent:-2em;
+}
+div.csl-left-margin {
+min-width:2em;
+float:left;
+}
+div.csl-right-inline {
+margin-left:2em;
+padding-left:1em;
+}
+div.csl-indent {
+margin-left: 2em;
+}</style>
 
 
 <script>/*!
@@ -2278,7 +2298,7 @@ window.Quarto = {
 
 <body class="quarto-light">
 
-<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-full toc-left">
 <div id="quarto-sidebar-toc-left" class="sidebar toc-left">
   <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
@@ -2294,6 +2314,7 @@ window.Quarto = {
   <li><a href="#change-point-approaches" id="toc-change-point-approaches" class="nav-link" data-scroll-target="#change-point-approaches">Change Point Approaches</a>
   <ul class="collapse">
   <li><a href="#at-most-one-change-point-amoc" id="toc-at-most-one-change-point-amoc" class="nav-link" data-scroll-target="#at-most-one-change-point-amoc">At Most One Change Point (AMOC)</a></li>
+  <li><a href="#change-point-for-frequencies" id="toc-change-point-for-frequencies" class="nav-link" data-scroll-target="#change-point-for-frequencies">Change point for Frequencies</a></li>
   <li><a href="#change-point-for-proportions" id="toc-change-point-for-proportions" class="nav-link" data-scroll-target="#change-point-for-proportions">Change point for Proportions</a></li>
   </ul></li>
   </ul></li>
@@ -2465,12 +2486,13 @@ window.Quarto = {
   </ul></li>
   <li><a href="#trimmed-ibtracs-test-results-6" id="toc-trimmed-ibtracs-test-results-6" class="nav-link" data-scroll-target="#trimmed-ibtracs-test-results-6">Trimmed IBTRacs Test Results</a></li>
   </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
 </div>
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
 </div>
-<main class="content" id="quarto-document-content">
+<main class="content column-page-right" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -2480,7 +2502,7 @@ window.Quarto = {
 
 
 
-<div class="quarto-title-meta">
+<div class="quarto-title-meta column-page-right">
 
     <div>
     <div class="quarto-title-meta-heading">Author</div>
@@ -2492,7 +2514,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 15, 2026</p>
+      <p class="date">January 16, 2026</p>
     </div>
   </div>
   
@@ -2509,35 +2531,42 @@ window.Quarto = {
 <p>Before performing the analysis, we discuss the different methods used.</p>
 <section id="regression-based-methods" class="level2">
 <h2 class="anchored" data-anchor-id="regression-based-methods">Regression Based methods</h2>
+<p>The regression approaches use <strong>Generalized Linear Models</strong> and <strong>Likelihood Ratio testing</strong> <span class="citation" data-cites="mccullagh2019generalized">(<a href="#ref-mccullagh2019generalized" role="doc-biblioref">McCullagh and Nelder 2019</a>)</span></p>
 <section id="for-count-data" class="level3">
 <h3 class="anchored" data-anchor-id="for-count-data">For Count Data</h3>
-<p>For the data consisting of counts (number of non-shorties per season and number of major storms per season) we perform a Poisson regression with a log-link function. That is, we model:</p>
+<p>For the data consisting of counts (number of non-shorties per season and number of major storms per season) we perform a <strong>Poisson regression with a log-link function</strong>. That is, we model:</p>
 <p><span class="math display">\[\log(Count) = \beta_0 + \beta_1\times Year\]</span></p>
 <p>which in the original units looks like</p>
 <p><span class="math display">\[Count = \exp(\beta_0 + \beta_1\times Year) = \exp(\beta_0)\times \exp(\beta_1\times Year)\]</span></p>
 <p>So for the Poisson based method, all the effects we find are multiplicative.</p>
-<p>It is worth noting that the Poisson regression is arguably more reliable than standard linear regression (particularly in the six basins) since we are working with moderately small counts.</p>
-<p>I also report values from the predictions based on these models. This provides some context of what the model is suggesting.</p>
+<p>It is worth noting that the Poisson regression is arguably more reliable than standard linear regression (particularly in the six basins) since we are working with moderately small counts. Inference is done using a Likelihood Ratio test on the <span class="math inline">\(\beta\)</span> coefficient using the <code>drop1()</code> function in R.</p>
+<p>I also report values from the predictions based on these models. This provides some context of what the model is suggesting. We use the prediction at the first and last time points to find an <em>overall trend</em>, that trend is then scaled to the #/decade level.</p>
 </section>
 <section id="for-proportions" class="level3">
 <h3 class="anchored" data-anchor-id="for-proportions">For Proportions</h3>
-<p>For the proportional data (proportion of major storms), we are using a logistic regression. Let <span class="math inline">\(p\)</span>=proportion of major storms, we are modeling</p>
+<p>For the proportional data (proportion of major storms and proportion of intense storms), we are using a <strong>Logistic Regression</strong>. Let <span class="math inline">\(p\)</span>=proportion of major (or intense) storms, we are modeling</p>
 <p><span class="math display">\[\log\left(\frac{p}{1-p}\right) = \beta_0 + \beta_1\times Year\]</span></p>
-<p>So again, when interpreting we need to transform back to the original units. But it is worth noting that the associated hypothesis test for this regression must be interpreted in terms of log-odds. It is also worth noting that when performing this logistic regression we are implicitly assuming that the process controlling the total counts of storms, is not changing. We use this same method on the proportion of intense storms.</p>
+<p>So again, when interpreting we need to transform back to the original units. It is worth noting that the associated hypothesis test for this regression must be interpreted in terms of log-odds. It is also worth noting that when performing this logistic regression we are implicitly assuming that the process controlling the total counts of storms, is not changing.</p>
+<p>Again, a likelihood ratio test is used for significance of the <span class="math inline">\(\beta_1\)</span> coefficient. We provide predicted probability values at the first and last time point, and from those values find an <em>overall trend</em> (%/decade).</p>
 </section>
 </section>
 <section id="change-point-approaches" class="level2">
 <h2 class="anchored" data-anchor-id="change-point-approaches">Change Point Approaches</h2>
-<p>The regression approaches assume a fairly restrictive structure – we are assuming some linear model. That is, any changes we see in the record are following some underlying linear trend. In the change point approach, we are simply looking for shifts in the mean of the process.</p>
+<p>The regression approaches assume a fairly restrictive structure – we are assuming some underlying linear model. That is, any changes we see in the record are following some underlying linear trend. In the change point approach, we are simply looking for shifts in the mean of the process.</p>
 <p>At some level, both methods looking for changes, or non-homegenieties in the data, but the change point approach doesn’t require that linearity assumption.</p>
 <section id="at-most-one-change-point-amoc" class="level3">
 <h3 class="anchored" data-anchor-id="at-most-one-change-point-amoc">At Most One Change Point (AMOC)</h3>
-<p>We perform some iid SCUSUM based-test to look for at most one change point. This provides the most likely change point location (given only a single change point can occur) and its corresponding <span class="math inline">\(p\)</span>-value.</p>
-<p>It is worth noting that CUSUM based tests can be conservative in practice (reported <span class="math inline">\(p\)</span>-values may be slightly elevated). If we want something more robust, we can perform a boostrapping/simulation type approach. For this report I use the asymptotic approach.</p>
+<p>We perform some iid <strong>SCUSUM based-test</strong> <span class="citation" data-cites="lund2023good">(<a href="#ref-lund2023good" role="doc-biblioref">Lund et al. 2023</a>)</span> to look for at most one change point. The SCUSUM statistic is defined as <span class="math display">\[\mbox{SCUSUM}=\frac{1}{n}\sum_{t=1}^n \mbox{CUSUM}(t)^2\]</span> for sample size <span class="math inline">\(n\)</span>, and where <span class="math display">\[\mbox{CUSUM}(k) = \frac{k}{n}\left(1-\frac{k}{n}\right)\left[\frac{\sqrt{n}}{\hat{\sigma}_{\hat{\theta}}}\left(\hat{\theta}_k - \hat{\theta}_k^*\right)\right].\]</span> The change point is found via <span class="math display">\[k = \text{argmax} \left|\text{CUSUM}(k)\right|\]</span> Under the null hypothesis of no changes, <span class="math inline">\(\text{SCUSUM}\)</span> converges to <span class="math inline">\(\int_0^1 B^2(t)dt\)</span>, where <span class="math inline">\(\{ B(t) \}_{t=0}^{t=1}\)</span> is the classical Brownian bridge process of empirical statistics. We used the distribution approximations in <span class="citation" data-cites="Tolmatz2002">(<a href="#ref-Tolmatz2002" role="doc-biblioref">Tolmatz 2002</a>)</span> to compute <span class="math inline">\(p\)</span>-values. This provides the most likely change point location (given only a single change point can occur) and its corresponding <span class="math inline">\(p\)</span>-value.</p>
+<p>It is worth noting that CUSUM based tests can be conservative in practice (reported <span class="math inline">\(p\)</span>-values may be slightly elevated) – we see this a little bit in the simulation study report. If you want something more robust, a boostrapping/simulation type approach could be performed. For this report we use the asymptotic approach partially because it is conservative.</p>
+</section>
+<section id="change-point-for-frequencies" class="level3">
+<h3 class="anchored" data-anchor-id="change-point-for-frequencies">Change point for Frequencies</h3>
+<p>When working with Poisson data (count data), we are looking for a change in the rate, or mean, parameter <span class="math inline">\(\lambda_t\)</span>. The <span class="math inline">\(\text{CUSUM}(k)\)</span> statistic can be calculated via <span class="math display">\[\mbox{CUSUM}(k)= \frac{1}{\hat{\sigma} \sqrt{n}}
+\left[ \sum_{t=1}^k  X_t - \frac{k}{n} \sum_{t=1}^{n} X_t \right]\]</span> and the variance estimate is found via <span class="math inline">\(\hat{\sigma}^2 = n^{-1} \sum_{t=1}^n X_t\)</span> under the assumption of Poisson data <span class="citation" data-cites="robbins2011changepoints">(<a href="#ref-robbins2011changepoints" role="doc-biblioref">Robbins et al. 2011</a>)</span></p>
 </section>
 <section id="change-point-for-proportions" class="level3">
 <h3 class="anchored" data-anchor-id="change-point-for-proportions">Change point for Proportions</h3>
-<p>We coded up a SCUSUM test for the proportion using standard Intro Stat binomial distribution theory. This is not all that different than the MDL search performed earlier. However, unlike the counts (or total number of storms), now the parameter of interest is <span class="math inline">\(p\)</span>, the proportion of major storms or proportion of intense storms.</p>
+<p>When working with the proportion of major (or intense) storms, we assume an underlying Binomial likelihood and the parameter of interested in <span class="math inline">\(p\)</span>, the proportion of major (or intense) storms. Let <span class="math inline">\(X_t\)</span> be the number of major (or intense) storms in year <span class="math inline">\(t\)</span> and <span class="math inline">\(T_t\)</span> is the total number of storms in that year. Based on Binimial likelihood arguments we calculate <span class="math display">\[\hat{\theta}_k = \hat{p}_k = \frac{\sum_{i=1}^k X_i}{\sum_{i=1}^k T_i}~~~~~\mbox{and}~~~~~\hat{\theta}_k^* = \hat{p}_k^* = \frac{\sum_{i=k+1}^n X_i}{\sum_{i=k+1}^n T_i}.\]</span> For the variance estimate, <span class="math inline">\(\sigma_{\hat{\theta}}\)</span>, we use the Wald estimate (covered in Intro Stat courses), <span class="math display">\[\sigma_{\hat{p}} = \sqrt{\frac{\hat{p}_n(1-\hat{p}_n)}{\sum_{i=1}^n T_i}}\]</span></p>
 </section>
 </section>
 </section>
@@ -11307,8 +11336,25 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 </div>
 </section>
 </section>
+<section id="references" class="level1 unnumbered">
 
-</main>
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-lund2023good" class="csl-entry" role="listitem">
+Lund, Robert B, Claudie Beaulieu, Rebecca Killick, QiQi Lu, and Xueheng Shi. 2023. <span>“Good Practices and Common Pitfalls in Climate Time Series Changepoint Techniques: A Review.”</span> <em>Journal of Climate</em> 36 (23): 8041–57.
+</div>
+<div id="ref-mccullagh2019generalized" class="csl-entry" role="listitem">
+McCullagh, Peter, and J. A. Nelder. 2019. <em>Generalized Linear Models</em>. Routledge.
+</div>
+<div id="ref-robbins2011changepoints" class="csl-entry" role="listitem">
+Robbins, Michael W, Robert B Lund, Colin M Gallagher, and QiQi Lu. 2011. <span>“Changepoints in the North Atlantic Tropical Cyclone Record.”</span> <em>Journal of the American Statistical Association</em> 106 (493): 89–99.
+</div>
+<div id="ref-Tolmatz2002" class="csl-entry" role="listitem">
+Tolmatz, Leonid. 2002. <span>“<span class="nocase">On the Distribution of the Square Integral of the Brownian Bridge</span>.”</span> <em>The Annals of Probability</em> 30 (1): 253–69. <a href="https://doi.org/10.1214/aop/1020107767">https://doi.org/10.1214/aop/1020107767</a>.
+</div>
+</div></section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {

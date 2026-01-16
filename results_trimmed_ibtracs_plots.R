@@ -1,6 +1,6 @@
 ################################################
 ##
-##  results_trimmed_plots.R
+##  results_ibtracs_trimmed_plots.R
 ##
 ##  This file builds the plots of the change
 ##    point results. If the found p-value
@@ -106,21 +106,21 @@ global_basin_tall <- global_basin |>
                                    "Proportion of Intense Cyclones") ) )
 
 # Total Cyclones - change at time 20
-trimmed_global_results$pois_chpt_test
+ibtracs_trimmed_global_results$pois_chpt_test
 # Major Cyclones - no change
-trimmed_global_results$major_pois_chpt_test
+ibtracs_trimmed_global_results$major_pois_chpt_test
 # Proportion Major Cyclones - change at time 21
-trimmed_global_results$prop_major_chpt_test
+ibtracs_trimmed_global_results$prop_major_chpt_test
 # Intense Cyclones - no change
-trimmed_global_results$intense_pois_chpt_test
+ibtracs_trimmed_global_results$intense_pois_chpt_test
 # Proportion Intense Cyclones - change at 21
-trimmed_global_results$prop_intense_chpt_test
+ibtracs_trimmed_global_results$prop_intense_chpt_test
 
-mean1 <- mean(global_basin$Total_Storms[1:trimmed_global_results$pois_chpt_test[2]])
-mean2 <- mean(global_basin$Total_Storms[(trimmed_global_results$pois_chpt_test[2]+1):dim(global_basin)[1]])
+mean1 <- mean(global_basin$Total_Storms[1:ibtracs_trimmed_global_results$pois_chpt_test[2]])
+mean2 <- mean(global_basin$Total_Storms[(ibtracs_trimmed_global_results$pois_chpt_test[2]+1):dim(global_basin)[1]])
 df_total_seg <- data.frame(
-  SEASON = c(min(global_basin$SEASON)-0.4, global_basin$SEASON[trimmed_global_results$pois_chpt_test[2]]+0.4,
-             global_basin$SEASON[trimmed_global_results$pois_chpt_test[2]]+0.6, max(global_basin$SEASON)+0.4),
+  SEASON = c(min(global_basin$SEASON)-0.4, global_basin$SEASON[ibtracs_trimmed_global_results$pois_chpt_test[2]]+0.4,
+             global_basin$SEASON[ibtracs_trimmed_global_results$pois_chpt_test[2]]+0.6, max(global_basin$SEASON)+0.4),
   Group = c(rep("seg1", 2),
             rep("seg2", 2) ),
   Mean = c(rep(mean1, 2),
@@ -134,11 +134,11 @@ df_major_seg <- data.frame(
   Measure = "Major_Storms")
 
 
-mean1 <- mean(global_basin$Intense_Storms[1:trimmed_global_results$intense_pois_chpt_test[2]])
-mean2 <- mean(global_basin$Intense_Storms[(trimmed_global_results$intense_pois_chpt_test[2]+1):dim(global_basin)[1]])
+mean1 <- mean(global_basin$Intense_Storms[1:ibtracs_trimmed_global_results$intense_pois_chpt_test[2]])
+mean2 <- mean(global_basin$Intense_Storms[(ibtracs_trimmed_global_results$intense_pois_chpt_test[2]+1):dim(global_basin)[1]])
 df_intense_seg <- data.frame(
-  SEASON = c(min(global_basin$SEASON)-0.4, global_basin$SEASON[trimmed_global_results$intense_pois_chpt_test[2]]+0.4,
-             global_basin$SEASON[trimmed_global_results$intense_pois_chpt_test[2]]+0.6, max(global_basin$SEASON)+0.4),
+  SEASON = c(min(global_basin$SEASON)-0.4, global_basin$SEASON[ibtracs_trimmed_global_results$intense_pois_chpt_test[2]]+0.4,
+             global_basin$SEASON[ibtracs_trimmed_global_results$intense_pois_chpt_test[2]]+0.6, max(global_basin$SEASON)+0.4),
   Group = c(rep("seg1", 2),
             rep("seg2", 2) ),
   Mean = c(rep(mean1, 2),
@@ -147,13 +147,13 @@ df_intense_seg <- data.frame(
 )
 
 
-mean1 <- sum(global_basin$Major_Storms[1:trimmed_global_results$prop_major_chpt_test[2]])/
-  sum(global_basin$Total_Storms[1:trimmed_global_results$prop_major_chpt_test[2]])
-mean2 <- sum(global_basin$Major_Storms[(trimmed_global_results$prop_major_chpt_test[2]+1):dim(global_basin)[1]])/
-  sum(global_basin$Total_Storms[(trimmed_global_results$prop_major_chpt_test[2]+1):dim(global_basin)[1]])
+mean1 <- sum(global_basin$Major_Storms[1:ibtracs_trimmed_global_results$prop_major_chpt_test[2]])/
+  sum(global_basin$Total_Storms[1:ibtracs_trimmed_global_results$prop_major_chpt_test[2]])
+mean2 <- sum(global_basin$Major_Storms[(ibtracs_trimmed_global_results$prop_major_chpt_test[2]+1):dim(global_basin)[1]])/
+  sum(global_basin$Total_Storms[(ibtracs_trimmed_global_results$prop_major_chpt_test[2]+1):dim(global_basin)[1]])
 df_prop_major_seg <- data.frame(
-  SEASON = c(min(global_basin$SEASON)-0.4, global_basin$SEASON[trimmed_global_results$prop_major_chpt_test[2]]+0.4,
-             global_basin$SEASON[trimmed_global_results$prop_major_chpt_test[2]]+0.6, max(global_basin$SEASON)+0.4),
+  SEASON = c(min(global_basin$SEASON)-0.4, global_basin$SEASON[ibtracs_trimmed_global_results$prop_major_chpt_test[2]]+0.4,
+             global_basin$SEASON[ibtracs_trimmed_global_results$prop_major_chpt_test[2]]+0.6, max(global_basin$SEASON)+0.4),
   Group = c(rep("seg1", 2),
             rep("seg2", 2) ),
   Mean = c(rep(mean1, 2),
@@ -163,13 +163,13 @@ df_prop_major_seg <- data.frame(
 
 
 
-mean1 <- sum(global_basin$Intense_Storms[1:trimmed_global_results$prop_intense_chpt_test[2]])/
-  sum(global_basin$Total_Storms[1:trimmed_global_results$prop_intense_chpt_test[2]])
-mean2 <- sum(global_basin$Intense_Storms[(trimmed_global_results$prop_intense_chpt_test[2]+1):dim(global_basin)[1]])/
-  sum(global_basin$Total_Storms[(trimmed_global_results$prop_intense_chpt_test[2]+1):dim(global_basin)[1]])
+mean1 <- sum(global_basin$Intense_Storms[1:ibtracs_trimmed_global_results$prop_intense_chpt_test[2]])/
+  sum(global_basin$Total_Storms[1:ibtracs_trimmed_global_results$prop_intense_chpt_test[2]])
+mean2 <- sum(global_basin$Intense_Storms[(ibtracs_trimmed_global_results$prop_intense_chpt_test[2]+1):dim(global_basin)[1]])/
+  sum(global_basin$Total_Storms[(ibtracs_trimmed_global_results$prop_intense_chpt_test[2]+1):dim(global_basin)[1]])
 df_prop_intense_seg <- data.frame(
-  SEASON = c(min(global_basin$SEASON)-0.4, global_basin$SEASON[trimmed_global_results$prop_intense_chpt_test[2]]+0.4,
-             global_basin$SEASON[trimmed_global_results$prop_intense_chpt_test[2]]+0.6, max(global_basin$SEASON)+0.4),
+  SEASON = c(min(global_basin$SEASON)-0.4, global_basin$SEASON[ibtracs_trimmed_global_results$prop_intense_chpt_test[2]]+0.4,
+             global_basin$SEASON[ibtracs_trimmed_global_results$prop_intense_chpt_test[2]]+0.6, max(global_basin$SEASON)+0.4),
   Group = c(rep("seg1", 2),
             rep("seg2", 2) ),
   Mean = c(rep(mean1, 2),
@@ -201,7 +201,7 @@ plot_global_findings <- ggplot(global_basin_tall, aes(x=SEASON, y=Value) ) +
 
 plot_global_findings
 
-ggsave(filename="./plots/result_trimmed_global_findings.png",
+ggsave(filename="./plots/result_ibtracs_trimmed_global_findings.png",
        plot=plot_global_findings,
        width=6.5, height=7, bg="white")
 
@@ -254,12 +254,12 @@ global_counts <- non_shorty_for_props %>%
 ################################################################################
 ################################################################################
 
-trimmed_na_results$pois_chpt_test
-trimmed_ep_results$pois_chpt_test
-trimmed_wp_results$pois_chpt_test
-trimmed_ni_results$pois_chpt_test
-trimmed_si_results$pois_chpt_test
-trimmed_sp_results$pois_chpt_test
+ibtracs_trimmed_na_results$pois_chpt_test
+ibtracs_trimmed_ep_results$pois_chpt_test
+ibtracs_trimmed_wp_results$pois_chpt_test
+ibtracs_trimmed_ni_results$pois_chpt_test
+ibtracs_trimmed_si_results$pois_chpt_test
+ibtracs_trimmed_sp_results$pois_chpt_test
 
 storm_counts <- non_shorty_for_props |>
   mutate(Prop_Storms = Major_Storms/Total_Storms)
@@ -267,12 +267,12 @@ storm_counts <- non_shorty_for_props |>
 storm_basin_regimes <- storm_counts %>%
   ungroup() %>%
   arrange(BASIN, SEASON) %>%
-  mutate(Regime = c(findInterval(1:N, trimmed_na_results$pois_chpt_test[2]+1),
-                    findInterval(1:N, trimmed_ep_results$pois_chpt_test[2]+1),
-                    findInterval(1:N, trimmed_wp_results$pois_chpt_test[2]+1),
+  mutate(Regime = c(findInterval(1:N, ibtracs_trimmed_na_results$pois_chpt_test[2]+1),
+                    findInterval(1:N, ibtracs_trimmed_ep_results$pois_chpt_test[2]+1),
+                    findInterval(1:N, ibtracs_trimmed_wp_results$pois_chpt_test[2]+1),
                     findInterval(1:N, NULL),
-                    findInterval(1:N, trimmed_si_results$pois_chpt_test[2]+1),
-                    findInterval(1:N, trimmed_sp_results$pois_chpt_test[2]+1)) ) %>%
+                    findInterval(1:N, ibtracs_trimmed_si_results$pois_chpt_test[2]+1),
+                    findInterval(1:N, ibtracs_trimmed_sp_results$pois_chpt_test[2]+1)) ) %>%
   group_by(BASIN, Regime) %>%
   summarize(Regime_Length = max(SEASON)-min(SEASON)+1,
             AvgTotalStorms = mean(Total_Storms),
@@ -294,7 +294,7 @@ plot_basin_totals <- ggplot(storm_counts) +
   x_scale_marginal +
   scale_y_continuous(breaks = integer_breaks())
 
-ggsave(filename="./plots/result_trimmed_basin_nonshortiesfindings.png", 
+ggsave(filename="./plots/result_ibtracs_trimmed_basin_nonshortiesfindings.png", 
        plot=plot_basin_totals,
        width=6.5, height=4.5, bg="white")
 
@@ -311,12 +311,12 @@ ggsave(filename="./plots/result_trimmed_basin_nonshortiesfindings.png",
 ################################################################################
 ################################################################################
 
-trimmed_na_results$major_pois_chpt_test
-trimmed_ep_results$major_pois_chpt_test
-trimmed_wp_results$major_pois_chpt_test
-trimmed_ni_results$major_pois_chpt_test
-trimmed_si_results$major_pois_chpt_test
-trimmed_sp_results$major_pois_chpt_test
+ibtracs_trimmed_na_results$major_pois_chpt_test
+ibtracs_trimmed_ep_results$major_pois_chpt_test
+ibtracs_trimmed_wp_results$major_pois_chpt_test
+ibtracs_trimmed_ni_results$major_pois_chpt_test
+ibtracs_trimmed_si_results$major_pois_chpt_test
+ibtracs_trimmed_sp_results$major_pois_chpt_test
 
 storm_counts <- non_shorty_for_props |>
   mutate(Prop_Storms = Major_Storms/Total_Storms)
@@ -324,8 +324,8 @@ storm_counts <- non_shorty_for_props |>
 storm_basin_regimes <- storm_counts %>%
   ungroup() %>%
   arrange(BASIN, SEASON) %>%
-  mutate(Regime = c(findInterval(1:N, trimmed_na_results$major_pois_chpt_test[2]+1),
-                    findInterval(1:N, trimmed_ep_results$major_pois_chpt_test[2]+1),
+  mutate(Regime = c(findInterval(1:N, ibtracs_trimmed_na_results$major_pois_chpt_test[2]+1),
+                    findInterval(1:N, ibtracs_trimmed_ep_results$major_pois_chpt_test[2]+1),
                     findInterval(1:N, NULL),
                     findInterval(1:N, NULL),
                     findInterval(1:N, NULL),
@@ -351,7 +351,7 @@ plot_basin_major <- ggplot(storm_counts) +
   scale_y_continuous(breaks = integer_breaks()) +
   x_scale_marginal
 
-ggsave(filename="./plots/result_trimmed_basin_major_findings.png", 
+ggsave(filename="./plots/result_ibtracs_trimmed_basin_major_findings.png", 
        plot=plot_basin_major,
        width=6.5, height=4.5, bg="white")
 
@@ -366,12 +366,12 @@ ggsave(filename="./plots/result_trimmed_basin_major_findings.png",
 ################################################################################
 ################################################################################
 
-trimmed_na_results$prop_major_chpt_test
-trimmed_ep_results$prop_major_chpt_test
-trimmed_wp_results$prop_major_chpt_test
-trimmed_ni_results$prop_major_chpt_test
-trimmed_si_results$prop_major_chpt_test
-trimmed_sp_results$prop_major_chpt_test
+ibtracs_trimmed_na_results$prop_major_chpt_test
+ibtracs_trimmed_ep_results$prop_major_chpt_test
+ibtracs_trimmed_wp_results$prop_major_chpt_test
+ibtracs_trimmed_ni_results$prop_major_chpt_test
+ibtracs_trimmed_si_results$prop_major_chpt_test
+ibtracs_trimmed_sp_results$prop_major_chpt_test
 
 storm_counts <- non_shorty_for_props |>
   mutate(Prop_Storms = Major_Storms/Total_Storms)
@@ -381,10 +381,10 @@ storm_basin_regimes <- storm_counts %>%
   arrange(BASIN, SEASON) %>%
   mutate(Regime = c(findInterval(1:N, NULL),
                     findInterval(1:N, NULL),
-                    findInterval(1:N, trimmed_wp_results$prop_major_chpt_test[2]+1),
+                    findInterval(1:N, ibtracs_trimmed_wp_results$prop_major_chpt_test[2]+1),
                     findInterval(1:N, NULL),
-                    findInterval(1:N, trimmed_si_results$prop_major_chpt_test[2]+1),
-                    findInterval(1:N, trimmed_sp_results$prop_major_chpt_test[2]+1) ) ) |>
+                    findInterval(1:N, ibtracs_trimmed_si_results$prop_major_chpt_test[2]+1),
+                    findInterval(1:N, ibtracs_trimmed_sp_results$prop_major_chpt_test[2]+1) ) ) |>
   group_by(BASIN, Regime) %>%
   summarize(Regime_Length = max(SEASON)-min(SEASON)+1,
             PropMajorStorms = sum(Major_Storms)/sum(Total_Storms),
@@ -405,7 +405,7 @@ plot_basin_prop_major <- ggplot(storm_counts) +
   theme_marginal +
   x_scale_marginal
 
-ggsave(filename="./plots/result_trimmed_basin_prop_major_findings.png", 
+ggsave(filename="./plots/result_ibtracs_trimmed_basin_prop_major_findings.png", 
        plot=plot_basin_prop_major,
        width=6.5, height=4.5, bg="white")
 
@@ -423,12 +423,12 @@ ggsave(filename="./plots/result_trimmed_basin_prop_major_findings.png",
 ################################################################################
 ################################################################################
 
-trimmed_na_results$intense_pois_chpt_test
-trimmed_ep_results$intense_pois_chpt_test
-trimmed_wp_results$intense_pois_chpt_test
-trimmed_ni_results$intense_pois_chpt_test
-trimmed_si_results$intense_pois_chpt_test
-trimmed_sp_results$intense_pois_chpt_test
+ibtracs_trimmed_na_results$intense_pois_chpt_test
+ibtracs_trimmed_ep_results$intense_pois_chpt_test
+ibtracs_trimmed_wp_results$intense_pois_chpt_test
+ibtracs_trimmed_ni_results$intense_pois_chpt_test
+ibtracs_trimmed_si_results$intense_pois_chpt_test
+ibtracs_trimmed_sp_results$intense_pois_chpt_test
 
 storm_counts <- non_shorty_for_props |>
   mutate(Prop_Storms = Intense_Storms/Total_Storms)
@@ -436,12 +436,12 @@ storm_counts <- non_shorty_for_props |>
 storm_basin_regimes <- storm_counts %>%
   ungroup() %>%
   arrange(BASIN, SEASON) %>%
-  mutate(Regime = c(findInterval(1:N, trimmed_na_results$intense_pois_chpt_test[2]+1),
-                    findInterval(1:N, trimmed_ep_results$intense_pois_chpt_test[2]+1),
-                    findInterval(1:N, trimmed_wp_results$intense_pois_chpt_test[2]+1),
+  mutate(Regime = c(findInterval(1:N, ibtracs_trimmed_na_results$intense_pois_chpt_test[2]+1),
+                    findInterval(1:N, ibtracs_trimmed_ep_results$intense_pois_chpt_test[2]+1),
+                    findInterval(1:N, ibtracs_trimmed_wp_results$intense_pois_chpt_test[2]+1),
                     findInterval(1:N, NULL),
-                    findInterval(1:N, trimmed_si_results$intense_pois_chpt_test[2]+1),
-                    findInterval(1:N, trimmed_sp_results$intense_pois_chpt_test[2]+1) ) ) %>%
+                    findInterval(1:N, ibtracs_trimmed_si_results$intense_pois_chpt_test[2]+1),
+                    findInterval(1:N, ibtracs_trimmed_sp_results$intense_pois_chpt_test[2]+1) ) ) %>%
   group_by(BASIN, Regime) %>%
   summarize(Regime_Length = max(SEASON)-min(SEASON)+1,
             AvgIntenseStorms = mean(Intense_Storms),
@@ -463,7 +463,7 @@ plot_basin_intense <- ggplot(storm_counts) +
   theme_marginal +
   x_scale_marginal
 
-ggsave(filename="./plots/result_trimmed_basin_intense_findings.png", 
+ggsave(filename="./plots/result_ibtracs_trimmed_basin_intense_findings.png", 
        plot=plot_basin_intense,
        width=6.5, height=4.5, bg="white")
 
@@ -478,12 +478,12 @@ ggsave(filename="./plots/result_trimmed_basin_intense_findings.png",
 ################################################################################
 ################################################################################
 
-trimmed_na_results$prop_intense_chpt_test
-trimmed_ep_results$prop_intense_chpt_test
-trimmed_wp_results$prop_intense_chpt_test
-trimmed_ni_results$prop_intense_chpt_test
-trimmed_si_results$prop_intense_chpt_test
-trimmed_sp_results$prop_intense_chpt_test
+ibtracs_trimmed_na_results$prop_intense_chpt_test
+ibtracs_trimmed_ep_results$prop_intense_chpt_test
+ibtracs_trimmed_wp_results$prop_intense_chpt_test
+ibtracs_trimmed_ni_results$prop_intense_chpt_test
+ibtracs_trimmed_si_results$prop_intense_chpt_test
+ibtracs_trimmed_sp_results$prop_intense_chpt_test
 
 storm_counts <- non_shorty_for_props |>
   mutate(Prop_Storms = Intense_Storms/Total_Storms)
@@ -492,11 +492,11 @@ storm_basin_regimes <- storm_counts %>%
   ungroup() %>%
   arrange(BASIN, SEASON) %>%
   mutate(Regime = c(findInterval(1:N, NULL),
-                    findInterval(1:N, trimmed_ep_results$prop_intense_chpt_test[2]+1),
-                    findInterval(1:N, trimmed_wp_results$prop_intense_chpt_test[2]+1),
+                    findInterval(1:N, ibtracs_trimmed_ep_results$prop_intense_chpt_test[2]+1),
+                    findInterval(1:N, ibtracs_trimmed_wp_results$prop_intense_chpt_test[2]+1),
                     findInterval(1:N, NULL),
-                    findInterval(1:N, trimmed_si_results$prop_intense_chpt_test[2]+1),
-                    findInterval(1:N, trimmed_sp_results$prop_intense_chpt_test[2]+1) ) ) |>
+                    findInterval(1:N, ibtracs_trimmed_si_results$prop_intense_chpt_test[2]+1),
+                    findInterval(1:N, ibtracs_trimmed_sp_results$prop_intense_chpt_test[2]+1) ) ) |>
   group_by(BASIN, Regime) %>%
   summarize(Regime_Length = max(SEASON)-min(SEASON)+1,
             PropIntenseStorms = sum(Intense_Storms)/sum(Total_Storms),
@@ -517,7 +517,7 @@ plot_basin_prop_intense <- ggplot(storm_counts) +
   theme_marginal +
   x_scale_marginal
 
-ggsave(filename="./plots/result_trimmed_basin_prop_intense_findings.png", 
+ggsave(filename="./plots/result_ibtracs_trimmed_basin_prop_intense_findings.png", 
        plot=plot_basin_prop_intense,
        width=6.5, height=4.5, bg="white")
 

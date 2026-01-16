@@ -5,11 +5,13 @@ author: "Tom Fisher"
 date: today
 format:
   html:
+    page-layout: full
     toc: true
     toc-depth: 3
     toc-location: left
     embed-resources: true
 editor: visual
+bibliography: sn-bibliography.bib
 ---
 
 ```{r, include=FALSE}
@@ -167,9 +169,11 @@ Before performing the analysis, we discuss the different methods used.
 
 ## Regression Based methods
 
+The regression approaches use **Generalized Linear Models** and **Likelihood Ratio testing** [@mccullagh2019generalized]
+
 ### For Count Data
 
-For the data consisting of counts (number of non-shorties per season and number of major storms per season) we perform a Poisson regression with a log-link function. That is, we model:
+For the data consisting of counts (number of non-shorties per season and number of major storms per season) we perform a **Poisson regression with a log-link function**. That is, we model:
 
 $$\log(Count) = \beta_0 + \beta_1\times Year$$
 
@@ -179,33 +183,55 @@ $$Count = \exp(\beta_0 + \beta_1\times Year) = \exp(\beta_0)\times \exp(\beta_1\
 
 So for the Poisson based method, all the effects we find are multiplicative.
 
-It is worth noting that the Poisson regression is arguably more reliable than standard linear regression (particularly in the six basins) since we are working with moderately small counts.
+It is worth noting that the Poisson regression is arguably more reliable than standard linear regression (particularly in the six basins) since we are working with moderately small counts. Inference is done using a Likelihood Ratio test on the $\beta$ coefficient using the `drop1()` function in R.
 
-I also report values from the predictions based on these models. This provides some context of what the model is suggesting.
+I also report values from the predictions based on these models. This provides some context of what the model is suggesting. We use the prediction at the first and last time points to find an *overall trend*, that trend is then scaled to the \#/decade level.
 
 ### For Proportions
 
-For the proportional data (proportion of major storms), we are using a logistic regression. Let $p$=proportion of major storms, we are modeling
+For the proportional data (proportion of major storms and proportion of intense storms), we are using a **Logistic Regression**. Let $p$=proportion of major (or intense) storms, we are modeling
 
 $$\log\left(\frac{p}{1-p}\right) = \beta_0 + \beta_1\times Year$$
 
-So again, when interpreting we need to transform back to the original units. But it is worth noting that the associated hypothesis test for this regression must be interpreted in terms of log-odds. It is also worth noting that when performing this logistic regression we are implicitly assuming that the process controlling the total counts of storms, is not changing. We use this same method on the proportion of intense storms.
+So again, when interpreting we need to transform back to the original units. It is worth noting that the associated hypothesis test for this regression must be interpreted in terms of log-odds. It is also worth noting that when performing this logistic regression we are implicitly assuming that the process controlling the total counts of storms, is not changing. 
+
+Again, a likelihood ratio test is used for significance of the $\beta_1$ coefficient. We provide predicted probability values at the first and last time point, and from those values find an *overall trend* (\%/decade).
 
 ## Change Point Approaches
 
-The regression approaches assume a fairly restrictive structure -- we are assuming some linear model. That is, any changes we see in the record are following some underlying linear trend. In the change point approach, we are simply looking for shifts in the mean of the process.
+The regression approaches assume a fairly restrictive structure -- we are assuming some underlying linear model. That is, any changes we see in the record are following some underlying linear trend. In the change point approach, we are simply looking for shifts in the mean of the process.
 
 At some level, both methods looking for changes, or non-homegenieties in the data, but the change point approach doesn't require that linearity assumption.
 
 ### At Most One Change Point (AMOC)
 
-We perform some iid SCUSUM based-test to look for at most one change point. This provides the most likely change point location (given only a single change point can occur) and its corresponding $p$-value.
+We perform some iid **SCUSUM based-test** [@lund2023good] to look for at most one change point. The SCUSUM statistic is defined as
+$$\mbox{SCUSUM}=\frac{1}{n}\sum_{t=1}^n \mbox{CUSUM}(t)^2$$
+for sample size $n$, and where
+$$\mbox{CUSUM}(k) = \frac{k}{n}\left(1-\frac{k}{n}\right)\left[\frac{\sqrt{n}}{\hat{\sigma}_{\hat{\theta}}}\left(\hat{\theta}_k - \hat{\theta}_k^*\right)\right].$$
+The change point is found via
+$$k = \text{argmax} \left|\text{CUSUM}(k)\right|$$
+Under the null hypothesis of no changes, $\text{SCUSUM}$ converges to $\int_0^1 B^2(t)dt$, where $\{ B(t) \}_{t=0}^{t=1}$ is the classical Brownian bridge process of empirical statistics. We used the distribution approximations in [@Tolmatz2002] to compute $p$-values.
+This provides the most likely change point location (given only a single change point can occur) and its corresponding $p$-value.
 
-It is worth noting that CUSUM based tests can be conservative in practice (reported $p$-values may be slightly elevated). If we want something more robust, we can perform a boostrapping/simulation type approach. For this report I use the asymptotic approach.
+It is worth noting that CUSUM based tests can be conservative in practice (reported $p$-values may be slightly elevated) -- we see this a little bit in the simulation study report. If you want something more robust, a boostrapping/simulation type approach could be performed. For this report we use the asymptotic approach partially because it is conservative.
+
+### Change point for Frequencies
+
+When working with Poisson data (count data), we are looking for a change in the rate, or mean, parameter $\lambda_t$. The $\text{CUSUM}(k)$ statistic can be calculated via
+$$\mbox{CUSUM}(k)= \frac{1}{\hat{\sigma} \sqrt{n}}
+\left[ \sum_{t=1}^k  X_t - \frac{k}{n} \sum_{t=1}^{n} X_t \right]$$
+and the variance estimate is found via $\hat{\sigma}^2 = n^{-1} \sum_{t=1}^n X_t$ under the assumption of Poisson data [@robbins2011changepoints]
 
 ### Change point for Proportions
 
-We coded up a SCUSUM test for the proportion using standard Intro Stat binomial distribution theory. This is not all that different than the MDL search performed earlier. However, unlike the counts (or total number of storms), now the parameter of interest is $p$, the proportion of major storms or proportion of intense storms.
+When working with the proportion of major (or intense) storms, we assume an underlying Binomial likelihood and the parameter of interested in $p$, the proportion of major (or intense) storms. Let $X_t$ be the number of major (or intense) storms in year $t$ and $T_t$ is the total number of storms in that year. Based on Binimial likelihood arguments we calculate
+$$\hat{\theta}_k = \hat{p}_k = \frac{\sum_{i=1}^k X_i}{\sum_{i=1}^k T_i}~~~~~\mbox{and}~~~~~\hat{\theta}_k^* = \hat{p}_k^* = \frac{\sum_{i=k+1}^n X_i}{\sum_{i=k+1}^n T_i}.$$
+For the variance estimate, $\sigma_{\hat{\theta}}$, we use the Wald estimate (covered in Intro Stat courses),
+$$\sigma_{\hat{p}} = \sqrt{\frac{\hat{p}_n(1-\hat{p}_n)}{\sum_{i=1}^n T_i}}$$
+
+
+
 
 # Global Cyclone Record
 
@@ -253,13 +279,15 @@ We begin with a study of the record across the entire globe -- the Global "basin
 
 
 ```{r, echo=FALSE}
-# save(ibtracs_global_results, ibtracs_na_results, ibtracs_ep_results, 
-#      ibtracs_wp_results, ibtracs_ni_results, ibtracs_si_results, ibtracs_sp_results,
-#      file="./data/results_ibtracs.RData")
-# save(hursat_global_results, hursat_na_results, hursat_ep_results, 
-#      hursat_wp_results, hursat_ni_results, hursat_si_results, hursat_sp_results,
-#      file="./data/results_hursat.RData")
-# save(trimmed_global_results, trimmed_na_results, trimmed_ep_results, 
-#      trimmed_wp_results, trimmed_ni_results, trimmed_si_results, trimmed_sp_results,
-#      file="./data/results_trimmed.RData")
+save(ibtracs_global_results, ibtracs_na_results, ibtracs_ep_results,
+     ibtracs_wp_results, ibtracs_ni_results, ibtracs_si_results, ibtracs_sp_results,
+     file="./data/results_ibtracs.RData")
+save(hursat_global_results, hursat_na_results, hursat_ep_results,
+     hursat_wp_results, hursat_ni_results, hursat_si_results, hursat_sp_results,
+     file="./data/results_hursat.RData")
+save(ibtracs_trimmed_global_results, ibtracs_trimmed_na_results, ibtracs_trimmed_ep_results,
+     ibtracs_trimmed_wp_results, ibtracs_trimmed_ni_results, ibtracs_trimmed_si_results, ibtracs_trimmed_sp_results,
+     file="./data/results_trimmed.RData")
 ```
+
+# References
