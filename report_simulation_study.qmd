@@ -30,7 +30,7 @@ In the **Power Studies** we simulate under the alternative hypothesis where a ch
 Overall we make the following conclusions
 
 -   Both the Regression methods and Change point methods provide adequate Type I error rates.
-    -   The SCUSUM change point method is ever-so-slightly conservative.
+    -   The SCUSUM change point method is a little conservative - particularly for working with proportions.
 -   In terms of power, the two methods provide similar power but the SCUSUM method is generally more powerful.
 
 # Global Series

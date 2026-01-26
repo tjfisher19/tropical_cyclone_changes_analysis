@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Tom Fisher">
-<meta name="dcterms.date" content="2026-01-16">
+<meta name="dcterms.date" content="2026-01-26">
 
 <title>Tropical Cyclone Analysis</title>
 <style>
@@ -2514,7 +2514,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 16, 2026</p>
+      <p class="date">January 26, 2026</p>
     </div>
   </div>
   
@@ -2531,7 +2531,7 @@ window.Quarto = {
 <p>Before performing the analysis, we discuss the different methods used.</p>
 <section id="regression-based-methods" class="level2">
 <h2 class="anchored" data-anchor-id="regression-based-methods">Regression Based methods</h2>
-<p>The regression approaches use <strong>Generalized Linear Models</strong> and <strong>Likelihood Ratio testing</strong> <span class="citation" data-cites="mccullagh2019generalized">(<a href="#ref-mccullagh2019generalized" role="doc-biblioref">McCullagh and Nelder 2019</a>)</span></p>
+<p>The regression approaches use <strong>Generalized Linear Models</strong> and <strong>Likelihood Ratio testing</strong> <span class="citation" data-cites="mccullagh2019generalized">(<a href="#ref-mccullagh2019generalized" role="doc-biblioref">McCullagh and Nelder 2019</a>)</span>.</p>
 <section id="for-count-data" class="level3">
 <h3 class="anchored" data-anchor-id="for-count-data">For Count Data</h3>
 <p>For the data consisting of counts (number of non-shorties per season and number of major storms per season) we perform a <strong>Poisson regression with a log-link function</strong>. That is, we model:</p>
@@ -2540,7 +2540,7 @@ window.Quarto = {
 <p><span class="math display">\[Count = \exp(\beta_0 + \beta_1\times Year) = \exp(\beta_0)\times \exp(\beta_1\times Year)\]</span></p>
 <p>So for the Poisson based method, all the effects we find are multiplicative.</p>
 <p>It is worth noting that the Poisson regression is arguably more reliable than standard linear regression (particularly in the six basins) since we are working with moderately small counts. Inference is done using a Likelihood Ratio test on the <span class="math inline">\(\beta\)</span> coefficient using the <code>drop1()</code> function in R.</p>
-<p>I also report values from the predictions based on these models. This provides some context of what the model is suggesting. We use the prediction at the first and last time points to find an <em>overall trend</em>, that trend is then scaled to the #/decade level.</p>
+<p>I also report values from the predictions based on these models. This provides some context of what the model is suggesting. We use the prediction at the first and last time points to find an <em>overall trend</em>, that trend is then scaled to the #/decade level for easier interpretation.</p>
 </section>
 <section id="for-proportions" class="level3">
 <h3 class="anchored" data-anchor-id="for-proportions">For Proportions</h3>
@@ -2553,20 +2553,20 @@ window.Quarto = {
 <section id="changepoint-approaches" class="level2">
 <h2 class="anchored" data-anchor-id="changepoint-approaches">Changepoint Approaches</h2>
 <p>The regression approaches assume a fairly restrictive structure – we are assuming some underlying linear model. That is, any changes we see in the record are following some underlying linear trend. In the changepoint approach, we are simply looking for shifts in the mean of the process.</p>
-<p>At some level, both methods looking for changes, or non-homegenieties in the data, but the changepoint approach doesn’t require that linearity assumption.</p>
+<p>At some level, both methods look for changes, or non-homegenieties, in the data, but the changepoint approach doesn’t require that linearity assumption.</p>
 <section id="at-most-one-changepoint-amoc" class="level3">
 <h3 class="anchored" data-anchor-id="at-most-one-changepoint-amoc">At Most One Changepoint (AMOC)</h3>
-<p>We perform some iid <strong>SCUSUM test</strong> <span class="citation" data-cites="lund2023good">(<a href="#ref-lund2023good" role="doc-biblioref">Lund et al. 2023</a>)</span> to look for at most one changepoint. The SCUSUM statistic is defined as <span class="math display">\[\mbox{SCUSUM}=\frac{1}{n}\sum_{t=1}^n \mbox{CUSUM}(t)^2\]</span> for sample size <span class="math inline">\(n\)</span>, and where <span class="math display">\[\mbox{CUSUM}(k) = \frac{k}{n}\left(1-\frac{k}{n}\right)\left[\frac{\sqrt{n}}{\hat{\sigma}_{\hat{\theta}}}\left(\hat{\theta}_k - \hat{\theta}_k^*\right)\right].\]</span> The changepoint is found via <span class="math display">\[k = \text{argmax} \left|\text{CUSUM}(k)\right|\]</span> Under the null hypothesis of no changes, <span class="math inline">\(\text{SCUSUM}\)</span> converges to <span class="math inline">\(\int_0^1 B^2(t)dt\)</span>, where <span class="math inline">\(\{ B(t) \}_{t=0}^{t=1}\)</span> is the classical Brownian bridge process of empirical statistics. We used the distribution approximations in <span class="citation" data-cites="Tolmatz2002">(<a href="#ref-Tolmatz2002" role="doc-biblioref">Tolmatz 2002</a>)</span> to compute <span class="math inline">\(p\)</span>-values. This provides the most likely changepoint location (given only a single changepoint can occur) and its corresponding <span class="math inline">\(p\)</span>-value.</p>
-<p>It is worth noting that CUSUM based tests can be conservative in practice (reported <span class="math inline">\(p\)</span>-values may be slightly elevated) – we see this a little bit in the simulation study report. If you want something more robust, a boostrapping/simulation type approach could be performed. For this report we use the asymptotic approach partially because it is conservative.</p>
+<p>We perform some iid <strong>SCUSUM test</strong> <span class="citation" data-cites="lund2023good">(<a href="#ref-lund2023good" role="doc-biblioref">Lund et al. 2023</a>)</span> to look for at most one changepoint. The SCUSUM statistic is defined as <span class="math display">\[\mbox{SCUSUM}=\frac{1}{n}\sum_{t=1}^n \mbox{CUSUM}(t)^2\]</span> for sample size <span class="math inline">\(n\)</span>. The details of <span class="math inline">\(\mbox{CUSUM}(t)\)</span> for our two scenarios is outlined below.</p>
+<p>The changepoint is found via <span class="math display">\[k = \text{argmax} \left|\text{CUSUM}(k)\right|.\]</span> Under the null hypothesis of no changes, <span class="math inline">\(\text{SCUSUM}\)</span> converges to <span class="math inline">\(\int_0^1 B^2(t)dt\)</span>, where <span class="math inline">\(\{ B(t) \}_{t=0}^{t=1}\)</span> is the classic Brownian bridge process of empirical statistics. We used the distribution approximations in <span class="citation" data-cites="Tolmatz2002">(<a href="#ref-Tolmatz2002" role="doc-biblioref">Tolmatz 2002</a>)</span> to compute <span class="math inline">\(p\)</span>-values. This provides the most likely changepoint location (given only a single changepoint can occur) and its corresponding <span class="math inline">\(p\)</span>-value.</p>
+<p>It is worth noting that CUSUM based tests can be conservative in practice (reported <span class="math inline">\(p\)</span>-values may be slightly elevated) – we see this a little bit in the simulation study report. A boostrapping/simulation type approach could be performed but here we use the asymptotic approach partially because it is conservative.</p>
 </section>
 <section id="changepoint-for-frequencies" class="level3">
 <h3 class="anchored" data-anchor-id="changepoint-for-frequencies">Changepoint for Frequencies</h3>
-<p>When working with Poisson data (count data), we are looking for a change in the rate, or mean, parameter <span class="math inline">\(\lambda_t\)</span>. The <span class="math inline">\(\text{CUSUM}(k)\)</span> statistic can be calculated via <span class="math display">\[\mbox{CUSUM}(k)= \frac{1}{\hat{\sigma} \sqrt{n}}
-\left[ \sum_{t=1}^k  X_t - \frac{k}{n} \sum_{t=1}^{n} X_t \right]\]</span> and the variance estimate is found via <span class="math inline">\(\hat{\sigma}^2 = n^{-1} \sum_{t=1}^n X_t\)</span> under the assumption of Poisson data <span class="citation" data-cites="robbins2011changepoints">(<a href="#ref-robbins2011changepoints" role="doc-biblioref">Robbins et al. 2011</a>)</span></p>
+<p>For the cyclone count series, we are assuming each observation, <span class="math inline">\(X_t\)</span>, is a Poisson random variable where the mean of the series is determine by a rate parameter. Statistically speaking, when looking for changes in the series we are looking for a change in the rate, or mean, parameter <span class="math inline">\(\lambda_t\)</span>. The <span class="math inline">\(\text{CUSUM}(k)\)</span> statistic can be calculated via <span class="math display">\[\mbox{CUSUM}(k)= \frac{1}{\hat{\sigma} \sqrt{n}}\left[ \sum_{t=1}^k  X_t - \frac{k}{n} \sum_{t=1}^{n} X_t \right]\]</span> and the variance estimate is found via <span class="math inline">\(\hat{\sigma}^2 = n^{-1} \sum_{t=1}^n X_t\)</span> under the assumption of Poisson data <span class="citation" data-cites="robbins2011changepoints">(<a href="#ref-robbins2011changepoints" role="doc-biblioref">Robbins et al. 2011</a>)</span>.</p>
 </section>
 <section id="changepoint-for-proportions" class="level3">
 <h3 class="anchored" data-anchor-id="changepoint-for-proportions">Changepoint for Proportions</h3>
-<p>When working with the proportion of major (or intense) storms, we assume an underlying Binomial likelihood and the parameter of interested in <span class="math inline">\(p\)</span>, the proportion of major (or intense) storms. Let <span class="math inline">\(X_t\)</span> be the number of major (or intense) storms in year <span class="math inline">\(t\)</span> and <span class="math inline">\(T_t\)</span> is the total number of storms in that year. Based on Binimial likelihood arguments we calculate <span class="math display">\[\hat{\theta}_k = \hat{p}_k = \frac{\sum_{i=1}^k X_i}{\sum_{i=1}^k T_i}~~~~~\mbox{and}~~~~~\hat{\theta}_k^* = \hat{p}_k^* = \frac{\sum_{i=k+1}^n X_i}{\sum_{i=k+1}^n T_i}.\]</span> For the variance estimate, <span class="math inline">\(\sigma_{\hat{\theta}}\)</span>, we use the Wald estimate (covered in Intro Stat courses), <span class="math display">\[\sigma_{\hat{p}} = \sqrt{\frac{\hat{p}_n(1-\hat{p}_n)}{\sum_{i=1}^n T_i}}\]</span></p>
+<p>When working with the proportion of major (or intense) storms, we perform a CUSUM comparison on <span class="math inline">\(\hat{p}_t\)</span>, the observed proportion of major (or intense) storms at time <span class="math inline">\(t\)</span>. Let <span class="math inline">\(Y_t\)</span> be the number of major (or intense) storms in year <span class="math inline">\(t\)</span> and <span class="math inline">\(X_t\)</span> is the total number of storms in that year. Based on the Poisson-Binomial likelihood arguments we calculate <span class="math display">\[\hat{p}_t = Y_t/X_t.\]</span> The <span class="math inline">\(\mbox{CUSUM}(k)\)</span> statistic is calculated on the <span class="math inline">\(\hat{p}_t\)</span> terms as <span class="math display">\[\mbox{CUSUM}(k)= \frac{1}{\hat{\sigma} \sqrt{n}}\left[ \sum_{t=1}^k  \hat{p}_t - \frac{k}{n} \sum_{t=1}^{n} \hat{p}_t \right].\]</span> The standard deviation estimation in this case is unwieldy but can be found through conditional expectation arguments: <span class="math display">\[\mbox{Var}(\hat{p}_t) = E\left[\mbox{Var}(\hat{p}_t | X_t)\right] + \mbox{Var}\left( E[\hat{p}_t|X_t]\right).\]</span> Detailed derivation reveals <span class="math display">\[\mbox{Var}(\hat{p}_t) = p^2e^{-\lambda}(1-e^{-\lambda}) + p(1-p)\sum_{k=1}^\infty \frac{e^{-\lambda}\lambda^k}{k(k!)}.\]</span> We estimate this variance by using <span class="math display">\[\hat{p} = \frac{\sum_{t=1}^n Y_t}{\sum_{t=1}^n X_t}~~~~~\mbox{and}~~~~~\hat{\lambda}=\bar{X} = \frac{1}{n}\sum_{t=1}^n X_t\]</span> in place of <span class="math inline">\(p\)</span> and <span class="math inline">\(\lambda\)</span> respectively. In practice, the sequence in the summation quickly converges to zero, so the series can be well-approximated by replacing <span class="math inline">\(\infty\)</span> with a finite number (we use 100).</p>
 </section>
 </section>
 </section>
@@ -2824,10 +2824,10 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-   0.62624208   11.00000000    0.02064423 </code></pre>
+   0.57620563   11.00000000    0.02754971 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1990 to 1991 with <span class="math inline">\(p\)</span>-value 0.0206442.</p>
+<p>The change in proportions occurs 1990 to 1991 with <span class="math inline">\(p\)</span>-value 0.0275497.</p>
 <p>In regime one, the proportion of major storms is 0.3055215 and in regime two, the proportion of major storms is 0.3680498; a change of 0.0625283.</p>
 </section>
 <section id="proportion-of-intense-storms" class="level4">
@@ -2836,11 +2836,11 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
- 2.747552e+00  1.200000e+01  2.801536e-07 </code></pre>
+ 2.621422e+00  2.200000e+01  5.344627e-07 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1991 to 1992 with <span class="math inline">\(p\)</span>-value 2.8015361^{-7}.</p>
-<p>In regime one, the proportion of intense storms is 0.1712018 and in regime two, the proportion of major storms is 0.2684592; a change of 0.0972574.</p>
+<p>The change in proportions occurs 2001 to 2002 with <span class="math inline">\(p\)</span>-value 5.3446271^{-7}.</p>
+<p>In regime one, the proportion of intense storms is 0.2042341 and in regime two, the proportion of major storms is 0.2791847; a change of 0.0749506.</p>
 </section>
 </section>
 </section>
@@ -2964,7 +2964,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <tr class="odd">
 <td style="text-align: left;">Prop Major</td>
 <td style="text-align: right;">1991</td>
-<td style="text-align: right;">0.02064</td>
+<td style="text-align: right;">0.02755</td>
 <td style="text-align: right;">30.55215</td>
 <td style="text-align: right;">36.80498</td>
 <td style="text-align: right;">6.25283</td>
@@ -2981,12 +2981,12 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Prop Freq</td>
-<td style="text-align: right;">1992</td>
+<td style="text-align: right;">2002</td>
 <td style="text-align: right;">0.00000</td>
-<td style="text-align: right;">17.12018</td>
-<td style="text-align: right;">26.84592</td>
-<td style="text-align: right;">9.72574</td>
-<td style="text-align: right;">56.80864</td>
+<td style="text-align: right;">20.42341</td>
+<td style="text-align: right;">27.91847</td>
+<td style="text-align: right;">7.49506</td>
+<td style="text-align: right;">36.69835</td>
 </tr>
 </tbody>
 </table>
@@ -3238,10 +3238,10 @@ YearsSinceStart  1   51.900 216.35 1.2274   0.2679</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-    0.1903681    21.0000000     0.3217506 </code></pre>
+    0.1723575    21.0000000     0.3695736 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 2001 to 2002 with <span class="math inline">\(p\)</span>-value 0.3217506.</p>
+<p>The change in proportions occurs 2001 to 2002 with <span class="math inline">\(p\)</span>-value 0.3695736.</p>
 <p>In regime one, the proportion of major storms is 0.2768 and in regime two, the proportion of major storms is 0.3067293; a change of 0.0299293.</p>
 </section>
 <section id="proportion-of-intense-storms-1" class="level4">
@@ -3250,10 +3250,10 @@ YearsSinceStart  1   51.900 216.35 1.2274   0.2679</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-    0.2213123    21.0000000     0.2561506 </code></pre>
+    0.1744750    21.0000000     0.3635057 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 2001 to 2002 with <span class="math inline">\(p\)</span>-value 0.2561506.</p>
+<p>The change in proportions occurs 2001 to 2002 with <span class="math inline">\(p\)</span>-value 0.3635057.</p>
 <p>In regime one, the proportion of intense storms is 0.1818667 and in regime two, the proportion of major storms is 0.2081377; a change of 0.026271.</p>
 </section>
 </section>
@@ -3378,7 +3378,7 @@ YearsSinceStart  1   51.900 216.35 1.2274   0.2679</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Prop Major</td>
 <td style="text-align: right;">2002</td>
-<td style="text-align: right;">0.32175</td>
+<td style="text-align: right;">0.36957</td>
 <td style="text-align: right;">27.68000</td>
 <td style="text-align: right;">30.67293</td>
 <td style="text-align: right;">2.99293</td>
@@ -3396,7 +3396,7 @@ YearsSinceStart  1   51.900 216.35 1.2274   0.2679</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Prop Freq</td>
 <td style="text-align: right;">2002</td>
-<td style="text-align: right;">0.25615</td>
+<td style="text-align: right;">0.36351</td>
 <td style="text-align: right;">18.18667</td>
 <td style="text-align: right;">20.81377</td>
 <td style="text-align: right;">2.62710</td>
@@ -3658,10 +3658,10 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-  1.086440716  10.000000000   0.001617666 </code></pre>
+    0.9880814    10.0000000     0.0027561 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1990 to 1991 with <span class="math inline">\(p\)</span>-value 0.0016177.</p>
+<p>The change in proportions occurs 1990 to 1991 with <span class="math inline">\(p\)</span>-value 0.0027561.</p>
 <p>In regime one, the proportion of major storms is 0.2977303 and in regime two, the proportion of major storms is 0.3730937; a change of 0.0753634.</p>
 </section>
 <section id="proportion-of-intense-storms-2" class="level4">
@@ -3670,10 +3670,10 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
- 2.817009e+00  1.100000e+01  1.963893e-07 </code></pre>
+ 2.590796e+00  1.100000e+01  6.253227e-07 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1991 to 1992 with <span class="math inline">\(p\)</span>-value 1.9638934^{-7}.</p>
+<p>The change in proportions occurs 1991 to 1992 with <span class="math inline">\(p\)</span>-value 6.2532268^{-7}.</p>
 <p>In regime one, the proportion of intense storms is 0.1715686 and in regime two, the proportion of major storms is 0.2690786; a change of 0.0975099.</p>
 </section>
 </section>
@@ -3798,7 +3798,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <tr class="odd">
 <td style="text-align: left;">Prop Major</td>
 <td style="text-align: right;">1991</td>
-<td style="text-align: right;">0.00162</td>
+<td style="text-align: right;">0.00276</td>
 <td style="text-align: right;">29.77303</td>
 <td style="text-align: right;">37.30937</td>
 <td style="text-align: right;">7.53634</td>
@@ -4079,10 +4079,10 @@ YearsSinceStart  1   52.243 140.33 1.6866   0.1941</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-   0.09771694   15.00000000    0.55596379 </code></pre>
+   0.07746082   15.00000000    0.68220957 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1994 to 1995 with <span class="math inline">\(p\)</span>-value 0.5559638.</p>
+<p>The change in proportions occurs 1994 to 1995 with <span class="math inline">\(p\)</span>-value 0.6822096.</p>
 <p>In regime one, the proportion of major storms is 0.22 and in regime two, the proportion of major storms is 0.2939633; a change of 0.0739633.</p>
 </section>
 <section id="proportion-of-intense-storms-3" class="level4">
@@ -4091,10 +4091,10 @@ YearsSinceStart  1   52.243 140.33 1.6866   0.1941</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-    0.2286134    18.0000000     0.2431083 </code></pre>
+    0.1814216    18.0000000     0.3444654 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1997 to 1998 with <span class="math inline">\(p\)</span>-value 0.2431083.</p>
+<p>The change in proportions occurs 1997 to 1998 with <span class="math inline">\(p\)</span>-value 0.3444654.</p>
 <p>In regime one, the proportion of intense storms is 0.1268657 and in regime two, the proportion of major storms is 0.1959654; a change of 0.0690997.</p>
 </section>
 </section>
@@ -4219,7 +4219,7 @@ YearsSinceStart  1   52.243 140.33 1.6866   0.1941</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Prop Major</td>
 <td style="text-align: right;">1995</td>
-<td style="text-align: right;">0.55596</td>
+<td style="text-align: right;">0.68221</td>
 <td style="text-align: right;">22.00000</td>
 <td style="text-align: right;">29.39633</td>
 <td style="text-align: right;">7.39633</td>
@@ -4237,7 +4237,7 @@ YearsSinceStart  1   52.243 140.33 1.6866   0.1941</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Prop Freq</td>
 <td style="text-align: right;">1998</td>
-<td style="text-align: right;">0.24311</td>
+<td style="text-align: right;">0.34447</td>
 <td style="text-align: right;">12.68657</td>
 <td style="text-align: right;">19.59654</td>
 <td style="text-align: right;">6.90997</td>
@@ -4499,10 +4499,10 @@ YearsSinceStart  1   44.950 109.38 1.5088   0.2193</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-   0.67834570   14.00000000    0.01533833 </code></pre>
+   0.71386928   14.00000000    0.01254763 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1994 to 1995 with <span class="math inline">\(p\)</span>-value 0.0153383.</p>
+<p>The change in proportions occurs 1994 to 1995 with <span class="math inline">\(p\)</span>-value 0.0125476.</p>
 <p>In regime one, the proportion of major storms is 0.1465517 and in regime two, the proportion of major storms is 0.2867133; a change of 0.1401616.</p>
 </section>
 <section id="proportion-of-intense-storms-4" class="level4">
@@ -4511,10 +4511,10 @@ YearsSinceStart  1   44.950 109.38 1.5088   0.2193</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-   0.42740110   14.00000000    0.06666526 </code></pre>
+   0.46173177   14.00000000    0.05414352 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1994 to 1995 with <span class="math inline">\(p\)</span>-value 0.0666653.</p>
+<p>The change in proportions occurs 1994 to 1995 with <span class="math inline">\(p\)</span>-value 0.0541435.</p>
 <p>In regime one, the proportion of intense storms is 0.0775862 and in regime two, the proportion of major storms is 0.1713287; a change of 0.0937425.</p>
 </section>
 </section>
@@ -4639,7 +4639,7 @@ YearsSinceStart  1   44.950 109.38 1.5088   0.2193</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Prop Major</td>
 <td style="text-align: right;">1995</td>
-<td style="text-align: right;">0.01534</td>
+<td style="text-align: right;">0.01255</td>
 <td style="text-align: right;">14.65517</td>
 <td style="text-align: right;">28.67133</td>
 <td style="text-align: right;">14.01616</td>
@@ -4657,7 +4657,7 @@ YearsSinceStart  1   44.950 109.38 1.5088   0.2193</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Prop Freq</td>
 <td style="text-align: right;">1995</td>
-<td style="text-align: right;">0.06667</td>
+<td style="text-align: right;">0.05414</td>
 <td style="text-align: right;">7.75862</td>
 <td style="text-align: right;">17.13287</td>
 <td style="text-align: right;">9.37425</td>
@@ -4917,10 +4917,10 @@ YearsSinceStart  1   47.664 112.31 0.47083   0.4926</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-    0.1346437    14.0000000     0.5036740 </code></pre>
+   0.09965549   14.00000000    0.54477587 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1994 to 1995 with <span class="math inline">\(p\)</span>-value 0.503674.</p>
+<p>The change in proportions occurs 1994 to 1995 with <span class="math inline">\(p\)</span>-value 0.5447759.</p>
 <p>In regime one, the proportion of major storms is 0.2197802 and in regime two, the proportion of major storms is 0.3079848; a change of 0.0882046.</p>
 </section>
 <section id="proportion-of-intense-storms-5" class="level4">
@@ -4929,10 +4929,10 @@ YearsSinceStart  1   47.664 112.31 0.47083   0.4926</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-    0.1675798    17.0000000     0.3837467 </code></pre>
+    0.0863996    17.0000000     0.6244675 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1997 to 1998 with <span class="math inline">\(p\)</span>-value 0.3837467.</p>
+<p>The change in proportions occurs 1997 to 1998 with <span class="math inline">\(p\)</span>-value 0.6244675.</p>
 <p>In regime one, the proportion of intense storms is 0.128 and in regime two, the proportion of major storms is 0.1921397; a change of 0.0641397.</p>
 </section>
 </section>
@@ -5057,7 +5057,7 @@ YearsSinceStart  1   47.664 112.31 0.47083   0.4926</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Prop Major</td>
 <td style="text-align: right;">1995</td>
-<td style="text-align: right;">0.50367</td>
+<td style="text-align: right;">0.54478</td>
 <td style="text-align: right;">21.97802</td>
 <td style="text-align: right;">30.79848</td>
 <td style="text-align: right;">8.82046</td>
@@ -5075,7 +5075,7 @@ YearsSinceStart  1   47.664 112.31 0.47083   0.4926</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Prop Freq</td>
 <td style="text-align: right;">1998</td>
-<td style="text-align: right;">0.38375</td>
+<td style="text-align: right;">0.62447</td>
 <td style="text-align: right;">12.80000</td>
 <td style="text-align: right;">19.21397</td>
 <td style="text-align: right;">6.41397</td>
@@ -5334,11 +5334,11 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-   0.08395708   11.00000000    0.63994562 </code></pre>
+   0.07850174   19.00000000    0.67533633 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1990 to 1991 with <span class="math inline">\(p\)</span>-value 0.6399456.</p>
-<p>In regime one, the proportion of major storms is 0.3291925 and in regime two, the proportion of major storms is 0.3884892; a change of 0.0592967.</p>
+<p>The change in proportions occurs 1998 to 1999 with <span class="math inline">\(p\)</span>-value 0.6753363.</p>
+<p>In regime one, the proportion of major storms is 0.3961538 and in regime two, the proportion of major storms is 0.3522013; a change of -0.0439526.</p>
 </section>
 <section id="proportion-of-intense-storms-6" class="level4">
 <h4 class="anchored" data-anchor-id="proportion-of-intense-storms-6">Proportion of intense storms</h4>
@@ -5346,11 +5346,11 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-   0.57482352   12.00000000    0.02777158 </code></pre>
+   0.39090801   34.00000000    0.08346233 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1991 to 1992 with <span class="math inline">\(p\)</span>-value 0.0277716.</p>
-<p>In regime one, the proportion of intense storms is 0.1666667 and in regime two, the proportion of major storms is 0.289604; a change of 0.1229373.</p>
+<p>The change in proportions occurs 2013 to 2014 with <span class="math inline">\(p\)</span>-value 0.0834623.</p>
+<p>In regime one, the proportion of intense storms is 0.2179177 and in regime two, the proportion of major storms is 0.3393939; a change of 0.1214763.</p>
 </section>
 </section>
 </section>
@@ -5473,12 +5473,12 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Prop Major</td>
-<td style="text-align: right;">1991</td>
-<td style="text-align: right;">0.63995</td>
-<td style="text-align: right;">32.91925</td>
-<td style="text-align: right;">38.84892</td>
-<td style="text-align: right;">5.92967</td>
-<td style="text-align: right;">18.01276</td>
+<td style="text-align: right;">1999</td>
+<td style="text-align: right;">0.67534</td>
+<td style="text-align: right;">39.61538</td>
+<td style="text-align: right;">35.22013</td>
+<td style="text-align: right;">-4.39526</td>
+<td style="text-align: right;">-11.09483</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Intense Freq</td>
@@ -5491,12 +5491,12 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Prop Freq</td>
-<td style="text-align: right;">1992</td>
-<td style="text-align: right;">0.02777</td>
-<td style="text-align: right;">16.66667</td>
-<td style="text-align: right;">28.96040</td>
-<td style="text-align: right;">12.29373</td>
-<td style="text-align: right;">73.76238</td>
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">0.08346</td>
+<td style="text-align: right;">21.79177</td>
+<td style="text-align: right;">33.93939</td>
+<td style="text-align: right;">12.14763</td>
+<td style="text-align: right;">55.74411</td>
 </tr>
 </tbody>
 </table>
@@ -5746,10 +5746,10 @@ YearsSinceStart  1   41.470 143.40 0.011437   0.9148</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-    0.0593159    18.0000000     0.8060209 </code></pre>
+   0.05402001   18.00000000    0.84222754 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1998 to 1999 with <span class="math inline">\(p\)</span>-value 0.8060209.</p>
+<p>The change in proportions occurs 1998 to 1999 with <span class="math inline">\(p\)</span>-value 0.8422275.</p>
 <p>In regime one, the proportion of major storms is 0.3547297 and in regime two, the proportion of major storms is 0.310219; a change of -0.0445108.</p>
 </section>
 <section id="proportion-of-intense-storms-7" class="level4">
@@ -5758,10 +5758,10 @@ YearsSinceStart  1   41.470 143.40 0.011437   0.9148</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-   0.07741408   18.00000000    0.68251904 </code></pre>
+    0.0654641    18.0000000     0.7635663 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1998 to 1999 with <span class="math inline">\(p\)</span>-value 0.682519.</p>
+<p>The change in proportions occurs 1998 to 1999 with <span class="math inline">\(p\)</span>-value 0.7635663.</p>
 <p>In regime one, the proportion of intense storms is 0.2533784 and in regime two, the proportion of major storms is 0.2116788; a change of -0.0416995.</p>
 </section>
 </section>
@@ -5886,7 +5886,7 @@ YearsSinceStart  1   41.470 143.40 0.011437   0.9148</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Prop Major</td>
 <td style="text-align: right;">1999</td>
-<td style="text-align: right;">0.80602</td>
+<td style="text-align: right;">0.84223</td>
 <td style="text-align: right;">35.47297</td>
 <td style="text-align: right;">31.02190</td>
 <td style="text-align: right;">-4.45108</td>
@@ -5904,7 +5904,7 @@ YearsSinceStart  1   41.470 143.40 0.011437   0.9148</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Prop Freq</td>
 <td style="text-align: right;">1999</td>
-<td style="text-align: right;">0.68252</td>
+<td style="text-align: right;">0.76357</td>
 <td style="text-align: right;">25.33784</td>
 <td style="text-align: right;">21.16788</td>
 <td style="text-align: right;">-4.16995</td>
@@ -6160,10 +6160,10 @@ YearsSinceStart  1   63.513 152.93 2.3574   0.1247</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-    0.1024930    18.0000000     0.6765492 </code></pre>
+    0.1132624    18.0000000     0.6102719 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1998 to 1999 with <span class="math inline">\(p\)</span>-value 0.6765492.</p>
+<p>The change in proportions occurs 1998 to 1999 with <span class="math inline">\(p\)</span>-value 0.6102719.</p>
 <p>In regime one, the proportion of major storms is 0.3968254 and in regime two, the proportion of major storms is 0.3409091; a change of -0.0559163.</p>
 </section>
 <section id="proportion-of-intense-storms-8" class="level4">
@@ -6172,10 +6172,10 @@ YearsSinceStart  1   63.513 152.93 2.3574   0.1247</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-    0.2915265    11.0000000     0.1578262 </code></pre>
+    0.1924071    11.0000000     0.3168370 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1991 to 1992 with <span class="math inline">\(p\)</span>-value 0.1578262.</p>
+<p>The change in proportions occurs 1991 to 1992 with <span class="math inline">\(p\)</span>-value 0.316837.</p>
 <p>In regime one, the proportion of intense storms is 0.1686747 and in regime two, the proportion of major storms is 0.2777778; a change of 0.1091031.</p>
 </section>
 </section>
@@ -6300,7 +6300,7 @@ YearsSinceStart  1   63.513 152.93 2.3574   0.1247</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Prop Major</td>
 <td style="text-align: right;">1999</td>
-<td style="text-align: right;">0.67655</td>
+<td style="text-align: right;">0.61027</td>
 <td style="text-align: right;">39.68254</td>
 <td style="text-align: right;">34.09091</td>
 <td style="text-align: right;">-5.59163</td>
@@ -6318,7 +6318,7 @@ YearsSinceStart  1   63.513 152.93 2.3574   0.1247</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Prop Freq</td>
 <td style="text-align: right;">1992</td>
-<td style="text-align: right;">0.15783</td>
+<td style="text-align: right;">0.31684</td>
 <td style="text-align: right;">16.86747</td>
 <td style="text-align: right;">27.77778</td>
 <td style="text-align: right;">10.91031</td>
@@ -6579,10 +6579,10 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-    0.3452491    21.0000000     0.1112540 </code></pre>
+     0.280296     21.000000      0.170129 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 2000 to 2001 with <span class="math inline">\(p\)</span>-value 0.111254.</p>
+<p>The change in proportions occurs 2000 to 2001 with <span class="math inline">\(p\)</span>-value 0.170129.</p>
 <p>In regime one, the proportion of major storms is 0.359841 and in regime two, the proportion of major storms is 0.4407115; a change of 0.0808705.</p>
 </section>
 <section id="proportion-of-intense-storms-9" class="level4">
@@ -6591,10 +6591,10 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-  0.885025291  22.000000000   0.004842603 </code></pre>
+   0.73638334   22.00000000    0.01105523 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 2001 to 2002 with <span class="math inline">\(p\)</span>-value 0.0048426.</p>
+<p>The change in proportions occurs 2001 to 2002 with <span class="math inline">\(p\)</span>-value 0.0110552.</p>
 <p>In regime one, the proportion of intense storms is 0.2604563 and in regime two, the proportion of major storms is 0.3643892; a change of 0.103933.</p>
 </section>
 </section>
@@ -6719,7 +6719,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <tr class="odd">
 <td style="text-align: left;">Prop Major</td>
 <td style="text-align: right;">2001</td>
-<td style="text-align: right;">0.11125</td>
+<td style="text-align: right;">0.17013</td>
 <td style="text-align: right;">35.98410</td>
 <td style="text-align: right;">44.07115</td>
 <td style="text-align: right;">8.08705</td>
@@ -6737,7 +6737,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <tr class="odd">
 <td style="text-align: left;">Prop Freq</td>
 <td style="text-align: right;">2002</td>
-<td style="text-align: right;">0.00484</td>
+<td style="text-align: right;">0.01106</td>
 <td style="text-align: right;">26.04563</td>
 <td style="text-align: right;">36.43892</td>
 <td style="text-align: right;">10.39330</td>
@@ -6993,10 +6993,10 @@ YearsSinceStart  1   63.811 190.30 0.13806   0.7102</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-    0.1858144    12.0000000     0.3330704 </code></pre>
+    0.1603657    12.0000000     0.4064999 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1992 to 1993 with <span class="math inline">\(p\)</span>-value 0.3330704.</p>
+<p>The change in proportions occurs 1992 to 1993 with <span class="math inline">\(p\)</span>-value 0.4064999.</p>
 <p>In regime one, the proportion of major storms is 0.3707865 and in regime two, the proportion of major storms is 0.3138374; a change of -0.0569491.</p>
 </section>
 <section id="proportion-of-intense-storms-10" class="level4">
@@ -7005,11 +7005,11 @@ YearsSinceStart  1   63.811 190.30 0.13806   0.7102</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-    0.2393892    25.0000000     0.2252704 </code></pre>
+    0.2145102    31.0000000     0.2690618 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 2005 to 2006 with <span class="math inline">\(p\)</span>-value 0.2252704.</p>
-<p>In regime one, the proportion of intense storms is 0.2219287 and in regime two, the proportion of major storms is 0.27; a change of 0.0480713.</p>
+<p>The change in proportions occurs 2011 to 2012 with <span class="math inline">\(p\)</span>-value 0.2690618.</p>
+<p>In regime one, the proportion of intense storms is 0.2246941 and in regime two, the proportion of major storms is 0.2974684; a change of 0.0727742.</p>
 </section>
 </section>
 </section>
@@ -7133,7 +7133,7 @@ YearsSinceStart  1   63.811 190.30 0.13806   0.7102</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Prop Major</td>
 <td style="text-align: right;">1993</td>
-<td style="text-align: right;">0.33307</td>
+<td style="text-align: right;">0.40650</td>
 <td style="text-align: right;">37.07865</td>
 <td style="text-align: right;">31.38374</td>
 <td style="text-align: right;">-5.69491</td>
@@ -7150,12 +7150,12 @@ YearsSinceStart  1   63.811 190.30 0.13806   0.7102</code></pre>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Prop Freq</td>
-<td style="text-align: right;">2006</td>
-<td style="text-align: right;">0.22527</td>
-<td style="text-align: right;">22.19287</td>
-<td style="text-align: right;">27.00000</td>
-<td style="text-align: right;">4.80713</td>
-<td style="text-align: right;">21.66071</td>
+<td style="text-align: right;">2012</td>
+<td style="text-align: right;">0.26906</td>
+<td style="text-align: right;">22.46941</td>
+<td style="text-align: right;">29.74684</td>
+<td style="text-align: right;">7.27742</td>
+<td style="text-align: right;">32.38814</td>
 </tr>
 </tbody>
 </table>
@@ -7411,10 +7411,10 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-   0.67059460   20.00000000    0.01602822 </code></pre>
+   0.53588284   20.00000000    0.03485692 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 2000 to 2001 with <span class="math inline">\(p\)</span>-value 0.0160282.</p>
+<p>The change in proportions occurs 2000 to 2001 with <span class="math inline">\(p\)</span>-value 0.0348569.</p>
 <p>In regime one, the proportion of major storms is 0.3575884 and in regime two, the proportion of major storms is 0.4670487; a change of 0.1094604.</p>
 </section>
 <section id="proportion-of-intense-storms-11" class="level4">
@@ -7423,10 +7423,10 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-  1.152340869  21.000000000   0.001134663 </code></pre>
+  0.929782409  21.000000000   0.003788301 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 2001 to 2002 with <span class="math inline">\(p\)</span>-value 0.0011347.</p>
+<p>The change in proportions occurs 2001 to 2002 with <span class="math inline">\(p\)</span>-value 0.0037883.</p>
 <p>In regime one, the proportion of intense storms is 0.2638889 and in regime two, the proportion of major storms is 0.3895706; a change of 0.1256817.</p>
 </section>
 </section>
@@ -7551,7 +7551,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <tr class="odd">
 <td style="text-align: left;">Prop Major</td>
 <td style="text-align: right;">2001</td>
-<td style="text-align: right;">0.01603</td>
+<td style="text-align: right;">0.03486</td>
 <td style="text-align: right;">35.75884</td>
 <td style="text-align: right;">46.70487</td>
 <td style="text-align: right;">10.94604</td>
@@ -7569,7 +7569,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <tr class="odd">
 <td style="text-align: left;">Prop Freq</td>
 <td style="text-align: right;">2002</td>
-<td style="text-align: right;">0.00113</td>
+<td style="text-align: right;">0.00379</td>
 <td style="text-align: right;">26.38889</td>
 <td style="text-align: right;">38.95706</td>
 <td style="text-align: right;">12.56817</td>
@@ -7832,11 +7832,11 @@ YearsSinceStart  1   65.189 95.730 0.0064511    0.936</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-    0.3165408    26.0000000     0.1338731 </code></pre>
+    0.1026393     8.0000000     0.6755793 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 2005 to 2006 with <span class="math inline">\(p\)</span>-value 0.1338731.</p>
-<p>In regime one, the proportion of major storms is 0.2297297 and in regime two, the proportion of major storms is 0.3934426; a change of 0.1637129.</p>
+<p>The change in proportions occurs 1987 to 1988 with <span class="math inline">\(p\)</span>-value 0.6755793.</p>
+<p>In regime one, the proportion of major storms is 0.1428571 and in regime two, the proportion of major storms is 0.3333333; a change of 0.1904762.</p>
 </section>
 <section id="proportion-of-intense-storms-12" class="level4">
 <h4 class="anchored" data-anchor-id="proportion-of-intense-storms-12">Proportion of intense storms</h4>
@@ -7844,11 +7844,11 @@ YearsSinceStart  1   65.189 95.730 0.0064511    0.936</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-   0.04333782   26.00000000    0.91080776 </code></pre>
+    0.1764642    29.0000000     0.3579204 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 2005 to 2006 with <span class="math inline">\(p\)</span>-value 0.9108078.</p>
-<p>In regime one, the proportion of intense storms is 0.1756757 and in regime two, the proportion of major storms is 0.2459016; a change of 0.070226.</p>
+<p>The change in proportions occurs 2008 to 2009 with <span class="math inline">\(p\)</span>-value 0.3579204.</p>
+<p>In regime one, the proportion of intense storms is 0.2151899 and in regime two, the proportion of major storms is 0.1964286; a change of -0.0187613.</p>
 </section>
 </section>
 </section>
@@ -7971,12 +7971,12 @@ YearsSinceStart  1   65.189 95.730 0.0064511    0.936</code></pre>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Prop Major</td>
-<td style="text-align: right;">2006</td>
-<td style="text-align: right;">0.13387</td>
-<td style="text-align: right;">22.97297</td>
-<td style="text-align: right;">39.34426</td>
-<td style="text-align: right;">16.37129</td>
-<td style="text-align: right;">71.26326</td>
+<td style="text-align: right;">1988</td>
+<td style="text-align: right;">0.67558</td>
+<td style="text-align: right;">14.28571</td>
+<td style="text-align: right;">33.33333</td>
+<td style="text-align: right;">19.04762</td>
+<td style="text-align: right;">133.33333</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Intense Freq</td>
@@ -7989,12 +7989,12 @@ YearsSinceStart  1   65.189 95.730 0.0064511    0.936</code></pre>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Prop Freq</td>
-<td style="text-align: right;">2006</td>
-<td style="text-align: right;">0.91081</td>
-<td style="text-align: right;">17.56757</td>
-<td style="text-align: right;">24.59016</td>
-<td style="text-align: right;">7.02260</td>
-<td style="text-align: right;">39.97478</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">0.35792</td>
+<td style="text-align: right;">21.51899</td>
+<td style="text-align: right;">19.64286</td>
+<td style="text-align: right;">-1.87613</td>
+<td style="text-align: right;">-8.71849</td>
 </tr>
 </tbody>
 </table>
@@ -8244,10 +8244,10 @@ YearsSinceStart  1   27.937 47.23 0.01944   0.8891</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-    0.0926164    25.0000000     0.5861688 </code></pre>
+   0.04665221   25.00000000    0.89052351 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 2005 to 2006 with <span class="math inline">\(p\)</span>-value 0.5861688.</p>
+<p>The change in proportions occurs 2005 to 2006 with <span class="math inline">\(p\)</span>-value 0.8905235.</p>
 <p>In regime one, the proportion of major storms is 0.0952381 and in regime two, the proportion of major storms is 0.1851852; a change of 0.0899471.</p>
 </section>
 <section id="proportion-of-intense-storms-13" class="level4">
@@ -8256,10 +8256,10 @@ YearsSinceStart  1   27.937 47.23 0.01944   0.8891</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-   0.07692201    8.00000000    0.68578154 </code></pre>
+   0.07125468    8.00000000    0.72387868 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1988 to 1989 with <span class="math inline">\(p\)</span>-value 0.6857815.</p>
+<p>The change in proportions occurs 1988 to 1989 with <span class="math inline">\(p\)</span>-value 0.7238787.</p>
 <p>In regime one, the proportion of intense storms is 0 and in regime two, the proportion of major storms is 0.075188; a change of 0.075188.</p>
 </section>
 </section>
@@ -8384,7 +8384,7 @@ YearsSinceStart  1   27.937 47.23 0.01944   0.8891</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Prop Major</td>
 <td style="text-align: right;">2006</td>
-<td style="text-align: right;">0.58617</td>
+<td style="text-align: right;">0.89052</td>
 <td style="text-align: right;">9.52381</td>
 <td style="text-align: right;">18.51852</td>
 <td style="text-align: right;">8.99471</td>
@@ -8402,7 +8402,7 @@ YearsSinceStart  1   27.937 47.23 0.01944   0.8891</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Prop Freq</td>
 <td style="text-align: right;">1989</td>
-<td style="text-align: right;">0.68578</td>
+<td style="text-align: right;">0.72388</td>
 <td style="text-align: right;">0.00000</td>
 <td style="text-align: right;">7.51880</td>
 <td style="text-align: right;">7.51880</td>
@@ -8656,11 +8656,11 @@ YearsSinceStart  1   58.205 81.45 0.30998   0.5777</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-    0.1653303    25.0000000     0.3906611 </code></pre>
+   0.09808116    7.00000000    0.55384949 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 2005 to 2006 with <span class="math inline">\(p\)</span>-value 0.3906611.</p>
-<p>In regime one, the proportion of major storms is 0.2297297 and in regime two, the proportion of major storms is 0.3870968; a change of 0.157367.</p>
+<p>The change in proportions occurs 1987 to 1988 with <span class="math inline">\(p\)</span>-value 0.5538495.</p>
+<p>In regime one, the proportion of major storms is 0.1428571 and in regime two, the proportion of major storms is 0.3095238; a change of 0.1666667.</p>
 </section>
 <section id="proportion-of-intense-storms-14" class="level4">
 <h4 class="anchored" data-anchor-id="proportion-of-intense-storms-14">Proportion of intense storms</h4>
@@ -8668,11 +8668,11 @@ YearsSinceStart  1   58.205 81.45 0.30998   0.5777</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-   0.07738372   25.00000000    0.68272014 </code></pre>
+   0.08299029   28.00000000    0.64613665 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 2005 to 2006 with <span class="math inline">\(p\)</span>-value 0.6827201.</p>
-<p>In regime one, the proportion of intense storms is 0.1756757 and in regime two, the proportion of major storms is 0.3225806; a change of 0.146905.</p>
+<p>The change in proportions occurs 2008 to 2009 with <span class="math inline">\(p\)</span>-value 0.6461366.</p>
+<p>In regime one, the proportion of intense storms is 0.2151899 and in regime two, the proportion of major storms is 0.2307692; a change of 0.0155794.</p>
 </section>
 </section>
 </section>
@@ -8795,12 +8795,12 @@ YearsSinceStart  1   58.205 81.45 0.30998   0.5777</code></pre>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Prop Major</td>
-<td style="text-align: right;">2006</td>
-<td style="text-align: right;">0.39066</td>
-<td style="text-align: right;">22.97297</td>
-<td style="text-align: right;">38.70968</td>
-<td style="text-align: right;">15.73670</td>
-<td style="text-align: right;">68.50095</td>
+<td style="text-align: right;">1988</td>
+<td style="text-align: right;">0.55385</td>
+<td style="text-align: right;">14.28571</td>
+<td style="text-align: right;">30.95238</td>
+<td style="text-align: right;">16.66667</td>
+<td style="text-align: right;">116.66667</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Intense Freq</td>
@@ -8813,12 +8813,12 @@ YearsSinceStart  1   58.205 81.45 0.30998   0.5777</code></pre>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Prop Freq</td>
-<td style="text-align: right;">2006</td>
-<td style="text-align: right;">0.68272</td>
-<td style="text-align: right;">17.56757</td>
-<td style="text-align: right;">32.25806</td>
-<td style="text-align: right;">14.69050</td>
-<td style="text-align: right;">83.62283</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">0.64614</td>
+<td style="text-align: right;">21.51899</td>
+<td style="text-align: right;">23.07692</td>
+<td style="text-align: right;">1.55794</td>
+<td style="text-align: right;">7.23982</td>
 </tr>
 </tbody>
 </table>
@@ -9077,11 +9077,11 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-   0.36467106   14.00000000    0.09835741 </code></pre>
+    0.3232242    12.0000000     0.1281837 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1993 to 1994 with <span class="math inline">\(p\)</span>-value 0.0983574.</p>
-<p>In regime one, the proportion of major storms is 0.2912621 and in regime two, the proportion of major storms is 0.3792325; a change of 0.0879704.</p>
+<p>The change in proportions occurs 1991 to 1992 with <span class="math inline">\(p\)</span>-value 0.1281837.</p>
+<p>In regime one, the proportion of major storms is 0.2880435 and in regime two, the proportion of major storms is 0.3763441; a change of 0.0883006.</p>
 </section>
 <section id="proportion-of-intense-storms-15" class="level4">
 <h4 class="anchored" data-anchor-id="proportion-of-intense-storms-15">Proportion of intense storms</h4>
@@ -9089,10 +9089,10 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
- 1.253748e+00  1.200000e+01  6.595091e-04 </code></pre>
+  1.130598973  12.000000000   0.001275262 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1991 to 1992 with <span class="math inline">\(p\)</span>-value 6.5950908^{-4}.</p>
+<p>The change in proportions occurs 1991 to 1992 with <span class="math inline">\(p\)</span>-value 0.0012753.</p>
 <p>In regime one, the proportion of intense storms is 0.1195652 and in regime two, the proportion of major storms is 0.2645161; a change of 0.1449509.</p>
 </section>
 </section>
@@ -9216,12 +9216,12 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Prop Major</td>
-<td style="text-align: right;">1994</td>
-<td style="text-align: right;">0.09836</td>
-<td style="text-align: right;">29.12621</td>
-<td style="text-align: right;">37.92325</td>
-<td style="text-align: right;">8.79704</td>
-<td style="text-align: right;">30.20316</td>
+<td style="text-align: right;">1992</td>
+<td style="text-align: right;">0.12818</td>
+<td style="text-align: right;">28.80435</td>
+<td style="text-align: right;">37.63441</td>
+<td style="text-align: right;">8.83006</td>
+<td style="text-align: right;">30.65531</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Intense Freq</td>
@@ -9235,7 +9235,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <tr class="odd">
 <td style="text-align: left;">Prop Freq</td>
 <td style="text-align: right;">1992</td>
-<td style="text-align: right;">0.00066</td>
+<td style="text-align: right;">0.00128</td>
 <td style="text-align: right;">11.95652</td>
 <td style="text-align: right;">26.45161</td>
 <td style="text-align: right;">14.49509</td>
@@ -9491,10 +9491,10 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-    0.3046090     7.0000000     0.1447468 </code></pre>
+    0.2911062     7.0000000     0.1582680 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1987 to 1988 with <span class="math inline">\(p\)</span>-value 0.1447468.</p>
+<p>The change in proportions occurs 1987 to 1988 with <span class="math inline">\(p\)</span>-value 0.158268.</p>
 <p>In regime one, the proportion of major storms is 0.1272727 and in regime two, the proportion of major storms is 0.2767677; a change of 0.1494949.</p>
 </section>
 <section id="proportion-of-intense-storms-16" class="level4">
@@ -9503,10 +9503,10 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-   0.36379910    8.00000000    0.09889986 </code></pre>
+   0.40446066    8.00000000    0.07674396 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1988 to 1989 with <span class="math inline">\(p\)</span>-value 0.0988999.</p>
+<p>The change in proportions occurs 1988 to 1989 with <span class="math inline">\(p\)</span>-value 0.076744.</p>
 <p>In regime one, the proportion of intense storms is 0.0737705 and in regime two, the proportion of major storms is 0.1656315; a change of 0.091861.</p>
 </section>
 </section>
@@ -9631,7 +9631,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <tr class="odd">
 <td style="text-align: left;">Prop Major</td>
 <td style="text-align: right;">1988</td>
-<td style="text-align: right;">0.14475</td>
+<td style="text-align: right;">0.15827</td>
 <td style="text-align: right;">12.72727</td>
 <td style="text-align: right;">27.67677</td>
 <td style="text-align: right;">14.94949</td>
@@ -9649,7 +9649,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <tr class="odd">
 <td style="text-align: left;">Prop Freq</td>
 <td style="text-align: right;">1989</td>
-<td style="text-align: right;">0.09890</td>
+<td style="text-align: right;">0.07674</td>
 <td style="text-align: right;">7.37705</td>
 <td style="text-align: right;">16.56315</td>
 <td style="text-align: right;">9.18610</td>
@@ -9911,11 +9911,11 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-   0.41079758   13.00000000    0.07380527 </code></pre>
+    0.2969966    10.0000000     0.1522015 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1993 to 1994 with <span class="math inline">\(p\)</span>-value 0.0738053.</p>
-<p>In regime one, the proportion of major storms is 0.2659574 and in regime two, the proportion of major storms is 0.3684211; a change of 0.1024636.</p>
+<p>The change in proportions occurs 1990 to 1991 with <span class="math inline">\(p\)</span>-value 0.1522015.</p>
+<p>In regime one, the proportion of major storms is 0.2516556 and in regime two, the proportion of major storms is 0.3638889; a change of 0.1122333.</p>
 </section>
 <section id="proportion-of-intense-storms-17" class="level4">
 <h4 class="anchored" data-anchor-id="proportion-of-intense-storms-17">Proportion of intense storms</h4>
@@ -9923,10 +9923,10 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-  1.167284268  11.000000000   0.001047232 </code></pre>
+  0.955970970  11.000000000   0.003283119 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1991 to 1992 with <span class="math inline">\(p\)</span>-value 0.0010472.</p>
+<p>The change in proportions occurs 1991 to 1992 with <span class="math inline">\(p\)</span>-value 0.0032831.</p>
 <p>In regime one, the proportion of intense storms is 0.1024096 and in regime two, the proportion of major storms is 0.2550725; a change of 0.1526628.</p>
 </section>
 </section>
@@ -10050,12 +10050,12 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Prop Major</td>
-<td style="text-align: right;">1994</td>
-<td style="text-align: right;">0.07381</td>
-<td style="text-align: right;">26.59574</td>
-<td style="text-align: right;">36.84211</td>
-<td style="text-align: right;">10.24636</td>
-<td style="text-align: right;">38.52632</td>
+<td style="text-align: right;">1991</td>
+<td style="text-align: right;">0.15220</td>
+<td style="text-align: right;">25.16556</td>
+<td style="text-align: right;">36.38889</td>
+<td style="text-align: right;">11.22333</td>
+<td style="text-align: right;">44.59795</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Intense Freq</td>
@@ -10069,7 +10069,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <tr class="odd">
 <td style="text-align: left;">Prop Freq</td>
 <td style="text-align: right;">1992</td>
-<td style="text-align: right;">0.00105</td>
+<td style="text-align: right;">0.00328</td>
 <td style="text-align: right;">10.24096</td>
 <td style="text-align: right;">25.50725</td>
 <td style="text-align: right;">15.26628</td>
@@ -10330,10 +10330,10 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-    0.2405925    23.0000000     0.2233761 </code></pre>
+    0.2106043    23.0000000     0.2768302 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 2002 to 2003 with <span class="math inline">\(p\)</span>-value 0.2233761.</p>
+<p>The change in proportions occurs 2002 to 2003 with <span class="math inline">\(p\)</span>-value 0.2768302.</p>
 <p>In regime one, the proportion of major storms is 0.2633929 and in regime two, the proportion of major storms is 0.3691275; a change of 0.1057347.</p>
 </section>
 <section id="proportion-of-intense-storms-18" class="level4">
@@ -10342,11 +10342,11 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-  0.929840449  23.000000000   0.003787098 </code></pre>
+   0.55450431   22.00000000    0.03125811 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 2002 to 2003 with <span class="math inline">\(p\)</span>-value 0.0037871.</p>
-<p>In regime one, the proportion of intense storms is 0.1116071 and in regime two, the proportion of major storms is 0.2550336; a change of 0.1434264.</p>
+<p>The change in proportions occurs 2001 to 2002 with <span class="math inline">\(p\)</span>-value 0.0312581.</p>
+<p>In regime one, the proportion of intense storms is 0.109589 and in regime two, the proportion of major storms is 0.2532468; a change of 0.1436577.</p>
 </section>
 </section>
 </section>
@@ -10470,7 +10470,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <tr class="odd">
 <td style="text-align: left;">Prop Major</td>
 <td style="text-align: right;">2003</td>
-<td style="text-align: right;">0.22338</td>
+<td style="text-align: right;">0.27683</td>
 <td style="text-align: right;">26.33929</td>
 <td style="text-align: right;">36.91275</td>
 <td style="text-align: right;">10.57347</td>
@@ -10487,12 +10487,12 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Prop Freq</td>
-<td style="text-align: right;">2003</td>
-<td style="text-align: right;">0.00379</td>
-<td style="text-align: right;">11.16071</td>
-<td style="text-align: right;">25.50336</td>
-<td style="text-align: right;">14.34264</td>
-<td style="text-align: right;">128.51007</td>
+<td style="text-align: right;">2002</td>
+<td style="text-align: right;">0.03126</td>
+<td style="text-align: right;">10.95890</td>
+<td style="text-align: right;">25.32468</td>
+<td style="text-align: right;">14.36577</td>
+<td style="text-align: right;">131.08766</td>
 </tr>
 </tbody>
 </table>
@@ -10746,10 +10746,10 @@ YearsSinceStart  1   39.575 116.23 0.46368   0.4959</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-    0.1362466    15.0000000     0.4967575 </code></pre>
+    0.1310477    15.0000000     0.5196784 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1995 to 1996 with <span class="math inline">\(p\)</span>-value 0.4967575.</p>
+<p>The change in proportions occurs 1995 to 1996 with <span class="math inline">\(p\)</span>-value 0.5196784.</p>
 <p>In regime one, the proportion of major storms is 0.3154762 and in regime two, the proportion of major storms is 0.2395833; a change of -0.0758929.</p>
 </section>
 <section id="proportion-of-intense-storms-19" class="level4">
@@ -10758,10 +10758,10 @@ YearsSinceStart  1   39.575 116.23 0.46368   0.4959</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-    0.1510645    29.0000000     0.4384995 </code></pre>
+    0.1160233    29.0000000     0.5948072 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 2009 to 2010 with <span class="math inline">\(p\)</span>-value 0.4384995.</p>
+<p>The change in proportions occurs 2009 to 2010 with <span class="math inline">\(p\)</span>-value 0.5948072.</p>
 <p>In regime one, the proportion of intense storms is 0.1711409 and in regime two, the proportion of major storms is 0.2741935; a change of 0.1030526.</p>
 </section>
 </section>
@@ -10886,7 +10886,7 @@ YearsSinceStart  1   39.575 116.23 0.46368   0.4959</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Prop Major</td>
 <td style="text-align: right;">1996</td>
-<td style="text-align: right;">0.49676</td>
+<td style="text-align: right;">0.51968</td>
 <td style="text-align: right;">31.54762</td>
 <td style="text-align: right;">23.95833</td>
 <td style="text-align: right;">-7.58929</td>
@@ -10904,7 +10904,7 @@ YearsSinceStart  1   39.575 116.23 0.46368   0.4959</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Prop Freq</td>
 <td style="text-align: right;">2010</td>
-<td style="text-align: right;">0.43850</td>
+<td style="text-align: right;">0.59481</td>
 <td style="text-align: right;">17.11409</td>
 <td style="text-align: right;">27.41935</td>
 <td style="text-align: right;">10.30526</td>
@@ -11166,10 +11166,10 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-   0.53751345   22.00000000    0.03452507 </code></pre>
+   0.46419284   22.00000000    0.05334794 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 2002 to 2003 with <span class="math inline">\(p\)</span>-value 0.0345251.</p>
+<p>The change in proportions occurs 2002 to 2003 with <span class="math inline">\(p\)</span>-value 0.0533479.</p>
 <p>In regime one, the proportion of major storms is 0.2651163 and in regime two, the proportion of major storms is 0.4285714; a change of 0.1634551.</p>
 </section>
 <section id="proportion-of-intense-storms-20" class="level4">
@@ -11178,10 +11178,10 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
- 1.418274e+00  2.100000e+01  2.753214e-04 </code></pre>
+  0.801316572  21.000000000   0.007692289 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 2001 to 2002 with <span class="math inline">\(p\)</span>-value 2.7532139^{-4}.</p>
+<p>The change in proportions occurs 2001 to 2002 with <span class="math inline">\(p\)</span>-value 0.0076923.</p>
 <p>In regime one, the proportion of intense storms is 0.1142857 and in regime two, the proportion of major storms is 0.3009709; a change of 0.1866852.</p>
 </section>
 </section>
@@ -11306,7 +11306,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <tr class="odd">
 <td style="text-align: left;">Prop Major</td>
 <td style="text-align: right;">2003</td>
-<td style="text-align: right;">0.03453</td>
+<td style="text-align: right;">0.05335</td>
 <td style="text-align: right;">26.51163</td>
 <td style="text-align: right;">42.85714</td>
 <td style="text-align: right;">16.34551</td>
@@ -11324,7 +11324,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <tr class="odd">
 <td style="text-align: left;">Prop Freq</td>
 <td style="text-align: right;">2002</td>
-<td style="text-align: right;">0.00028</td>
+<td style="text-align: right;">0.00769</td>
 <td style="text-align: right;">11.42857</td>
 <td style="text-align: right;">30.09709</td>
 <td style="text-align: right;">18.66852</td>

@@ -169,7 +169,7 @@ Before performing the analysis, we discuss the different methods used.
 
 ## Regression Based methods
 
-The regression approaches use **Generalized Linear Models** and **Likelihood Ratio testing** [@mccullagh2019generalized]
+The regression approaches use **Generalized Linear Models** and **Likelihood Ratio testing** [@mccullagh2019generalized].
 
 ### For Count Data
 
@@ -185,7 +185,7 @@ So for the Poisson based method, all the effects we find are multiplicative.
 
 It is worth noting that the Poisson regression is arguably more reliable than standard linear regression (particularly in the six basins) since we are working with moderately small counts. Inference is done using a Likelihood Ratio test on the $\beta$ coefficient using the `drop1()` function in R.
 
-I also report values from the predictions based on these models. This provides some context of what the model is suggesting. We use the prediction at the first and last time points to find an *overall trend*, that trend is then scaled to the #/decade level.
+I also report values from the predictions based on these models. This provides some context of what the model is suggesting. We use the prediction at the first and last time points to find an *overall trend*, that trend is then scaled to the #/decade level for easier interpretation.
 
 ### For Proportions
 
@@ -201,22 +201,41 @@ Again, a likelihood ratio test is used for significance of the $\beta_1$ coeffic
 
 The regression approaches assume a fairly restrictive structure -- we are assuming some underlying linear model. That is, any changes we see in the record are following some underlying linear trend. In the changepoint approach, we are simply looking for shifts in the mean of the process.
 
-At some level, both methods looking for changes, or non-homegenieties in the data, but the changepoint approach doesn't require that linearity assumption.
+At some level, both methods look for changes, or non-homegenieties, in the data, but the changepoint approach doesn't require that linearity assumption.
 
 ### At Most One Changepoint (AMOC)
 
-We perform some iid **SCUSUM test** [@lund2023good] to look for at most one changepoint. The SCUSUM statistic is defined as $$\mbox{SCUSUM}=\frac{1}{n}\sum_{t=1}^n \mbox{CUSUM}(t)^2$$ for sample size $n$, and where $$\mbox{CUSUM}(k) = \frac{k}{n}\left(1-\frac{k}{n}\right)\left[\frac{\sqrt{n}}{\hat{\sigma}_{\hat{\theta}}}\left(\hat{\theta}_k - \hat{\theta}_k^*\right)\right].$$ The changepoint is found via $$k = \text{argmax} \left|\text{CUSUM}(k)\right|$$ Under the null hypothesis of no changes, $\text{SCUSUM}$ converges to $\int_0^1 B^2(t)dt$, where $\{ B(t) \}_{t=0}^{t=1}$ is the classical Brownian bridge process of empirical statistics. We used the distribution approximations in [@Tolmatz2002] to compute $p$-values. This provides the most likely changepoint location (given only a single changepoint can occur) and its corresponding $p$-value.
+We perform some iid **SCUSUM test** [@lund2023good] to look for at most one changepoint. The SCUSUM statistic is defined as 
+$$\mbox{SCUSUM}=\frac{1}{n}\sum_{t=1}^n \mbox{CUSUM}(t)^2$$
+for sample size $n$. The details of $\mbox{CUSUM}(t)$ for our two scenarios is outlined below. 
 
-It is worth noting that CUSUM based tests can be conservative in practice (reported $p$-values may be slightly elevated) -- we see this a little bit in the simulation study report. If you want something more robust, a boostrapping/simulation type approach could be performed. For this report we use the asymptotic approach partially because it is conservative.
+The changepoint is found via 
+$$k = \text{argmax} \left|\text{CUSUM}(k)\right|.$$ 
+Under the null hypothesis of no changes, $\text{SCUSUM}$ converges to $\int_0^1 B^2(t)dt$, where $\{ B(t) \}_{t=0}^{t=1}$ is the classic Brownian bridge process of empirical statistics. We used the distribution approximations in [@Tolmatz2002] to compute $p$-values. This provides the most likely changepoint location (given only a single changepoint can occur) and its corresponding $p$-value.
+
+It is worth noting that CUSUM based tests can be conservative in practice (reported $p$-values may be slightly elevated) -- we see this a little bit in the simulation study report. A boostrapping/simulation type approach could be performed but here we use the asymptotic approach partially because it is conservative.
 
 ### Changepoint for Frequencies
 
-When working with Poisson data (count data), we are looking for a change in the rate, or mean, parameter $\lambda_t$. The $\text{CUSUM}(k)$ statistic can be calculated via $$\mbox{CUSUM}(k)= \frac{1}{\hat{\sigma} \sqrt{n}}
-\left[ \sum_{t=1}^k  X_t - \frac{k}{n} \sum_{t=1}^{n} X_t \right]$$ and the variance estimate is found via $\hat{\sigma}^2 = n^{-1} \sum_{t=1}^n X_t$ under the assumption of Poisson data [@robbins2011changepoints]
+For the cyclone count series, we are assuming each observation, $X_t$, is a Poisson random variable where the mean of the series is determine by a rate parameter. Statistically speaking, when looking for changes in the series we are looking for a change in the rate, or mean, parameter $\lambda_t$. The $\text{CUSUM}(k)$ statistic can be calculated via 
+$$\mbox{CUSUM}(k)= \frac{1}{\hat{\sigma} \sqrt{n}}\left[ \sum_{t=1}^k  X_t - \frac{k}{n} \sum_{t=1}^{n} X_t \right]$$
+and the variance estimate is found via $\hat{\sigma}^2 = n^{-1} \sum_{t=1}^n X_t$ under the assumption of Poisson data [@robbins2011changepoints].
 
 ### Changepoint for Proportions
 
-When working with the proportion of major (or intense) storms, we assume an underlying Binomial likelihood and the parameter of interested in $p$, the proportion of major (or intense) storms. Let $X_t$ be the number of major (or intense) storms in year $t$ and $T_t$ is the total number of storms in that year. Based on Binimial likelihood arguments we calculate $$\hat{\theta}_k = \hat{p}_k = \frac{\sum_{i=1}^k X_i}{\sum_{i=1}^k T_i}~~~~~\mbox{and}~~~~~\hat{\theta}_k^* = \hat{p}_k^* = \frac{\sum_{i=k+1}^n X_i}{\sum_{i=k+1}^n T_i}.$$ For the variance estimate, $\sigma_{\hat{\theta}}$, we use the Wald estimate (covered in Intro Stat courses), $$\sigma_{\hat{p}} = \sqrt{\frac{\hat{p}_n(1-\hat{p}_n)}{\sum_{i=1}^n T_i}}$$
+When working with the proportion of major (or intense) storms, we perform a CUSUM comparison on $\hat{p}_t$, the observed proportion of major (or intense) storms at time $t$. Let $Y_t$ be the number of major (or intense) storms in year $t$ and $X_t$ is the total number of storms in that year. Based on the Poisson-Binomial likelihood arguments we calculate 
+$$\hat{p}_t = Y_t/X_t.$$ 
+The $\mbox{CUSUM}(k)$ statistic is calculated on the $\hat{p}_t$ terms as
+$$\mbox{CUSUM}(k)= \frac{1}{\hat{\sigma} \sqrt{n}}\left[ \sum_{t=1}^k  \hat{p}_t - \frac{k}{n} \sum_{t=1}^{n} \hat{p}_t \right].$$
+The standard deviation estimation in this case is unwieldy but can be found through conditional expectation arguments:
+$$\mbox{Var}(\hat{p}_t) = E\left[\mbox{Var}(\hat{p}_t | X_t)\right] + \mbox{Var}\left( E[\hat{p}_t|X_t]\right).$$
+Detailed derivation reveals
+$$\mbox{Var}(\hat{p}_t) = p^2e^{-\lambda}(1-e^{-\lambda}) + p(1-p)\sum_{k=1}^\infty \frac{e^{-\lambda}\lambda^k}{k(k!)}.$$
+We estimate this variance by using
+$$\hat{p} = \frac{\sum_{t=1}^n Y_t}{\sum_{t=1}^n X_t}~~~~~\mbox{and}~~~~~\hat{\lambda}=\bar{X} = \frac{1}{n}\sum_{t=1}^n X_t$$
+in place of $p$ and $\lambda$ respectively. In practice, the sequence in the summation quickly converges to zero, so the series can be well-approximated by replacing $\infty$ with a finite number (we use 100).
+
+
 
 # Global Cyclone Record
 
