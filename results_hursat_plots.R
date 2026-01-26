@@ -107,11 +107,11 @@ global_basin_tall <- global_basin |>
 hursat_global_results$pois_chpt_test
 # Major Cyclones - no change
 hursat_global_results$major_pois_chpt_test
-# Proportion Major Cyclones - change at time 21
+# Proportion Major Cyclones - no change
 hursat_global_results$prop_major_chpt_test
 # Intense Cyclones - no change
 hursat_global_results$intense_pois_chpt_test
-# Proportion Intense Cyclones - change at 21
+# Proportion Intense Cyclones - no change
 hursat_global_results$prop_intense_chpt_test
 
 mean1 <- mean(global_basin$Total_Storms[1:hursat_global_results$pois_chpt_test[2]])
@@ -139,33 +139,19 @@ df_intense_seg <- data.frame(
   Measure = "Intense_Storms"
 )
 
-mean1 <- sum(global_basin$Major_Storms[1:hursat_global_results$prop_major_chpt_test[2]])/
-  sum(global_basin$Total_Storms[1:hursat_global_results$prop_major_chpt_test[2]])
-mean2 <- sum(global_basin$Major_Storms[(hursat_global_results$prop_major_chpt_test[2]+1):dim(global_basin)[1]])/
-  sum(global_basin$Total_Storms[(hursat_global_results$prop_major_chpt_test[2]+1):dim(global_basin)[1]])
+
 df_prop_major_seg <- data.frame(
-  SEASON = c(min(global_basin$SEASON)-0.4, global_basin$SEASON[hursat_global_results$prop_major_chpt_test[2]]+0.4,
-             global_basin$SEASON[hursat_global_results$prop_major_chpt_test[2]]+0.6, max(global_basin$SEASON)+0.4),
-  Group = c(rep("seg1", 2),
-            rep("seg2", 2) ),
-  Mean = c(rep(mean1, 2),
-           rep(mean2, 2) ),
+  SEASON = c(min(global_basin$SEASON)-0.4, max(global_basin$SEASON)+0.4),
+  Group = c(rep("seg2", 2) ),
+  Mean = c(rep(sum(global_basin$Major_Storms)/sum(global_basin$Total_Storms), 2) ),
   Measure = "Prop_Major"
 )
 
 
-
-mean1 <- sum(global_basin$Intense_Storms[1:hursat_global_results$prop_intense_chpt_test[2]])/
-  sum(global_basin$Total_Storms[1:hursat_global_results$prop_intense_chpt_test[2]])
-mean2 <- sum(global_basin$Intense_Storms[(hursat_global_results$prop_intense_chpt_test[2]+1):dim(global_basin)[1]])/
-  sum(global_basin$Total_Storms[(hursat_global_results$prop_intense_chpt_test[2]+1):dim(global_basin)[1]])
 df_prop_intense_seg <- data.frame(
-  SEASON = c(min(global_basin$SEASON)-0.4, global_basin$SEASON[hursat_global_results$prop_intense_chpt_test[2]]+0.4,
-             global_basin$SEASON[hursat_global_results$prop_intense_chpt_test[2]]+0.6, max(global_basin$SEASON)+0.4),
-  Group = c(rep("seg1", 2),
-            rep("seg2", 2) ),
-  Mean = c(rep(mean1, 2),
-           rep(mean2, 2) ),
+  SEASON = c(min(global_basin$SEASON)-0.4, max(global_basin$SEASON)+0.4),
+  Group = c(rep("seg2", 2) ),
+  Mean = c(rep(sum(global_basin$Intense_Storms)/sum(global_basin$Total_Storms), 2) ),
   Measure = "Prop_Intense"
 )
 
@@ -373,7 +359,7 @@ storm_basin_regimes <- storm_counts %>%
   arrange(BASIN, SEASON) %>%
   mutate(Regime = c(findInterval(1:N, hursat_na_results$prop_major_chpt_test[2]+1),
                     findInterval(1:N, NULL),
-                    findInterval(1:N, hursat_wp_results$prop_major_chpt_test[2]+1),
+                    findInterval(1:N, NULL),
                     findInterval(1:N, NULL),
                     findInterval(1:N, hursat_si_results$prop_major_chpt_test[2]+1),
                     findInterval(1:N, NULL) ) ) |>

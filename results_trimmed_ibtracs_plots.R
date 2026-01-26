@@ -105,15 +105,15 @@ global_basin_tall <- global_basin |>
                                    "Intense Cyclones",
                                    "Proportion of Intense Cyclones") ) )
 
-# Total Cyclones - change at time 20
+# Total Cyclones - change at time 17
 ibtracs_trimmed_global_results$pois_chpt_test
 # Major Cyclones - no change
 ibtracs_trimmed_global_results$major_pois_chpt_test
-# Proportion Major Cyclones - change at time 21
+# Proportion Major Cyclones - change at time 10
 ibtracs_trimmed_global_results$prop_major_chpt_test
-# Intense Cyclones - no change
+# Intense Cyclones - Change at time pointn 8
 ibtracs_trimmed_global_results$intense_pois_chpt_test
-# Proportion Intense Cyclones - change at 21
+# Proportion Intense Cyclones - change at 11
 ibtracs_trimmed_global_results$prop_intense_chpt_test
 
 mean1 <- mean(global_basin$Total_Storms[1:ibtracs_trimmed_global_results$pois_chpt_test[2]])

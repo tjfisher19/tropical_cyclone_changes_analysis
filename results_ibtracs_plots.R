@@ -378,7 +378,7 @@ storm_basin_regimes <- storm_counts %>%
   mutate(Regime = c(findInterval(1:N, NULL),
                     findInterval(1:N, NULL),
                     findInterval(1:N, ibtracs_wp_results$prop_major_chpt_test[2]+1),
-                    findInterval(1:N, ibtracs_ni_results$prop_major_chpt_test[2]+1),
+                    findInterval(1:N, NULL),
                     findInterval(1:N, ibtracs_si_results$prop_major_chpt_test[2]+1),
                     findInterval(1:N, ibtracs_sp_results$prop_major_chpt_test[2]+1) ) ) |>
   group_by(BASIN, Regime) %>%
@@ -487,7 +487,7 @@ storm_counts <- non_shorty_for_props |>
 storm_basin_regimes <- storm_counts %>%
   ungroup() %>%
   arrange(BASIN, SEASON) %>%
-  mutate(Regime = c(findInterval(1:N, ibtracs_na_results$prop_intense_chpt_test[2]+1),
+  mutate(Regime = c(findInterval(1:N, NULL),
                     findInterval(1:N, ibtracs_ep_results$prop_intense_chpt_test[2]+1),
                     findInterval(1:N, ibtracs_wp_results$prop_intense_chpt_test[2]+1),
                     findInterval(1:N, NULL),
