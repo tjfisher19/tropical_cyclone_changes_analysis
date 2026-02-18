@@ -4,7 +4,6 @@
 ## IBTracs Full Analysis
 
 ```{r global_ibtracs, echo=FALSE}
-ibtracs_global_results <- get_report_basin(basin="Global", all_basins=ibtracs_all_basins)
 ```
 
 ### Summary Statistics (overall)

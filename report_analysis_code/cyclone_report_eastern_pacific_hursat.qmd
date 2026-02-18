@@ -2,7 +2,6 @@
 ## HURSAT Full Analysis
 
 ```{r ep_hursat, echo=FALSE}
-hursat_ep_results <- get_report_basin(basin="Eastern North Pacific", all_basins=hursat_all_basins)
 ```
 
 ### Summary Statistics (overall)

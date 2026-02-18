@@ -2,7 +2,6 @@
 ## Trimmed IBTRacs Full Analysis
 
 ```{r na_trimmed, echo=FALSE}
-ibtracs_trimmed_na_results <- get_report_basin(basin="North Atlantic", all_basins=ibtracs_trimmed_all_basins)
 ```
 
 ### Summary Statistics (overall)

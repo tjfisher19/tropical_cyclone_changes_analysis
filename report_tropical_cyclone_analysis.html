@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Tom Fisher">
-<meta name="dcterms.date" content="2026-01-26">
+<meta name="dcterms.date" content="2026-02-17">
 
 <title>Tropical Cyclone Analysis</title>
 <style>
@@ -2514,7 +2514,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 26, 2026</p>
+      <p class="date">February 17, 2026</p>
     </div>
   </div>
   
@@ -2566,7 +2566,7 @@ window.Quarto = {
 </section>
 <section id="changepoint-for-proportions" class="level3">
 <h3 class="anchored" data-anchor-id="changepoint-for-proportions">Changepoint for Proportions</h3>
-<p>When working with the proportion of major (or intense) storms, we perform a CUSUM comparison on <span class="math inline">\(\hat{p}_t\)</span>, the observed proportion of major (or intense) storms at time <span class="math inline">\(t\)</span>. Let <span class="math inline">\(Y_t\)</span> be the number of major (or intense) storms in year <span class="math inline">\(t\)</span> and <span class="math inline">\(X_t\)</span> is the total number of storms in that year. Based on the Poisson-Binomial likelihood arguments we calculate <span class="math display">\[\hat{p}_t = Y_t/X_t.\]</span> The <span class="math inline">\(\mbox{CUSUM}(k)\)</span> statistic is calculated on the <span class="math inline">\(\hat{p}_t\)</span> terms as <span class="math display">\[\mbox{CUSUM}(k)= \frac{1}{\hat{\sigma} \sqrt{n}}\left[ \sum_{t=1}^k  \hat{p}_t - \frac{k}{n} \sum_{t=1}^{n} \hat{p}_t \right].\]</span> The standard deviation estimation in this case is unwieldy but can be found through conditional expectation arguments: <span class="math display">\[\mbox{Var}(\hat{p}_t) = E\left[\mbox{Var}(\hat{p}_t | X_t)\right] + \mbox{Var}\left( E[\hat{p}_t|X_t]\right).\]</span> Detailed derivation reveals <span class="math display">\[\mbox{Var}(\hat{p}_t) = p^2e^{-\lambda}(1-e^{-\lambda}) + p(1-p)\sum_{k=1}^\infty \frac{e^{-\lambda}\lambda^k}{k(k!)}.\]</span> We estimate this variance by using <span class="math display">\[\hat{p} = \frac{\sum_{t=1}^n Y_t}{\sum_{t=1}^n X_t}~~~~~\mbox{and}~~~~~\hat{\lambda}=\bar{X} = \frac{1}{n}\sum_{t=1}^n X_t\]</span> in place of <span class="math inline">\(p\)</span> and <span class="math inline">\(\lambda\)</span> respectively. In practice, the sequence in the summation quickly converges to zero, so the series can be well-approximated by replacing <span class="math inline">\(\infty\)</span> with a finite number (we use 100).</p>
+<p>When working with the proportion of major (or intense) storms, we perform a CUSUM comparison on <span class="math inline">\(\hat{p}_t\)</span>, the observed proportion of major (or intense) storms at time <span class="math inline">\(t\)</span>. Let <span class="math inline">\(Y_t\)</span> be the number of major (or intense) storms in year <span class="math inline">\(t\)</span> and <span class="math inline">\(X_t\)</span> is the total number of storms in that year. Based on the Poisson-Binomial likelihood arguments we calculate <span class="math display">\[\hat{p}_t = Y_t/X_t.\]</span> The <span class="math inline">\(\mbox{CUSUM}(k)\)</span> statistic is calculated on the <span class="math inline">\(\hat{p}_t\)</span> terms as <span class="math display">\[\mbox{CUSUM}(k)= \frac{1}{\hat{\sigma} \sqrt{n}}\left[ \sum_{t=1}^k  \hat{p}_t - \frac{k}{n} \sum_{t=1}^{n} \hat{p}_t \right].\]</span> The standard deviation estimation in this case is unwieldy but can be found through conditional expectation arguments: <span class="math display">\[\mbox{Var}(\hat{p}_t) = E\left[\mbox{Var}(\hat{p}_t | X_t)\right] + \mbox{Var}\left( E[\hat{p}_t|X_t]\right).\]</span> Detailed derivation reveals <span class="math display">\[\mbox{Var}(\hat{p}_t) = p^2e^{-\lambda}(1-e^{-\lambda}) + p(1-p)\sum_{k=1}^\infty \frac{e^{-\lambda}\lambda^k}{k(k!)}.\]</span> We estimate this variance by using <span class="math display">\[\hat{p} = \frac{\sum_{t=1}^n Y_t}{\sum_{t=1}^n X_t}~~~~~\mbox{and}~~~~~\hat{\lambda}=\bar{X} = \frac{1}{n}\sum_{t=1}^n X_t\]</span> in place of <span class="math inline">\(p\)</span> and <span class="math inline">\(\lambda\)</span> respectively. In practice, the term <span class="math inline">\(e^{-\lambda}\)</span> is small for large values of lambda, so the <span class="math inline">\(p^2e^{-\lambda}(1-e^{-\lambda})\)</span> terms goes to zero. The infinite summation is <span class="math inline">\(E\left[\frac{1}{X}1_{X&gt;0}\right]\)</span> and is approximately equal to <span class="math inline">\(1/\lambda\)</span> for large values of <span class="math inline">\(\lambda\)</span>. More importantly for our application, the sequence in the summation converges to zero fairly quickly, so the series can be well-approximated by replacing <span class="math inline">\(\infty\)</span> with a finite number.</p>
 </section>
 </section>
 </section>
@@ -2824,10 +2824,10 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-   0.57620563   11.00000000    0.02754971 </code></pre>
+   0.57608652   11.00000000    0.02756876 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1990 to 1991 with <span class="math inline">\(p\)</span>-value 0.0275497.</p>
+<p>The change in proportions occurs 1990 to 1991 with <span class="math inline">\(p\)</span>-value 0.0275688.</p>
 <p>In regime one, the proportion of major storms is 0.3055215 and in regime two, the proportion of major storms is 0.3680498; a change of 0.0625283.</p>
 </section>
 <section id="proportion-of-intense-storms" class="level4">
@@ -2836,10 +2836,10 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
- 2.621422e+00  2.200000e+01  5.344627e-07 </code></pre>
+ 2.620880e+00  2.200000e+01  5.359492e-07 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 2001 to 2002 with <span class="math inline">\(p\)</span>-value 5.3446271^{-7}.</p>
+<p>The change in proportions occurs 2001 to 2002 with <span class="math inline">\(p\)</span>-value 5.3594924^{-7}.</p>
 <p>In regime one, the proportion of intense storms is 0.2042341 and in regime two, the proportion of major storms is 0.2791847; a change of 0.0749506.</p>
 </section>
 </section>
@@ -2964,7 +2964,7 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <tr class="odd">
 <td style="text-align: left;">Prop Major</td>
 <td style="text-align: right;">1991</td>
-<td style="text-align: right;">0.02755</td>
+<td style="text-align: right;">0.02757</td>
 <td style="text-align: right;">30.55215</td>
 <td style="text-align: right;">36.80498</td>
 <td style="text-align: right;">6.25283</td>
@@ -3238,10 +3238,10 @@ YearsSinceStart  1   51.900 216.35 1.2274   0.2679</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-    0.1723575    21.0000000     0.3695736 </code></pre>
+    0.1651585    21.0000000     0.3911958 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 2001 to 2002 with <span class="math inline">\(p\)</span>-value 0.3695736.</p>
+<p>The change in proportions occurs 2001 to 2002 with <span class="math inline">\(p\)</span>-value 0.3911958.</p>
 <p>In regime one, the proportion of major storms is 0.2768 and in regime two, the proportion of major storms is 0.3067293; a change of 0.0299293.</p>
 </section>
 <section id="proportion-of-intense-storms-1" class="level4">
@@ -3250,10 +3250,10 @@ YearsSinceStart  1   51.900 216.35 1.2274   0.2679</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-    0.1744750    21.0000000     0.3635057 </code></pre>
+    0.1671876    21.0000000     0.3849408 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 2001 to 2002 with <span class="math inline">\(p\)</span>-value 0.3635057.</p>
+<p>The change in proportions occurs 2001 to 2002 with <span class="math inline">\(p\)</span>-value 0.3849408.</p>
 <p>In regime one, the proportion of intense storms is 0.1818667 and in regime two, the proportion of major storms is 0.2081377; a change of 0.026271.</p>
 </section>
 </section>
@@ -3378,7 +3378,7 @@ YearsSinceStart  1   51.900 216.35 1.2274   0.2679</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Prop Major</td>
 <td style="text-align: right;">2002</td>
-<td style="text-align: right;">0.36957</td>
+<td style="text-align: right;">0.39120</td>
 <td style="text-align: right;">27.68000</td>
 <td style="text-align: right;">30.67293</td>
 <td style="text-align: right;">2.99293</td>
@@ -3396,7 +3396,7 @@ YearsSinceStart  1   51.900 216.35 1.2274   0.2679</code></pre>
 <tr class="odd">
 <td style="text-align: left;">Prop Freq</td>
 <td style="text-align: right;">2002</td>
-<td style="text-align: right;">0.36351</td>
+<td style="text-align: right;">0.38494</td>
 <td style="text-align: right;">18.18667</td>
 <td style="text-align: right;">20.81377</td>
 <td style="text-align: right;">2.62710</td>
@@ -3658,10 +3658,10 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
-    0.9880814    10.0000000     0.0027561 </code></pre>
+  0.987899907  10.000000000   0.002758822 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1990 to 1991 with <span class="math inline">\(p\)</span>-value 0.0027561.</p>
+<p>The change in proportions occurs 1990 to 1991 with <span class="math inline">\(p\)</span>-value 0.0027588.</p>
 <p>In regime one, the proportion of major storms is 0.2977303 and in regime two, the proportion of major storms is 0.3730937; a change of 0.0753634.</p>
 </section>
 <section id="proportion-of-intense-storms-2" class="level4">
@@ -3670,10 +3670,10 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SCUSUM Stat chpt Location       p-value 
- 2.590796e+00  1.100000e+01  6.253227e-07 </code></pre>
+ 2.590321e+00  1.100000e+01  6.268503e-07 </code></pre>
 </div>
 </div>
-<p>The change in proportions occurs 1991 to 1992 with <span class="math inline">\(p\)</span>-value 6.2532268^{-7}.</p>
+<p>The change in proportions occurs 1991 to 1992 with <span class="math inline">\(p\)</span>-value 6.2685032^{-7}.</p>
 <p>In regime one, the proportion of intense storms is 0.1715686 and in regime two, the proportion of major storms is 0.2690786; a change of 0.0975099.</p>
 </section>
 </section>
@@ -7628,6 +7628,10 @@ Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&
 </div>
 </div>
 <div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_line()`).</code></pre>
+</div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Removed 2 rows containing missing values or values outside the scale range
 (`geom_point()`).</code></pre>

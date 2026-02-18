@@ -2,7 +2,6 @@
 ## HURSAT Full Analysis
 
 ```{r si_hursat, echo=FALSE}
-hursat_si_results <- get_report_basin(basin="Southern Indian", all_basins=hursat_all_basins)
 ```
 
 ### Summary Statistics (overall)

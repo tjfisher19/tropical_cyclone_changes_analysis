@@ -4,7 +4,6 @@
 ## IBTracs Full Analysis
 
 ```{r ep_ibtracs, echo=FALSE}
-ibtracs_ep_results <- get_report_basin(basin="Eastern North Pacific", all_basins=ibtracs_all_basins)
 ```
 
 ### Summary Statistics (overall)

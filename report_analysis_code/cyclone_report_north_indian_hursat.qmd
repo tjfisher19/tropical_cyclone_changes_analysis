@@ -2,7 +2,6 @@
 ## HURSAT Full Analysis
 
 ```{r ni_hursat, echo=FALSE}
-hursat_ni_results <- get_report_basin(basin="Northern Indian", all_basins=hursat_all_basins)
 ```
 
 ### Summary Statistics (overall)

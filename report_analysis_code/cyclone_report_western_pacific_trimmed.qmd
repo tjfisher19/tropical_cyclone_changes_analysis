@@ -2,7 +2,6 @@
 ## Trimmed IBTRacs Full Analysis
 
 ```{r wp_trimmed, echo=FALSE}
-ibtracs_trimmed_wp_results <- get_report_basin(basin="Western North Pacific", all_basins=ibtracs_trimmed_all_basins)
 ```
 
 ### Summary Statistics (overall)

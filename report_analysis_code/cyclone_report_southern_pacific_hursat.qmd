@@ -2,7 +2,6 @@
 ## HURSAT Full Analysis
 
 ```{r sp_hursat, echo=FALSE}
-hursat_sp_results <- get_report_basin(basin="Southern Pacific", all_basins=hursat_all_basins)
 ```
 
 ### Summary Statistics (overall)

@@ -4,7 +4,6 @@
 ## IBTracs Full Analysis
 
 ```{r sp_ibtracs, echo=FALSE}
-ibtracs_sp_results <- get_report_basin(basin="Southern Pacific", all_basins=ibtracs_all_basins)
 ```
 
 ### Summary Statistics (overall)

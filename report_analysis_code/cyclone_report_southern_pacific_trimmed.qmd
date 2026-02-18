@@ -2,7 +2,6 @@
 ## Trimmed IBTRacs Full Analysis
 
 ```{r sp_trimmed, echo=FALSE}
-ibtracs_trimmed_sp_results <- get_report_basin(basin="Southern Pacific", all_basins=ibtracs_trimmed_all_basins)
 ```
 
 ### Summary Statistics (overall)

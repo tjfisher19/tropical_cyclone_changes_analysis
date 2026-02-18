@@ -4,7 +4,6 @@
 ## IBTracs Full Analysis
 
 ```{r ni_ibtracs, echo=FALSE}
-ibtracs_ni_results <- get_report_basin(basin="Northern Indian", all_basins=ibtracs_all_basins)
 ```
 
 ### Summary Statistics (overall)

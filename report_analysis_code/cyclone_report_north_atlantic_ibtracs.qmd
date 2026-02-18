@@ -4,7 +4,6 @@
 ## IBTracs Full Analysis
 
 ```{r na_ibtracs, echo=FALSE}
-ibtracs_na_results <- get_report_basin(basin="North Atlantic", all_basins=ibtracs_all_basins)
 ```
 
 ### Summary Statistics (overall)

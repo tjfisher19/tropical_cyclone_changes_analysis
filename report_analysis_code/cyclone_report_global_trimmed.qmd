@@ -2,7 +2,6 @@
 ## Trimmed IBTRacs Full Analysis
 
 ```{r global_trimmed, echo=FALSE}
-ibtracs_trimmed_global_results <- get_report_basin(basin="Global", all_basins=ibtracs_trimmed_all_basins)
 ```
 
 ### Summary Statistics (overall)

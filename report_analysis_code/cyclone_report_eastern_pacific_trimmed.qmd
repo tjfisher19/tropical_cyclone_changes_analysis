@@ -2,7 +2,6 @@
 ## Trimmed IBTRacs Full Analysis
 
 ```{r ep_trimmed, echo=FALSE}
-ibtracs_trimmed_ep_results <- get_report_basin(basin="Eastern North Pacific", all_basins=ibtracs_trimmed_all_basins)
 ```
 
 ### Summary Statistics (overall)

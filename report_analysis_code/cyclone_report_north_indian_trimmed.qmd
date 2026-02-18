@@ -2,7 +2,6 @@
 ## Trimmed IBTRacs Full Analysis
 
 ```{r ni_trimmed, echo=FALSE}
-ibtracs_trimmed_ni_results <- get_report_basin(basin="Northern Indian", all_basins=ibtracs_trimmed_all_basins)
 ```
 
 ### Summary Statistics (overall)

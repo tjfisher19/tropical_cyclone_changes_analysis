@@ -4,7 +4,6 @@
 ## IBTracs Full Analysis
 
 ```{r si_ibtracs, echo=FALSE}
-ibtracs_si_results <- get_report_basin(basin="Southern Indian", all_basins=ibtracs_all_basins)
 ```
 
 ### Summary Statistics (overall)
