@@ -4,7 +4,7 @@ This repository contains all the code and Quarto files (as well as the rendered 
 
 The Plots in the manuscript (including the supplemental plots for the HURSAT and Trimmed IBTRacs data) can be found in the [plots folder](plots/).
 
-All the analysis can be found in the [Tropical Cyclone Analysis Report](report_tropical_cyclone_analysis.html){target="_blank"}.
+All the analysis can be found in the <a href="report_tropical_cyclone_analysis.html" target="_blank">Tropical Cyclone Analysis Report</a>.
 
 The repository contains the following:
 
