@@ -21,7 +21,7 @@
 
 library(quarto)
 
-short_day_cutoff <- 3
+shorty_day_cutoff <- 3
 source("01_fetching_best_track_data.R")
 source("02_processing_hursat_adt.R")
 rm(list=ls())
