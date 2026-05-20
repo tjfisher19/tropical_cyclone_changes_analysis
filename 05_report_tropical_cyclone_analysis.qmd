@@ -63,37 +63,19 @@ At some level, both methods look for changes, or non-homegenieties, in the data,
 
 ### At Most One Changepoint (AMOC)
 
-We perform some iid **SCUSUM test** [@lund2023good] to look for at most one changepoint. The SCUSUM statistic is defined as 
-$$\mbox{SCUSUM}=\frac{1}{n}\sum_{t=1}^n \mbox{CUSUM}(t)^2$$
-for sample size $n$. The details of $\mbox{CUSUM}(t)$ for our two scenarios is outlined below. 
+We perform some iid **SCUSUM test** [@lund2023good] to look for at most one changepoint. The SCUSUM statistic is defined as $$\mbox{SCUSUM}=\frac{1}{n}\sum_{t=1}^n \mbox{CUSUM}(t)^2$$ for sample size $n$. The details of $\mbox{CUSUM}(t)$ for our two scenarios is outlined below.
 
-The changepoint is found via 
-$$k = \text{argmax} \left|\text{CUSUM}(k)\right|.$$ 
-Under the null hypothesis of no changes, $\text{SCUSUM}$ converges to $\int_0^1 B^2(t)dt$, where $\{ B(t) \}_{t=0}^{t=1}$ is the classic Brownian bridge process of empirical statistics. We used the distribution approximations in [@Tolmatz2002] to compute $p$-values. This provides the most likely changepoint location (given only a single changepoint can occur) and its corresponding $p$-value.
+The changepoint is found via $$k = \text{argmax} \left|\text{CUSUM}(k)\right|.$$ Under the null hypothesis of no changes, $\text{SCUSUM}$ converges to $\int_0^1 B^2(t)dt$, where $\{ B(t) \}_{t=0}^{t=1}$ is the classic Brownian bridge process of empirical statistics. We used the distribution approximations in [@Tolmatz2002] to compute $p$-values. This provides the most likely changepoint location (given only a single changepoint can occur) and its corresponding $p$-value.
 
 It is worth noting that CUSUM based tests can be conservative in practice (reported $p$-values may be slightly elevated) -- we see this a little bit in the simulation study report. A boostrapping/simulation type approach could be performed but here we use the asymptotic approach partially because it is conservative.
 
 ### Changepoint for Frequencies
 
-For the cyclone count series, we are assuming each observation, $X_t$, is a Poisson random variable where the mean of the series is determine by a rate parameter. Statistically speaking, when looking for changes in the series we are looking for a change in the rate, or mean, parameter $\lambda_t$. The $\text{CUSUM}(k)$ statistic can be calculated via 
-$$\mbox{CUSUM}(k)= \frac{1}{\hat{\sigma} \sqrt{n}}\left[ \sum_{t=1}^k  X_t - \frac{k}{n} \sum_{t=1}^{n} X_t \right]$$
-and the variance estimate is found via $\hat{\sigma}^2 = n^{-1} \sum_{t=1}^n X_t$ under the assumption of Poisson data [@robbins2011changepoints].
+For the cyclone count series, we are assuming each observation, $X_t$, is a Poisson random variable where the mean of the series is determine by a rate parameter. Statistically speaking, when looking for changes in the series we are looking for a change in the rate, or mean, parameter $\lambda_t$. The $\text{CUSUM}(k)$ statistic can be calculated via $$\mbox{CUSUM}(k)= \frac{1}{\hat{\sigma} \sqrt{n}}\left[ \sum_{t=1}^k  X_t - \frac{k}{n} \sum_{t=1}^{n} X_t \right]$$ and the variance estimate is found via $\hat{\sigma}^2 = n^{-1} \sum_{t=1}^n X_t$ under the assumption of Poisson data [@robbins2011changepoints].
 
 ### Changepoint for Proportions
 
-When working with the proportion of major (or intense) storms, we perform a CUSUM comparison on $\hat{p}_t$, the observed proportion of major (or intense) storms at time $t$. Let $Y_t$ be the number of major (or intense) storms in year $t$ and $X_t$ is the total number of storms in that year. Based on the Poisson-Binomial likelihood arguments we calculate 
-$$\hat{p}_t = Y_t/X_t.$$ 
-The $\mbox{CUSUM}(k)$ statistic is calculated on the $\hat{p}_t$ terms as
-$$\mbox{CUSUM}(k)= \frac{1}{\hat{\sigma} \sqrt{n}}\left[ \sum_{t=1}^k  \hat{p}_t - \frac{k}{n} \sum_{t=1}^{n} \hat{p}_t \right].$$
-The standard deviation estimation in this case is unwieldy but can be found through conditional expectation arguments:
-$$\mbox{Var}(\hat{p}_t) = E\left[\mbox{Var}(\hat{p}_t | X_t)\right] + \mbox{Var}\left( E[\hat{p}_t|X_t]\right).$$
-Detailed derivation reveals
-$$\mbox{Var}(\hat{p}_t) = p^2e^{-\lambda}(1-e^{-\lambda}) + p(1-p)\sum_{k=1}^\infty \frac{e^{-\lambda}\lambda^k}{k(k!)}.$$
-We estimate this variance by using
-$$\hat{p} = \frac{\sum_{t=1}^n Y_t}{\sum_{t=1}^n X_t}~~~~~\mbox{and}~~~~~\hat{\lambda}=\bar{X} = \frac{1}{n}\sum_{t=1}^n X_t$$
-in place of $p$ and $\lambda$ respectively. In practice, the term $e^{-\lambda}$ is small for large values of lambda, so the $p^2e^{-\lambda}(1-e^{-\lambda})$ terms goes to zero. The infinite summation is $E\left[\frac{1}{X}1_{X>0}\right]$ and is approximately equal to $1/\lambda$ for large values of $\lambda$. More importantly for our application, the sequence in the summation converges to zero fairly quickly, so the series can be well-approximated by replacing $\infty$ with a finite number.
-
-
+When working with the proportion of major (or intense) storms, we perform a CUSUM comparison on $\hat{p}_t$, the observed proportion of major (or intense) storms at time $t$. Let $Y_t$ be the number of major (or intense) storms in year $t$ and $X_t$ is the total number of storms in that year. Based on the Poisson-Binomial likelihood arguments we calculate $$\hat{p}_t = Y_t/X_t.$$ The $\mbox{CUSUM}(k)$ statistic is calculated on the $\hat{p}_t$ terms as $$\mbox{CUSUM}(k)= \frac{1}{\hat{\sigma} \sqrt{n}}\left[ \sum_{t=1}^k  \hat{p}_t - \frac{k}{n} \sum_{t=1}^{n} \hat{p}_t \right].$$ The standard deviation estimation in this case is unwieldy but can be found through conditional expectation arguments: $$\mbox{Var}(\hat{p}_t) = E\left[\mbox{Var}(\hat{p}_t | X_t)\right] + \mbox{Var}\left( E[\hat{p}_t|X_t]\right).$$ Detailed derivation reveals $$\mbox{Var}(\hat{p}_t) = p^2e^{-\lambda}(1-e^{-\lambda}) + p(1-p)\sum_{k=1}^\infty \frac{e^{-\lambda}\lambda^k}{k(k!)}.$$ We estimate this variance by using $$\hat{p} = \frac{\sum_{t=1}^n Y_t}{\sum_{t=1}^n X_t}~~~~~\mbox{and}~~~~~\hat{\lambda}=\bar{X} = \frac{1}{n}\sum_{t=1}^n X_t$$ in place of $p$ and $\lambda$ respectively. In practice, the term $e^{-\lambda}$ is small for large values of lambda, so the $p^2e^{-\lambda}(1-e^{-\lambda})$ terms goes to zero. The infinite summation is $E\left[\frac{1}{X}1_{X>0}\right]$ and is approximately equal to $1/\lambda$ for large values of $\lambda$. More importantly for our application, the sequence in the summation converges to zero fairly quickly, so the series can be well-approximated by replacing $\infty$ with a finite number.
 
 # Global Cyclone Record
 
@@ -101,45 +83,42 @@ We begin with a study of the record across the entire globe -- the Global "basin
 
 {{< include ./report_analysis_code/cyclone_report_global_ibtracs.qmd >}} 
 {{< include ./report_analysis_code/cyclone_report_global_hursat.qmd >}} 
-{{< include ./report_analysis_code/cyclone_report_global_trimmed.qmd >}}
+
 
 # North Atlantic
 
 {{< include ./report_analysis_code/cyclone_report_north_atlantic_ibtracs.qmd >}} 
 {{< include ./report_analysis_code/cyclone_report_north_atlantic_hursat.qmd >}} 
-{{< include ./report_analysis_code/cyclone_report_north_atlantic_trimmed.qmd >}}
+
 
 # Eastern North Pacific
 
 {{< include ./report_analysis_code/cyclone_report_eastern_pacific_ibtracs.qmd >}} 
 {{< include ./report_analysis_code/cyclone_report_eastern_pacific_hursat.qmd >}} 
-{{< include ./report_analysis_code/cyclone_report_eastern_pacific_trimmed.qmd >}}
+
 
 # Western North Pacific
 
 {{< include ./report_analysis_code/cyclone_report_western_pacific_ibtracs.qmd >}} 
 {{< include ./report_analysis_code/cyclone_report_western_pacific_hursat.qmd >}} 
-{{< include ./report_analysis_code/cyclone_report_western_pacific_trimmed.qmd >}}
+
 
 # North Indian
 
 {{< include ./report_analysis_code/cyclone_report_north_indian_ibtracs.qmd >}} 
 {{< include ./report_analysis_code/cyclone_report_north_indian_hursat.qmd >}} 
-{{< include ./report_analysis_code/cyclone_report_north_indian_trimmed.qmd >}}
+
 
 # South Indian
 
 {{< include ./report_analysis_code/cyclone_report_southern_indian_ibtracs.qmd >}} 
 {{< include ./report_analysis_code/cyclone_report_southern_indian_hursat.qmd >}} 
-{{< include ./report_analysis_code/cyclone_report_southern_indian_trimmed.qmd >}}
+
 
 # South Pacific
 
 {{< include ./report_analysis_code/cyclone_report_southern_pacific_ibtracs.qmd >}} 
 {{< include ./report_analysis_code/cyclone_report_southern_pacific_hursat.qmd >}} 
-{{< include ./report_analysis_code/cyclone_report_southern_pacific_trimmed.qmd >}}
-
-
 
 
 # References

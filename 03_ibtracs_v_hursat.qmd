@@ -1,0 +1,359 @@
+---
+title: "IBTrACS vs HURSAT"
+subtitle: "Comparison of two sources of Tropical Cyclone Records"
+author: "Tom Fisher"
+date: today
+format:
+  html:
+    page-layout: full
+    toc: true
+    toc-depth: 3
+    toc-location: left
+    embed-resources: true
+editor: visual
+bibliography: sn-bibliography.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(knitr)
+load("data/ibtracs_storm_classifications.RData")
+load("data/hursat_storm_classifications.RData")
+ibtracs_storms_fct <- ibtracs_storms_fct |>
+  filter(BASIN!="Southern Atlantic")
+hursat_storms_fct <- hursat_storms_fct |>
+  filter(BASIN!="Southern Atlantic")
+shorty_day_cutoff <- (min(filter(ibtracs_storms_fct, Duration_Class_Streak=="Non_Shorty")$Max_TC_Streak)-1)/4
+```
+
+## Premise
+
+A short comparison of the record from the IBTrACS data and the HURSAT-ADT data.
+
+No big conclusions should be made from this short report, but it does provide a short comparison about how the two two sources of data agree and differ.
+
+It is basically a study on data quality and to provide nuance to any future results.
+
+## Data Statement
+
+We look at non-shorty storms. **How do we define a "shorty"?**
+
+- IBTrACS
+  - IBTrACS time frame is from 1980 to 2025.
+  - Observations are made at 000, 600, 1200, and 1800 hours.
+  - We require **at least `r shorty_day_cutoff` consecutive days** of Tropical Storms strength (35+ knots)
+  - So we require at least 13 consecutive observations to qualify as a non-shorty.
+  - Of the `r NROW(ibtracs_storms_fct)` tropical cyclones on record, `r sum(ibtracs_storms_fct$Duration_Class_Streak=="Shorty")` are shorties, and `r sum(ibtracs_storms_fct$Duration_Class_Streak!="Shorty")` are non-shorty.
+- HURSAT
+  - HURSAT time frame if from 1981 to 2024.
+  - Records are timed from satellite images, not on necessarily at a regular intervals.
+  - We calculate *streaks* where the wind speed is at 35+ knots. We compare the beginning and end of that streak.
+  - The streak duration must last **at least `r shorty_day_cutoff` days**.
+  - Of the `r NROW(hursat_storms_fct)` storms in HURSAT, `r sum(hursat_storms_fct$Duration_Class_Streak=="Shorty")` are shorties and `r sum(hursat_storms_fct$Duration_Class_Streak!="Shorty")` are not.
+
+The main analysis here is comparing the storms that are non-shorties.
+
+## Comparison of Max Windspeeds
+
+We start with an overall comparison of the records from IBTrACS and HURSAT. Here are descriptive statistics and graphics for the maximum windspeed of all non-shorty tropical cyclones.
+
+```{r, echo=FALSE}
+compare_wind_df <- bind_rows(
+  ibtracs_storms_fct |> 
+    dplyr::filter(Duration_Class_Streak=="Non_Shorty") |>
+    mutate(Source="IBTrACS"),
+  
+  hursat_storms_fct |>
+    dplyr::filter(Duration_Class_Streak=="Non_Shorty") |>
+    mutate(Source="HURSAT")
+)
+
+compare_wind_df |>
+  group_by(Source) |>
+  summarize(N=n(),
+            Mean=mean(Wind),
+            SD = sd(Wind),
+            Min = min(Wind),
+            `5th Perc` = quantile(Wind, prob=0.05),
+            `10th Perc` = quantile(Wind, prob=0.10),
+            `25th Perc` = quantile(Wind, prob=0.25),
+            `50th Perc` = quantile(Wind, prob=0.50),
+            `75th Perc` = quantile(Wind, prob=0.75),
+            `90th Perc` = quantile(Wind, prob=0.90),
+            `95th Perc` = quantile(Wind, prob=0.95),
+            Max = max(Wind)
+  ) |>
+  kable(caption="Summary Statistics of Maximum Windspeeds")
+```
+
+Visual Comparison
+
+```{r, echo=FALSE}
+ggplot(compare_wind_df, aes(x=Wind, fill=Source) ) +
+  geom_density(alpha=0.4) +
+  theme_minimal() +
+  theme(axis.text.y=element_blank(),
+        axis.title.y=element_blank(),
+        legend.position = "bottom") +
+  labs(x="Maximum Windspeed (kts)",
+       title="Distribution of Maximum Windspeeds",
+       subtitle="Storms at TC Strength for 3+ days")
+```
+
+Surprisingly, the two are very similar overall with HURSAT providing slightly higher values of wind speed. I wasn't expecting that.
+
+The bi-modality of the HURSAT data is peculiar (at least to me?). The slow right skew in the IBTrACS is what I would expect to see generally.
+
+### Digging into HURSAT
+
+So I made the following plot -- which includes ALL the windspeed records in the HURSAT data (so the same storm will have multiple observations).
+
+```{r, echo=FALSE}
+load("./data/hursat_adt_raw.RData")
+
+hursat_adt_all <- hursat_adt_raw |>
+  dplyr::select(WindSpeed) |>
+  drop_na()
+
+ggplot(hursat_adt_all, aes(x=WindSpeed) ) +
+  geom_density() +
+  theme_minimal() +
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank()) +
+  labs(title="Windspeeds in HURSAT Data",
+       x="Wind Speed (kts)",
+       subtitle=paste("Based on", NROW(hursat_adt_all), "unique satellite records") ) +
+  scale_x_continuous(breaks=seq(0,240, 20))
+```
+
+We still see multiple modes. The peak around 25 knots (minimum recorded windspeed), another at 35 knots (tropical cyclone), another around 55 to 60 knots (just shy of hurricane strength), then another peak around 100 knots (albeit smaller relative to the others). There must be something in the ADT algorithm to *cluster* some of the wind speed estimates together.
+
+If we remove all observations under 35 knots, we see the peak near 100 knots better.
+
+```{r, echo=FALSE}
+ggplot(dplyr::filter(hursat_adt_all, WindSpeed>=35), aes(x=WindSpeed) ) +
+  geom_density() +
+  theme_minimal() +
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank()) +
+  labs(title="Windspeeds in HURSAT Data",
+       x="Wind Speed (kts)",
+       subtitle = "Only records with 35+ knots") +
+  scale_x_continuous(breaks=seq(0,240, 20))
+```
+
+### Digging into IBTrACS
+
+Sine we went through the trouble of looking at all the HURSAT wind records, why not also look at the IBTrACS in case something fishy is happening there.
+
+```{r, echo=FALSE}
+load("./data/ibtracs_rawData.RData")
+
+ibtracs_storms_all <- ibtracs_storms_raw |>
+  dplyr::select(USA_WIND) |>
+  drop_na()
+
+ggplot(ibtracs_storms_all, aes(x=USA_WIND) ) +
+  geom_density() +
+  theme_minimal() +
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank()) +
+  labs(title="Windspeeds in IBTrACS Data",
+       x="Wind Speed (kts)",
+       subtitle=paste("Based on", NROW(ibtracs_storms_all), "unique best track records")) +
+  scale_x_continuous(breaks=seq(0,240, 20))
+```
+
+Nothing surprising here -- general right skew with little peaks where rounding occurs (pretty much every measurement is divisible by 5 in the IBTrACS).
+
+## Differences by Storm
+
+One key question is how the two sources report differing wind speeds in the record for a given storm. I merged the two data sets linking them together by Storm ID (SID).
+
+```{r, echo=FALSE}
+specific_storms <- ibtracs_storms_fct |>
+  dplyr::filter(Duration_Class_Streak=="Non_Shorty") |>
+  dplyr::select(SID, IBTrACS_Basin=BASIN, Name=NAME, IBTrACS_Wind = Wind) |>
+  inner_join(
+    hursat_storms_fct |>
+      dplyr::filter(Duration_Class_Streak=="Non_Shorty") |>
+      dplyr::select(SID, HURSAT_Basin = BASIN, HURSAT_Wind = Wind),
+    by="SID") |>
+  mutate(Difference = IBTrACS_Wind - HURSAT_Wind,
+         Higher_Record = case_when(Difference < 0 ~ "HURSAT", 
+                                   Difference > 0 ~ "IBTrACS",
+                                   .default = "Match") ) |>
+  mutate(Higher_Record = factor(Higher_Record,
+                                levels=c("HURSAT", "Match", "IBTrACS")))
+```
+
+Originally, we had `r sum(ibtracs_storms_fct$Duration_Class_Streak!="Shorty")` non-shorties in IBTrACS and `r sum(hursat_storms_fct$Duration_Class_Streak!="Shorty")`. There are `r NROW(specific_storms)` storms in this combined dataset, so we have some 'lost' storms. Many are in the southern hemisphere where IBTrACS likely didn't monitor them.
+
+```{r, echo=FALSE}
+lost_storms <- hursat_storms_fct |>
+      dplyr::filter(Duration_Class_Streak=="Non_Shorty") |>
+      dplyr::select(SID, HURSAT_Basin = BASIN, HURSAT_Wind = Wind) |>
+  anti_join(
+    ibtracs_storms_fct |>
+      dplyr::filter(Duration_Class_Streak=="Non_Shorty") |>
+      dplyr::select(SID, IBTrACS_Basin=BASIN, Name=NAME, IBTrACS_Wind = Wind),
+    by="SID")
+
+lost_storms |>
+  group_by(Basin=HURSAT_Basin) |>
+  summarize(N=n()) |>
+  kable(caption="Storms in HURSAT but not IBTrACS")
+```
+
+For sanity checking, that one North Atlantic storm is ID `r dplyr::filter(lost_storms, HURSAT_Basin=="North Atlantic")$SID`. In the IBTrACS data this is an unnamed storm that never achieved a wind speed greater than 30 knots, so it is not being recorded at all (crazy that the HURSAT is saying 79.6 knots).
+
+### Difference Basins
+
+I found that the Basin of origin does not match for about 20 storms.
+
+```{r, echo=FALSE}
+specific_storms |>
+  filter(IBTrACS_Basin != HURSAT_Basin) |>
+  dplyr::select(-Difference, -Higher_Record) |>
+  kable(caption="Storms with differing Basins")
+```
+
+For HURSAT, I need to define the basin -- I do so using latitude and longitude measurements in the SID. For example, Hurricane Francis (last record above), SID is `2017111S09146`. This says the storm originated in 2017 on Julian day 111 in the Southern Hemisphere at latitude 09 and longitude 146. The IBTrACS documentation says
+
+> SP = South Pacific 135° \< Longitude \< 290
+
+Frances has an origin longitude of 146 which is clearly in the South Pacific range, but it is marked as Southern Indian in IBTrACS. I looked at the raw data and the first observations for this storm are at longitude 145.5 and the World Meteorological Organization recorded wind speed is 15 knots -- so it was being tracked as a weak tropical disturbance. The storm hit 20 knots wind speed for the first time at longitude 132.6 which is considered in the Southern Indian basin -- hence the classification.
+
+If you look at the other storms in the list, it is a similar story. They formed near the border of two different basins and crossed into a different agency's jurisdiction at some point.
+
+I think in terms of analysis, we should follow the documentation for the origin of basin. We make a note about how 20-ish storms differing. This should have no effect on the global results but may have minor effect on the within basin results.
+
+### How Wind Speeds change
+
+We calculate the difference in maximum wind speed for the `r NROW(specific_storms)` storm that have both an IBTrACS and HURSAT non-shorty record. The difference is defined by the Wind Speed from **IBTrACS - HURSAT** Wind Speed. Below are summary statistics of these differences.
+
+```{r, echo=FALSE}
+specific_storms |>
+  summarize(N=n(),
+            Mean=mean(Difference),
+            SD = sd(Difference),
+            Min = min(Difference),
+            `5th Perc` = quantile(Difference, prob=0.05),
+            `10th Perc` = quantile(Difference, prob=0.10),
+            `25th Perc` = quantile(Difference, prob=0.25),
+            `50th Perc` = quantile(Difference, prob=0.50),
+            `75th Perc` = quantile(Difference, prob=0.75),
+            `90th Perc` = quantile(Difference, prob=0.90),
+            `95th Perc` = quantile(Difference, prob=0.95),
+            Max = max(Difference)
+  ) |>
+  kable(caption="Summary Statistics of Paired Differences in Windspeed")
+```
+
+Both the mean and median are near 0, indicating "on average" we have an agreement in the maximum storm wind speed (thus classification). Also, 80% of the time we are within $\pm$ 20 and 90% of the time within $\pm$ 30. Here is the classification of the storms:
+
+```{r, echo=FALSE}
+specific_storms |>
+  summarize(`HURSAT Higher`=sum(Difference<0),
+            `Matching` = sum(Difference==0),
+            `IBTrACS Higher` = sum(Difference>0)) |>
+  kable(caption="Higher Windspeed by Source")
+```
+
+We can also visualize the differences (the 40 times where they match are not plotted).
+
+```{r, echo=FALSE}
+specific_storms2 <- specific_storms |>
+  dplyr::filter(Higher_Record!="Match") |>
+  mutate(Higher_Record = factor(Higher_Record,
+                                levels=c("HURSAT", "IBTrACS")))
+specific_storms3 <- specific_storms |>
+  dplyr::filter(Higher_Record=="Match") |>
+  group_by(Difference) |>
+  summarize(N=n())
+
+ggplot( ) +
+  geom_histogram(data=specific_storms2, aes(x=Difference, fill=Higher_Record),
+                 breaks=seq(-70, 90, 5) )  +
+  #geom_col(data=specific_storms3, aes(x=Difference, y=N), fill="gray70") +
+  scale_fill_manual(values=c("goldenrod", "forestgreen") ) +
+  labs(x="Difference (IBTrACS - HURSAT)",
+       fill="Bigger Windspeed Source",
+       title="Difference between IBTrACS and HURSAT",
+       subtitle="Storms at TC Strength for 3+ days in both records") +
+  theme_minimal() + 
+  theme(legend.position = "bottom")
+```
+
+### Digging in Part 1
+
+I explored a few of the extreme cases -- I do not think there is anything wrong with my data processing. I think it is just a data quality issues. For example the case with the largest difference is a storm in the South Indian. Here are a few observations when the storm is at Tropical Cyclone Strength from the IBTrACS data.
+
+```{r, echo=FALSE}
+storm.id <- specific_storms[which.max(specific_storms$Difference),]$SID
+
+ibtracs_storms_raw |>
+  filter(SID==storm.id) |>
+  mutate(Wind = USA_WIND ) |>
+  drop_na(Wind) |>
+  dplyr::filter(hour(ISO_TIME) %in% c(0,6,12,18),
+                minute(ISO_TIME)==0,
+                Wind >= 35)  |>
+  dplyr::select(SID, BASIN, NAME, ISO_TIME, LAT, LON, Wind) |>
+  dplyr::filter(day(ISO_TIME) %in% c(20, 21, 22)) |>
+  kable(caption="From IBTrACS")
+```
+
+On the same dates from the HURSAT data
+
+```{r, echo=FALSE}
+hursat_adt_raw |>
+  dplyr::filter(SID == storm.id) |>
+  dplyr::filter(WindSpeed >= 35) |>
+  dplyr::select(SID, Date, Time, Lat, Lon, WindSpeed) |>
+  mutate(Date = ymd(Date)) |>
+  dplyr::filter(day(Date) %in% c(20, 21, 22)) |>
+  kable(caption="From HURSAT")
+```
+
+The dates match, the longitude and latitude largely match, just very different wind speed estimates. Wikipedia says, "Over the following days, the system further deepened, peaking in strength as a Category 3 on the Australian intensity scale with 205 km/h (125 mph) and a barometric pressure of 915 hPa (mbar; 27.02 inHg)."
+
+This is a storm that has two names because two tracking agencies monitored it. But it appears to be a single storm that took place just west of Australia. The ADT algorithm used for HURSAT seems to project a very low wind speed compared to IBTrACS.
+
+### Digging in Part 2
+
+Similarly, if we look at the storm with the biggest difference where HURSAT is much stronger than IBTrACS.
+
+```{r, echo=FALSE}
+storm.id <- specific_storms[which.min(specific_storms$Difference),]$SID
+
+ibtracs_storms_raw |>
+  filter(SID==storm.id) |>
+  mutate(Wind = USA_WIND ) |>
+  drop_na(Wind) |>
+  dplyr::filter(hour(ISO_TIME) %in% c(0,6,12,18),
+                minute(ISO_TIME)==0,
+                Wind >= 35)  |>
+  dplyr::select(SID, BASIN, NAME, ISO_TIME, LAT, LON, Wind) |>
+  dplyr::filter(day(ISO_TIME) %in% c(5, 6, 7)) |>
+  kable(caption="From IBTrACS")
+```
+
+and from HURSAT we get the following on these dates.
+
+```{r, echo=FALSE}
+hursat_adt_raw |>
+  dplyr::filter(SID == storm.id) |>
+  dplyr::filter(WindSpeed >= 35) |>
+  dplyr::select(SID, Date, Time, Lat, Lon, WindSpeed) |>
+  mutate(Date = ymd(Date)) |>
+  dplyr::filter(day(Date) %in% c(5, 6, 7)) |>
+  kable(caption="From HURSAT")
+```
+
+Again, the storms and locations all more-or-less match, but very different wind speed records.
+
+This is an interesting storm, or we should says storm. Check out the [1986-1987 South Pacific season](https://en.wikipedia.org/wiki/1986%E2%80%9387_South_Pacific_cyclone_season#Severe_Tropical_Cyclone_Uma).
+
+Two storms linked at some point but originated as two disturbances. IBTrACS combines them into this single record but if you look into the IBTrACS record further there is an "unnamed" storm shorty around the same time. I looked into the HURSAT data and there is another storm that is marked as a shorty also in the same time frame. I suspect that shorty is Veli and the storm recorded above is Uma. But they are combined in IBTrACs as far as naming. I am not sure if that is why the IBTrACS wind speed is smaller or not.

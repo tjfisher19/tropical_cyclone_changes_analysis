@@ -1,0 +1,112 @@
+---
+title: "Shorty Sensitivity"
+substitle: "A study on the definition of a shorty"
+author: "Tom Fisher"
+date: today
+format:
+  html:
+    page-layout: full
+    toc: true
+    toc-depth: 3
+    toc-location: left
+    embed-resources: true
+editor: visual
+bibliography: sn-bibliography.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+load("./data/shorty_sensitivity.RData")
+```
+
+
+
+## Definition of "Shorty"
+
+This short report studies the effects of removing short duration storms from the record, or so called "shorties".
+
+We calculate "shorties" based on the consecutive observations according to the USA agency record of 4 times per day (hours 00, 06, 12, 18).  So if the cutoff for a shorty was 2-days, we need at least 9 observations at 35 knots to be counted as a non-shorty.  
+
+The HURSAT data does not provide results on regular time intervals, so we calculate streaks of wind speeds at 35+ knots, if that *streak* has a duration of at least \# days, then it is considered a non-shorty.
+
+## Summary
+
+### IBTrACS Record
+
+```{r, echo=FALSE}
+ibtracs_summaries |>
+  dplyr::select(`Shorty Length`=Days, `Total Non-shorty`=Total, `Avg Cyclones`=`Total Storms (Avg)`, `Avg Hurricanes`=`Hurricanes (Avg)`, `Avg Major TC`=`Major Storms (Avg)`, `Avg Intense TC`=`Intense Storms (Avg)`) |>
+  kable(caption="Change in Record after removing Shorties")
+```
+
+
+### HURSAT Record
+
+```{r, echo=FALSE}
+hursat_summaries |>
+  dplyr::select(`Shorty Length`=Days, `Total Non-shorty`=Total, `Avg Cyclones`=`Total Storms (Avg)`, `Avg Hurricanes`=`Hurricanes (Avg)`, `Avg Major TC`=`Major Storms (Avg)`, `Avg Intense TC`=`Intense Storms (Avg)`) |>
+  kable(caption="Change in Record after removing Shorties")
+```
+
+## Sensitivity in Changepoint Methods
+
+### IBTrACS Record
+
+```{r, echo=FALSE}
+ibtracs_key_shorty |>
+  dplyr::filter(Basin=="Global",
+                Method=="Changepoint") |>
+  mutate(Output = paste0("Shift of ", round(Shift, 1), " in ", Time, ". p-val=", round(p.value, 4) ) ) |>
+  dplyr::select(Days, Series, Output) |>
+  pivot_wider(id_cols=Days, names_from = Series, values_from = Output) |>
+  rename(`Shorty Length`=Days) |>
+  knitr::kable(caption="Findings from the SCUSUM Changepoint method, reporting the magnitude of the shift (in terms of lambda, expected storms per year), the year of the shift, the corresponding p-value based on Shorty definition length.")
+```
+
+### HURSAT Record
+
+```{r, echo=FALSE}
+hursat_key_shorty |>
+  dplyr::filter(Basin=="Global",
+                Method=="Changepoint") |>
+  mutate(Output = paste0("Shift of ", round(Shift, 1), " in ", Time, ". p-val=", round(p.value, 4) ) ) |>
+  dplyr::select(Days, Series, Output) |>
+  pivot_wider(id_cols=Days, names_from = Series, values_from = Output) |>
+  rename(`Shorty Length`=Days) |>
+  knitr::kable(caption="Findings from the SCUSUM Changepoint method, reporting the magnitude of the shift (in terms of lambda, expected storms per year), the year of the shift, the corresponding p-value based on Shorty definition length.")
+```
+
+## Regression Results
+
+
+### IBTrACS
+
+```{r, echo=FALSE}
+ibtracs_key_shorty |>
+  dplyr::filter(Basin=="Global",
+                Method=="Regression") |>
+  mutate(Output = paste0("Change ", round(Relative_Shift, 4)," per decade. p-val=", round(p.value, 4) ) ) |>
+  dplyr::select(Days, Series, Output) |>
+  pivot_wider(id_cols=Days, names_from = Series, values_from = Output) |>
+  rename(`Shorty Length`=Days) |>
+  knitr::kable(caption="Generalized Linear Model Findings, reporting the regression coefficient (the estimated beta term), the p-value for two-sided LRT for a significant coefficient based on Shorty definition length.")
+```
+
+### HURSAT
+
+
+```{r, echo=FALSE}
+hursat_key_shorty |>
+  dplyr::filter(Basin=="Global",
+                Method=="Regression") |>
+  mutate(Output = paste0("Change ", round(Relative_Shift, 4)," per decade. p-val=", round(p.value, 4) ) ) |>
+  dplyr::select(Days, Series, Output) |>
+  pivot_wider(id_cols=Days, names_from = Series, values_from = Output) |>
+  rename(`Shorty Length`=Days) |>
+  knitr::kable(caption="Generalized Linear Model Findings, reporting the regression coefficient (the estimated beta term), the p-value for two-sided LRT for a significant coefficient based on Shorty definition length.")
+```
+
+

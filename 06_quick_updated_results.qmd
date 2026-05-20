@@ -1,0 +1,92 @@
+---
+title: "Key Results"
+subtitle: "Tables summarizing the key results"
+author: "Tom Fisher"
+date: today
+format:
+  html:
+    page-layout: full
+    toc: true
+    toc-depth: 3
+    toc-location: left
+    embed-resources: true
+editor: visual
+bibliography: sn-bibliography.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+load("./data/results_overview.RData")
+```
+
+## Premise and Notes
+
+This report summarizes the big report down to just a few tables
+
+In each table there are $7\times 6=42$ hypothesis test being performed. I perform the [False Discovery Rate](https://en.wikipedia.org/wiki/False_discovery_rate) method to adjust for multiple comparisons -- it is being reported in parenthesis.
+
+A few ceveats we have already established
+
+- IBTrACS data goes from 1980 to 2025. HURSAT is from 1981 to 2024.
+- When processing IBTrACS we are now using the USA Agency recorded wind speed. In doing so, we lose 193 storms total storms compared to the previous analysis when I used any windspeed.
+- Storms with at least 3 consecutive days of tropical storm strength (non-shorty) are considered in this analysis.
+- There are differences between IBTrACS and HURAT -- see the other report.
+
+## Changepoint Approach
+
+He we summarize the *at most one changepoint* (AMOC) method we describe in the other report. The "Shift of \## in YEAR" marks the change in mean (or proportion) and the year we found the change. It must be reiterated that by finding a change at a given year this does not mean something systematically happened, it just happens to be the point where we detecting a nonhomogeneity in the underlying mean process of the data.
+
+### IBTrACS
+
+```{r, echo=FALSE}
+ibtracs_key_results |>
+  dplyr::filter(Method=="Changepoint") |>
+  mutate(adj_pvalue = p.adjust(p.value, method="fdr")) |>
+  mutate(Output = paste0("Shift of ", round(Shift, 1), " (", round(Relative_Shift,2), "%) in ", Time, ". p-val=", round(p.value, 4), " (FDR: ", round(adj_pvalue, 4), ")" ) ) |>
+  dplyr::select(Basin, Series, Output) |>
+  pivot_wider(id_cols=Basin, names_from = Series, values_from = Output) |>
+  knitr::kable(caption="Findings from the SCUSUM Changepoint method, reporting the magnitude of the shift (in terms of lambda, expected storms per year), the year of the shift, the corresponding p-value (and FDR adjusted p-value)")
+```
+
+### HURSAT
+
+```{r, echo=FALSE}
+hursat_key_results |>
+  dplyr::filter(Method=="Changepoint") |>
+  mutate(adj_pvalue = p.adjust(p.value, method="fdr")) |>
+  mutate(Output = paste0("Shift of ", round(Shift, 1), " (", round(Relative_Shift,2), "%) in ", Time, ". p-val=", round(p.value, 4), " (FDR: ", round(adj_pvalue, 4), ")" ) ) |>
+  dplyr::select(Basin, Series, Output) |>
+  pivot_wider(id_cols=Basin, names_from = Series, values_from = Output) |>
+  knitr::kable(caption="Findings from the SCUSUM Changepoint method, reporting the magnitude of the shift (in terms of lambda, expected storms per year), the year of the shift, the corresponding p-value (and FDR adjusted p-value)")
+```
+
+## Regression Results
+
+Here, the coefficient is NOT a regression coefficient, but rather the decadal change based on a linear relation. I took the predicted value in Year 1, the predicted value in year $N$, found the difference and then scaled to the decade. This provide a contextual \# per decade increase (or decrease). These $p$-values are based on two-sided likelihood ratio test for the coefficient in the generalized linear model.
+
+### IBTrACS
+
+```{r, echo=FALSE}
+ibtracs_key_results |>
+  dplyr::filter(Method=="Regression") |>
+  mutate(adj_pvalue = p.adjust(p.value, method="fdr")) |>
+  mutate(Output = paste0("Change ", round(Relative_Shift, 4)," per decade. p-val=", round(p.value, 4), " (FDR: ", round(adj_pvalue, 4), ")" ) ) |>
+  dplyr::select(Basin, Series, Output) |>
+  pivot_wider(id_cols=Basin, names_from = Series, values_from = Output) |>
+  knitr::kable(caption="Generalized Linear Model Findings, reporting the regression coefficient (the estimated beta term), the p-value for two-sided LRT for a significant coefficient (and the FDR adjusted p-value)")
+```
+
+### HURSAT
+
+```{r, echo=FALSE}
+hursat_key_results |>
+  dplyr::filter(Method=="Regression") |>
+  mutate(adj_pvalue = p.adjust(p.value, method="fdr")) |>
+  mutate(Output = paste0("Change ", round(Relative_Shift, 4)," per decade. p-val=", round(p.value, 4), " (FDR: ", round(adj_pvalue, 4), ")" ) ) |>
+  dplyr::select(Basin, Series, Output) |>
+  pivot_wider(id_cols=Basin, names_from = Series, values_from = Output) |>
+  knitr::kable(caption="Generalized Linear Model Findings, reporting the regression coefficient (the estimated beta term), the p-value for two-sided LRT for a significant coefficient (and the FDR adjusted p-value)")
+```

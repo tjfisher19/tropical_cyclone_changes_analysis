@@ -9,7 +9,9 @@
 ##  Author: Tom Fisher (fishert4@miamioh.edu)
 ##
 ##  Code tested on 2025-11-12
-##     Last ran on 2026-01-15
+##
+##     Last ran on 2026-04-08
+##         edited to use the USA windspeed records
 
 
 
@@ -37,10 +39,10 @@ library(tidyverse)
 # storm_col_names <- read_csv(URL,
 #                             n_max = 0)
 # 
-# storms_raw <- read_csv(URL,
+# ibtracs_storms_raw <- read_csv(URL,
 #                        skip = 2, col_names = names(storm_col_names), na="" )
 # 
-# save(storms_raw, file="./data/ibtracs_rawData.RData")
+# save(ibtracs_storms_raw, file="./data/ibtracs_rawData.RData")
 
 #######################################################
 ## Load Best Track Data
@@ -48,14 +50,16 @@ library(tidyverse)
 
 load("./data/ibtracs_rawData.RData")
 
-
 ############################################################
 ############################################################
-## Processing the Raw data for our analysis
-##   of counts and proportions
+## We require the following to constants to be declared
+##   If they are not declared elsewhere (for example, in
+##       
+##       
+##   then we set these as the defaults.)
 
-## The current year is still happening. So all data before this year!
-current_year <- year(Sys.time())
+if(!exists("current_year") ) current_year <- year(Sys.time());
+if(!exists("shorty_day_cutoff") ) shorty_day_cutoff <- 3;
 
 ##################################################################
 ## Each row of storms raw is a specific time & place observation
@@ -86,19 +90,33 @@ current_year <- year(Sys.time())
 ##   will be a unique storm recording its season, basin
 ##   and classifications
 
-storms_fct <- storms_raw %>%
+ibtracs_storms_fct <- ibtracs_storms_raw %>%
   mutate(SEASON=year(ISO_TIME) ) |>
-  mutate(Wind = pmax(WMO_WIND, USA_WIND, TOKYO_WIND, CMA_WIND, HKO_WIND, NEWDELHI_WIND, REUNION_WIND, BOM_WIND, NADI_WIND, WELLINGTON_WIND, DS824_WIND, TD9636_WIND, NEUMANN_WIND, MLC_WIND, na.rm=TRUE) ) |>
-  dplyr::filter(Wind > 34,
-                SEASON < current_year) |>
+  mutate(Wind = USA_WIND ) |>
+  drop_na(Wind) |>
+  #mutate(Wind = pmax(WMO_WIND, USA_WIND, TOKYO_WIND, CMA_WIND, HKO_WIND, NEWDELHI_WIND, REUNION_WIND, BOM_WIND, NADI_WIND, WELLINGTON_WIND, DS824_WIND, TD9636_WIND, NEUMANN_WIND, MLC_WIND, na.rm=TRUE) ) |>
+  # dplyr::filter(Wind > 34,
+               # SEASON < current_year) |>
+  dplyr::filter(SEASON < current_year,
+                hour(ISO_TIME) %in% c(0,6,12,18),
+                minute(ISO_TIME)==0)  |>
+  mutate(TC = ifelse(Wind > 34, "TC", "No")) |>
+  # mutate(new_streak = TC != lag(TC, default = first(TC)),
+  #        streak_id = cumsum(new_streak) ) |>
+  group_by(SID, streak_id = consecutive_id(TC)) %>%
+  mutate(streak_length = row_number()) |>
+  dplyr::filter(TC=="TC") |>
   group_by(SID) %>% 
-  summarize(N=n(),                  ## Number of observations
-            SEASON=first(SEASON),   ## Save the Season/year
-            BASIN=first(BASIN),     ## Save the BASIN
-            NAME=first(NAME),       ## Storm name (might be useful for annotation)
-            Wind = max(Wind, na.rm=TRUE),
-            Duration = max(ISO_TIME)-min(ISO_TIME)) |>
-  mutate(Duration_Class = ifelse(Duration <= 48*60*60, "Shorty", "Non_Shorty"),
+  summarize(N=n(),                                 ## Number of observations
+            SEASON=first(SEASON),                  ## Save the Season/year
+            BASIN=first(BASIN),                    ## Save the BASIN of cycolgenesis
+            NAME=first(NAME),                      ## Storm name (might be useful for annotation)
+            Wind = max(Wind, na.rm=TRUE),          ## Maximum attained windspeed, for categorization
+            Duration = max(ISO_TIME)-min(ISO_TIME), ## Duration of start and end of 35kn records
+            Max_TC_Streak = max(streak_length)
+            ) |>
+  mutate(Duration_Class = ifelse(Duration < shorty_day_cutoff*24*60*60, "Shorty", "Non_Shorty"),
+         Duration_Class_Streak = ifelse(Max_TC_Streak <= shorty_day_cutoff*4, "Shorty", "Non_Shorty"),
          BASIN = factor(BASIN,     ## Label the BASIN with something informative
                         levels=c("NA", "EP", "WP", "NI", "SI", "SP", "SA"),
                         labels=c("North Atlantic",
@@ -117,12 +135,13 @@ storms_fct <- storms_raw %>%
          StormCat = factor(StormCat, levels=c("Cat-0", "Cat-1", "Cat-2", "Cat-3", "Cat-4", "Cat-5") ) ) %>%
   dplyr::filter(!is.na(StormCat))
 
-save(storms_fct, file = "./data/ibtracs_storm_classifications.RData")
+save(ibtracs_storms_fct, file = "./data/ibtracs_storm_classifications.RData")
 
 ############################################################
 ## We now build the dataset for our analysis.
 ##  We filter so only "non-shorties" are included
 ##  For each basin and season we count
+##   the number of Hurricanes (Cat 1, 2, 3, 4, 5)
 ##   the number of Major storms (Cat 3, 4, 5)
 ##   the number of Intense storms (Cat 4, 5)
 ##   and total number (of non-shorties)
@@ -132,15 +151,16 @@ save(storms_fct, file = "./data/ibtracs_storm_classifications.RData")
 ##   in any case when a season, basin, storm type 
 ##   combination did not occur (ie. Northern Indian)
 
-non_shorty_for_props <- storms_fct |>
-  dplyr::filter(Duration_Class=="Non_Shorty") |>
+ibtracs_non_shorty_for_props <- ibtracs_storms_fct |>
+  dplyr::filter(Duration_Class_Streak=="Non_Shorty") |>
   group_by(SEASON, BASIN) |>
-  summarize(Major_Storms = sum(StormCat %in% c("Cat-3", "Cat-4", "Cat-5")),
+  summarize(Hurricanes = sum(StormCat !="Cat-0"),
+            Major_Storms = sum(StormCat %in% c("Cat-3", "Cat-4", "Cat-5")),
             Intense_Storms = sum(StormCat %in% c("Cat-4", "Cat-5") ),
-            Total_Storms = n() ) |>
+            Total_Storms = n()) |>
   ungroup() |>
-  complete(SEASON, BASIN, fill=list(Major_Storms=0, Intense_Storms=0, Total_Storms=0)) %>% 
+  complete(SEASON, BASIN, fill=list(Hurricanes=0, Major_Storms=0, Intense_Storms=0, Total_Storms=0)) %>% 
   dplyr::filter(BASIN != "Southern Atlantic")
 
-save(non_shorty_for_props, 
+save(ibtracs_non_shorty_for_props, 
      file="./data/ibtracs_nonShortiesForProportions.RData")
