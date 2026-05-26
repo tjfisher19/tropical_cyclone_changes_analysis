@@ -167,6 +167,7 @@ hursat_storms_fct <- hursat_adt_raw |>
   ##  Here, we determine the length
   ##   as per consecutive observations
   ##   where a storm is tropical storm strength
+  drop_na(WindSpeed) |>
   mutate(TC = ifelse(WindSpeed > 34, "TC", "No")) |>
   group_by(SID, streak_id = consecutive_id(TC)) %>%
   mutate(streak_length = row_number()) |>

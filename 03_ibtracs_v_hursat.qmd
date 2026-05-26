@@ -47,8 +47,8 @@ We look at non-shorty storms. **How do we define a "shorty"?**
   - Of the `r NROW(ibtracs_storms_fct)` tropical cyclones on record, `r sum(ibtracs_storms_fct$Duration_Class_Streak=="Shorty")` are shorties, and `r sum(ibtracs_storms_fct$Duration_Class_Streak!="Shorty")` are non-shorty.
 - HURSAT
   - HURSAT time frame if from 1981 to 2024.
-  - Records are timed from satellite images, not on necessarily at a regular intervals.
-  - We calculate *streaks* where the wind speed is at 35+ knots. We compare the beginning and end of that streak.
+  - Records are timed from satellite images, not on necessarily at a regular intervals, but largely collected every 3 hours.
+  - We calculate *streaks* where the wind speed is at 35+ knots. We compare the beginning and end of that streak to determine the duration.
   - The streak duration must last **at least `r shorty_day_cutoff` days**.
   - Of the `r NROW(hursat_storms_fct)` storms in HURSAT, `r sum(hursat_storms_fct$Duration_Class_Streak=="Shorty")` are shorties and `r sum(hursat_storms_fct$Duration_Class_Streak!="Shorty")` are not.
 
@@ -103,7 +103,7 @@ ggplot(compare_wind_df, aes(x=Wind, fill=Source) ) +
 
 Surprisingly, the two are very similar overall with HURSAT providing slightly higher values of wind speed. I wasn't expecting that.
 
-The bi-modality of the HURSAT data is peculiar (at least to me?). The slow right skew in the IBTrACS is what I would expect to see generally.
+The bi-modality of the HURSAT data is also interesting. The slow right skew in the IBTrACS is what I would expect to see generally.
 
 ### Digging into HURSAT
 
@@ -127,7 +127,7 @@ ggplot(hursat_adt_all, aes(x=WindSpeed) ) +
   scale_x_continuous(breaks=seq(0,240, 20))
 ```
 
-We still see multiple modes. The peak around 25 knots (minimum recorded windspeed), another at 35 knots (tropical cyclone), another around 55 to 60 knots (just shy of hurricane strength), then another peak around 100 knots (albeit smaller relative to the others). There must be something in the ADT algorithm to *cluster* some of the wind speed estimates together.
+We still see multiple modes. The peak around 25 knots (minimum recorded windspeed), another at 35 knots (tropical cyclone), another around 55 to 60 knots (just shy of hurricane strength), then another peak around 100 knots (albeit smaller relative to the others).
 
 If we remove all observations under 35 knots, we see the peak near 100 knots better.
 
@@ -145,7 +145,7 @@ ggplot(dplyr::filter(hursat_adt_all, WindSpeed>=35), aes(x=WindSpeed) ) +
 
 ### Digging into IBTrACS
 
-Sine we went through the trouble of looking at all the HURSAT wind records, why not also look at the IBTrACS in case something fishy is happening there.
+Since we went through the trouble of looking at all the HURSAT wind records, why not also look at the IBTrACS in case something fishy is happening there.
 
 ```{r, echo=FALSE}
 load("./data/ibtracs_rawData.RData")
@@ -206,7 +206,7 @@ lost_storms |>
   kable(caption="Storms in HURSAT but not IBTrACS")
 ```
 
-For sanity checking, that one North Atlantic storm is ID `r dplyr::filter(lost_storms, HURSAT_Basin=="North Atlantic")$SID`. In the IBTrACS data this is an unnamed storm that never achieved a wind speed greater than 30 knots, so it is not being recorded at all (crazy that the HURSAT is saying 79.6 knots).
+For sanity checking, that one North Atlantic storm is ID `r dplyr::filter(lost_storms, HURSAT_Basin=="North Atlantic")$SID`. In the IBTrACS data this is an unnamed storm that never achieved a wind speed greater than 30 knots, so it is not being recorded at all (yet HURSAT is saying 79.6 knots).
 
 ### Difference Basins
 
@@ -219,7 +219,7 @@ specific_storms |>
   kable(caption="Storms with differing Basins")
 ```
 
-For HURSAT, I need to define the basin -- I do so using latitude and longitude measurements in the SID. For example, Hurricane Francis (last record above), SID is `2017111S09146`. This says the storm originated in 2017 on Julian day 111 in the Southern Hemisphere at latitude 09 and longitude 146. The IBTrACS documentation says
+For HURSAT, we need to define the basin based on latitude and longitude measurements in the SID. For example, Hurricane Francis (last record above), SID is `2017111S09146`. This says the storm originated in 2017 on Julian day 111 in the Southern Hemisphere at latitude 09 and longitude 146. The IBTrACS documentation says
 
 > SP = South Pacific 135° \< Longitude \< 290
 
@@ -227,7 +227,7 @@ Frances has an origin longitude of 146 which is clearly in the South Pacific ran
 
 If you look at the other storms in the list, it is a similar story. They formed near the border of two different basins and crossed into a different agency's jurisdiction at some point.
 
-I think in terms of analysis, we should follow the documentation for the origin of basin. We make a note about how 20-ish storms differing. This should have no effect on the global results but may have minor effect on the within basin results.
+In terms of analysis this will have no effect on the global record and minimal effects on the basin level results given it is only 20-ish storms over 45 years.
 
 ### How Wind Speeds change
 
@@ -288,7 +288,7 @@ ggplot( ) +
 
 ### Digging in Part 1
 
-I explored a few of the extreme cases -- I do not think there is anything wrong with my data processing. I think it is just a data quality issues. For example the case with the largest difference is a storm in the South Indian. Here are a few observations when the storm is at Tropical Cyclone Strength from the IBTrACS data.
+I explored a few of the extreme cases – I think the differences are largley a result of data quality issues. For example the case with the largest difference is a storm in the South Indian. Here are a few observations when the storm is at Tropical Cyclone Strength from the IBTrACS data.
 
 ```{r, echo=FALSE}
 storm.id <- specific_storms[which.max(specific_storms$Difference),]$SID
@@ -354,6 +354,6 @@ hursat_adt_raw |>
 
 Again, the storms and locations all more-or-less match, but very different wind speed records.
 
-This is an interesting storm, or we should says storm. Check out the [1986-1987 South Pacific season](https://en.wikipedia.org/wiki/1986%E2%80%9387_South_Pacific_cyclone_season#Severe_Tropical_Cyclone_Uma).
+This is an interesting storm, or we should says storms. Check out the [1986-1987 South Pacific season](https://en.wikipedia.org/wiki/1986%E2%80%9387_South_Pacific_cyclone_season#Severe_Tropical_Cyclone_Uma).
 
-Two storms linked at some point but originated as two disturbances. IBTrACS combines them into this single record but if you look into the IBTrACS record further there is an "unnamed" storm shorty around the same time. I looked into the HURSAT data and there is another storm that is marked as a shorty also in the same time frame. I suspect that shorty is Veli and the storm recorded above is Uma. But they are combined in IBTrACs as far as naming. I am not sure if that is why the IBTrACS wind speed is smaller or not.
+Two storms linked at some point but originated as two disturbances. IBTrACS combines them into this single record. If you look into the HURSAT data, there is another storm that is marked as a shorty also in the same time frame. I suspect that shorty is Veli and the storm recorded above is Uma. But they are combined in IBTrACs as one SID and as far as naming, so we follow that convention here.

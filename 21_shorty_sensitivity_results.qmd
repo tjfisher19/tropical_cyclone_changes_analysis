@@ -22,13 +22,11 @@ library(kableExtra)
 load("./data/shorty_sensitivity.RData")
 ```
 
-
-
 ## Definition of "Shorty"
 
 This short report studies the effects of removing short duration storms from the record, or so called "shorties".
 
-We calculate "shorties" based on the consecutive observations according to the USA agency record of 4 times per day (hours 00, 06, 12, 18).  So if the cutoff for a shorty was 2-days, we need at least 9 observations at 35 knots to be counted as a non-shorty.  
+We calculate "shorties" based on the consecutive observations according to the USA agency record of 4 times per day (hours 00, 06, 12, 18). So if the cutoff for a shorty was 2-days, we need at least 9 observations at 35 knots to be counted as a non-shorty.
 
 The HURSAT data does not provide results on regular time intervals, so we calculate streaks of wind speeds at 35+ knots, if that *streak* has a duration of at least \# days, then it is considered a non-shorty.
 
@@ -41,7 +39,6 @@ ibtracs_summaries |>
   dplyr::select(`Shorty Length`=Days, `Total Non-shorty`=Total, `Avg Cyclones`=`Total Storms (Avg)`, `Avg Hurricanes`=`Hurricanes (Avg)`, `Avg Major TC`=`Major Storms (Avg)`, `Avg Intense TC`=`Intense Storms (Avg)`) |>
   kable(caption="Change in Record after removing Shorties")
 ```
-
 
 ### HURSAT Record
 
@@ -81,7 +78,6 @@ hursat_key_shorty |>
 
 ## Regression Results
 
-
 ### IBTrACS
 
 ```{r, echo=FALSE}
@@ -97,7 +93,6 @@ ibtracs_key_shorty |>
 
 ### HURSAT
 
-
 ```{r, echo=FALSE}
 hursat_key_shorty |>
   dplyr::filter(Basin=="Global",
@@ -108,5 +103,3 @@ hursat_key_shorty |>
   rename(`Shorty Length`=Days) |>
   knitr::kable(caption="Generalized Linear Model Findings, reporting the regression coefficient (the estimated beta term), the p-value for two-sided LRT for a significant coefficient based on Shorty definition length.")
 ```
-
-

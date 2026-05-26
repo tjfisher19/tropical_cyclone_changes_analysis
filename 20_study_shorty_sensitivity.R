@@ -152,6 +152,11 @@ hursat_global040 <- hursat_global_results
 ibtracs_global040 <- ibtracs_global_results
 
 
+
+###############################
+## Bundle all the resutls into
+##   one data.frame
+
 ibtracs_key_shorty <-
   bind_rows(
     ibtracs_key000 |> mutate(Days = 0),
