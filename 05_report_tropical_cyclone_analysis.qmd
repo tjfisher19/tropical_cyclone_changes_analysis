@@ -81,44 +81,30 @@ When working with the proportion of major (or intense) storms, we perform a CUSU
 
 We begin with a study of the record across the entire globe -- the Global "basin". Our analysis looks at all non-shorties (storms that lasted at least 48 hours) and achieved tropical storm strength. We also look at those storms that achieved major hurricane strength.
 
-{{< include ./report_analysis_code/cyclone_report_global_ibtracs.qmd >}} 
-{{< include ./report_analysis_code/cyclone_report_global_hursat.qmd >}} 
-
+{{< include ./report_analysis_code/cyclone_report_global_ibtracs.qmd >}} {{< include ./report_analysis_code/cyclone_report_global_hursat.qmd >}}
 
 # North Atlantic
 
-{{< include ./report_analysis_code/cyclone_report_north_atlantic_ibtracs.qmd >}} 
-{{< include ./report_analysis_code/cyclone_report_north_atlantic_hursat.qmd >}} 
-
+{{< include ./report_analysis_code/cyclone_report_north_atlantic_ibtracs.qmd >}} {{< include ./report_analysis_code/cyclone_report_north_atlantic_hursat.qmd >}}
 
 # Eastern North Pacific
 
-{{< include ./report_analysis_code/cyclone_report_eastern_pacific_ibtracs.qmd >}} 
-{{< include ./report_analysis_code/cyclone_report_eastern_pacific_hursat.qmd >}} 
-
+{{< include ./report_analysis_code/cyclone_report_eastern_pacific_ibtracs.qmd >}} {{< include ./report_analysis_code/cyclone_report_eastern_pacific_hursat.qmd >}}
 
 # Western North Pacific
 
-{{< include ./report_analysis_code/cyclone_report_western_pacific_ibtracs.qmd >}} 
-{{< include ./report_analysis_code/cyclone_report_western_pacific_hursat.qmd >}} 
-
+{{< include ./report_analysis_code/cyclone_report_western_pacific_ibtracs.qmd >}} {{< include ./report_analysis_code/cyclone_report_western_pacific_hursat.qmd >}}
 
 # North Indian
 
-{{< include ./report_analysis_code/cyclone_report_north_indian_ibtracs.qmd >}} 
-{{< include ./report_analysis_code/cyclone_report_north_indian_hursat.qmd >}} 
-
+{{< include ./report_analysis_code/cyclone_report_north_indian_ibtracs.qmd >}} {{< include ./report_analysis_code/cyclone_report_north_indian_hursat.qmd >}}
 
 # South Indian
 
-{{< include ./report_analysis_code/cyclone_report_southern_indian_ibtracs.qmd >}} 
-{{< include ./report_analysis_code/cyclone_report_southern_indian_hursat.qmd >}} 
-
+{{< include ./report_analysis_code/cyclone_report_southern_indian_ibtracs.qmd >}} {{< include ./report_analysis_code/cyclone_report_southern_indian_hursat.qmd >}}
 
 # South Pacific
 
-{{< include ./report_analysis_code/cyclone_report_southern_pacific_ibtracs.qmd >}} 
-{{< include ./report_analysis_code/cyclone_report_southern_pacific_hursat.qmd >}} 
-
+{{< include ./report_analysis_code/cyclone_report_southern_pacific_ibtracs.qmd >}} {{< include ./report_analysis_code/cyclone_report_southern_pacific_hursat.qmd >}}
 
 # References

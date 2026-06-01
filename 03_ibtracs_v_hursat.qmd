@@ -33,8 +33,6 @@ A short comparison of the record from the IBTrACS data and the HURSAT-ADT data.
 
 No big conclusions should be made from this short report, but it does provide a short comparison about how the two two sources of data agree and differ.
 
-It is basically a study on data quality and to provide nuance to any future results.
-
 ## Data Statement
 
 We look at non-shorty storms. **How do we define a "shorty"?**
@@ -54,9 +52,9 @@ We look at non-shorty storms. **How do we define a "shorty"?**
 
 The main analysis here is comparing the storms that are non-shorties.
 
-## Comparison of Max Windspeeds
+## Comparison of Max Wind Speeds
 
-We start with an overall comparison of the records from IBTrACS and HURSAT. Here are descriptive statistics and graphics for the maximum windspeed of all non-shorty tropical cyclones.
+We start with an overall comparison of the records from IBTrACS and HURSAT. Here are descriptive statistics and graphics for the maximum wind speed of all non-shorty tropical cyclones.
 
 ```{r, echo=FALSE}
 compare_wind_df <- bind_rows(
@@ -107,7 +105,7 @@ The bi-modality of the HURSAT data is also interesting. The slow right skew in t
 
 ### Digging into HURSAT
 
-So I made the following plot -- which includes ALL the windspeed records in the HURSAT data (so the same storm will have multiple observations).
+Given the bi-modality above, we make the following plot -- which includes ALL the wind speed records in the HURSAT data (so the same storm will have multiple observations).
 
 ```{r, echo=FALSE}
 load("./data/hursat_adt_raw.RData")
@@ -288,7 +286,7 @@ ggplot( ) +
 
 ### Digging in Part 1
 
-I explored a few of the extreme cases – I think the differences are largley a result of data quality issues. For example the case with the largest difference is a storm in the South Indian. Here are a few observations when the storm is at Tropical Cyclone Strength from the IBTrACS data.
+I explored a few of the extreme cases – I think the differences are largely a result of data quality issues. For example the case with the largest difference is a storm in the South Indian. Here are a few observations when the storm is at Tropical Cyclone Strength from the IBTrACS data.
 
 ```{r, echo=FALSE}
 storm.id <- specific_storms[which.max(specific_storms$Difference),]$SID

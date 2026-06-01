@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Tom Fisher">
-<meta name="dcterms.date" content="2026-05-22">
+<meta name="dcterms.date" content="2026-06-01">
 
 <title>Key Results</title>
 <style>
@@ -2322,7 +2322,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 22, 2026</p>
+      <p class="date">June 1, 2026</p>
     </div>
   </div>
   
@@ -2337,11 +2337,11 @@ window.Quarto = {
 <section id="premise-and-notes" class="level2">
 <h2 class="anchored" data-anchor-id="premise-and-notes">Premise and Notes</h2>
 <p>This report summarizes the big report down to just a few tables</p>
-<p>In each table there are <span class="math inline">\(7\times 6=42\)</span> hypothesis test being performed. I perform the <a href="https://en.wikipedia.org/wiki/False_discovery_rate">False Discovery Rate</a> method to adjust for multiple comparisons – it is being reported in parenthesis.</p>
-<p>A few ceveats we have already established</p>
+<p>In each table there are <span class="math inline">\(7\times 6=42\)</span> hypothesis test being performed. We perform the <a href="https://en.wikipedia.org/wiki/False_discovery_rate">False Discovery Rate</a> method to adjust for multiple comparisons – it is being reported in parenthesis.</p>
+<p>A few caveats we have already established</p>
 <ul>
 <li>IBTrACS data goes from 1980 to 2025. HURSAT is from 1981 to 2024.</li>
-<li>When processing IBTrACS we are now using the USA Agency recorded wind speed. In doing so, we lose 193 storms total storms compared to the previous analysis when I used any windspeed.</li>
+<li>When processing IBTrACS we are now using the USA Agency recorded wind speed.</li>
 <li>Storms with at least 3 consecutive days of tropical storm strength (non-shorty) are considered in this analysis.</li>
 <li>There are differences between IBTrACS and HURAT – see the other report.</li>
 </ul>
@@ -2542,7 +2542,7 @@ window.Quarto = {
 </section>
 <section id="regression-results" class="level2">
 <h2 class="anchored" data-anchor-id="regression-results">Regression Results</h2>
-<p>Here, the coefficient is NOT a regression coefficient, but rather the decadal change based on a linear relation. I took the predicted value in Year 1, the predicted value in year <span class="math inline">\(N\)</span>, found the difference and then scaled to the decade. This provide a contextual # per decade increase (or decrease). These <span class="math inline">\(p\)</span>-values are based on two-sided likelihood ratio test for the coefficient in the generalized linear model.</p>
+<p>Here, the coefficient is NOT a regression coefficient, but rather the decadal change based on a linear relation. Take the predicted value in Year 1, the predicted value in year <span class="math inline">\(N\)</span>, find the difference and then scaled to the decade. This provide a contextual # per decade increase (or decrease). These <span class="math inline">\(p\)</span>-values are based on two-sided likelihood ratio test for the coefficient in the generalized linear model. As before, an FDR multiple comparisons is also provided.</p>
 <section id="ibtracs-1" class="level3">
 <h3 class="anchored" data-anchor-id="ibtracs-1">IBTrACS</h3>
 <div class="cell">

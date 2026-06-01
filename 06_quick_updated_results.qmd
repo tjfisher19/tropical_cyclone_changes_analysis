@@ -20,19 +20,21 @@ library(tidyverse)
 library(knitr)
 library(kableExtra)
 load("./data/results_overview.RData")
+load("data/ibtracs_storm_classifications.RData")
+shorty_day_cutoff <- (min(filter(ibtracs_storms_fct, Duration_Class_Streak=="Non_Shorty")$Max_TC_Streak)-1)/4
 ```
 
 ## Premise and Notes
 
 This report summarizes the big report down to just a few tables
 
-In each table there are $7\times 6=42$ hypothesis test being performed. I perform the [False Discovery Rate](https://en.wikipedia.org/wiki/False_discovery_rate) method to adjust for multiple comparisons -- it is being reported in parenthesis.
+In each table there are $7\times 6=42$ hypothesis test being performed. We perform the [False Discovery Rate](https://en.wikipedia.org/wiki/False_discovery_rate) method to adjust for multiple comparisons -- it is being reported in parenthesis.
 
-A few ceveats we have already established
+A few caveats we have already established
 
 - IBTrACS data goes from 1980 to 2025. HURSAT is from 1981 to 2024.
-- When processing IBTrACS we are now using the USA Agency recorded wind speed. In doing so, we lose 193 storms total storms compared to the previous analysis when I used any windspeed.
-- Storms with at least 3 consecutive days of tropical storm strength (non-shorty) are considered in this analysis.
+- When processing IBTrACS we are now using the USA Agency recorded wind speed.
+- Storms with at least `r shorty_day_cutoff` consecutive days of tropical storm strength (non-shorty) are considered in this analysis.
 - There are differences between IBTrACS and HURAT -- see the other report.
 
 ## Changepoint Approach
@@ -65,7 +67,7 @@ hursat_key_results |>
 
 ## Regression Results
 
-Here, the coefficient is NOT a regression coefficient, but rather the decadal change based on a linear relation. I took the predicted value in Year 1, the predicted value in year $N$, found the difference and then scaled to the decade. This provide a contextual \# per decade increase (or decrease). These $p$-values are based on two-sided likelihood ratio test for the coefficient in the generalized linear model.
+Here, the coefficient is NOT a regression coefficient, but rather the decadal change based on a linear relation. Take the predicted value in Year 1, the predicted value in year $N$, find the difference and then scaled to the decade. This provide a contextual \# per decade increase (or decrease). These $p$-values are based on two-sided likelihood ratio test for the coefficient in the generalized linear model. As before, an FDR multiple comparisons is also provided.
 
 ### IBTrACS
 

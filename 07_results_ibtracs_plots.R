@@ -37,11 +37,13 @@ load("./data/results_overview.RData")
 ##   customization of axes and such
 ##   
 
+if(!exists("shorty_day_cutoff") ) shorty_day_cutoff <- 3;
+
 data_dots <- "gray50"
 data_line <- "gray60"
 seg_line <- "gray20"
-caption_text <- "Source: International Best Track Archive for Climate Stewardship\nhttps://www.ncei.noaa.gov/products/international-best-track-archive"
-
+caption_text <- "Source: International Best Track Archive for Climate Stewardship (IBTrACS)\nhttps://www.ncei.noaa.gov/products/international-best-track-archive"
+subtitle_text <- paste("Segmentations based on significant SCUSUM Change Point Test\nStorms with less than", shorty_day_cutoff, "consecutive days at tropical cyclone strength excluded")
 
 our_labels <- function(x) {
   case_when(x==yearFirst ~ paste0(yearFirst),
@@ -62,9 +64,10 @@ x_scale_marginal <- scale_x_continuous(limits=c(yearFirst-0.75, yearLast+0.75),
 
 theme_marginal <- theme_minimal() +
   theme(axis.title = element_blank(),
-        axis.text = element_text(size=8),
-        plot.caption = element_text(family="mono"),
-        plot.title.position = "plot")
+        axis.text = element_text(size=7.5),
+        plot.caption = element_text(family="mono", size=7),
+        plot.title.position = "plot",
+        plot.subtitle = element_text(size=8.5) )
 
 integer_breaks <- function(n = 5, ...) {
   fxn <- function(x) {
@@ -109,7 +112,7 @@ global_basin_tall <- global_basin |>
   pivot_longer(-SEASON, names_to="Measure", values_to="Value") |>
   mutate(Measure = factor(Measure, 
                           levels=c("Total_Storms", "Hurricanes", "Major_Storms", "Prop_Major", "Intense_Storms", "Prop_Intense"),
-                          labels=c("Total Cyclones",
+                          labels=c("Tropical Cyclones",
                                    "Hurricanes",
                                    "Major Cyclones",
                                    "Proportion of Major Cyclones",
@@ -135,7 +138,7 @@ global_key_results_plot <- ibtracs_key_results |>
                             .default = Mean) ) |>
   mutate(Measure = factor(Measure, 
                           levels=c("Cyclone Freq", "Hurricanes", "Major Freq", "Prop Major", "Intense Freq", "Prop Intense"),
-                          labels=c("Total Cyclones",
+                          labels=c("Tropical Cyclones",
                                    "Hurricanes",
                                    "Major Cyclones",
                                    "Proportion of Major Cyclones",
@@ -154,7 +157,7 @@ plot_global_findings <- ggplot(global_basin_tall, aes(x=SEASON, y=Value) ) +
   geom_line(data=global_key_results_plot, aes(x=Season, y=Value, group=Group),
             linewidth=1.2, color=seg_line) +
   labs(title="Global Tropical Cyclone Record (1980-2025)",
-       subtitle="Segmentations based on SCUSUM Change Point Test",
+       subtitle=subtitle_text,
        caption=caption_text) +
   theme_minimal() + 
   theme_marginal +
@@ -218,7 +221,7 @@ plot_basin_totals <- ggplot(storm_counts) +
                color=seg_line, linewidth=1.25) +
   facet_wrap(~BASIN, scales="free") +
   labs(title="Changes in Cyclone Frequency by Basin",
-       subtitle="Segmentations based on SCUSUM Change Point Test",
+       subtitle=subtitle_text,
        caption=caption_text) +
   theme_minimal() + 
   theme_marginal +
@@ -274,7 +277,7 @@ plot_basin_hurricanes <- ggplot(storm_counts) +
                color=seg_line, linewidth=1.25) +
   facet_wrap(~BASIN, scales="free") +
   labs(title="Changes in Hurricanes (Category 1+) by Basin",
-       subtitle="Segmentations based on SCUSUM Change Point Test",
+       subtitle=subtitle_text,
        caption=caption_text) +
   theme_minimal() + 
   theme_marginal +
@@ -329,7 +332,7 @@ plot_basin_major <- ggplot(storm_counts) +
                color=seg_line, linewidth=1.25) +
   facet_wrap(~BASIN, scales="free") +
   labs(title="Changes in Major Cyclones (Category 3+) by Basin",
-       subtitle="Segmentations based on SCUSUM Change Point Test",
+       subtitle=subtitle_text,
        caption=caption_text) +
   theme_minimal() + 
   theme_marginal +
@@ -388,7 +391,7 @@ plot_basin_prop_major <- ggplot(storm_counts) +
                color=seg_line, linewidth=1.25) +
   facet_wrap(~BASIN, scales="free") +
   labs(title="Changes in Proportion of Major Cyclones by Basin",
-       subtitle="Segmentations based on SCUSUM Change Point Test",
+       subtitle=subtitle_text,
        caption=caption_text) +
   theme_minimal() + 
   theme_marginal +
@@ -444,7 +447,7 @@ plot_basin_intense <- ggplot(storm_counts) +
                color=seg_line, linewidth=1.25) +
   facet_wrap(~BASIN, scales="free") +
   labs(title="Changes in Intense Cyclones (Category 4+) by Basin",
-       subtitle="Segmentations based on SCUSUM Change Point Test",
+       subtitle=subtitle_text,
        caption=caption_text) +
   theme_minimal() + 
   scale_y_continuous(breaks = integer_breaks()) +
@@ -501,7 +504,7 @@ plot_basin_prop_intense <- ggplot(storm_counts) +
                color=seg_line, linewidth=1.25) +
   facet_wrap(~BASIN, scales="free") +
   labs(title="Changes in Proportion of Intense Cyclones by Basin",
-       subtitle="Segmentations based on SCUSUM Change Point Test",
+       subtitle=subtitle_text,
        caption=caption_text) +
   theme_minimal() + 
   theme_marginal +

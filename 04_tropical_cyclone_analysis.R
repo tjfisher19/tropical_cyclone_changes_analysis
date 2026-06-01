@@ -21,15 +21,13 @@
 ##      Ran on 2026-05-18 after adding in Hurricanes
 
 library(tidyverse)
-set.seed(1)
 
-## Load data
+## Load the data for changepoint and
+##    generalized linear model analysis
 load("./data/ibtracs_nonShortiesForProportions.RData")
 load("./data/hursat_nonShortiesForProportions.RData")
 
-
-
-## Load cusum test
+## Load CUSUM test functions
 source("cusumBasedChangePointsTest.R")
 
 ## Add the "Global" basin to each dataset
@@ -43,6 +41,7 @@ ibtracs_all_basins <- ibtracs_non_shorty_for_props |>
   bind_rows(ibtracs_non_shorty_for_props)
 
 ## Now with the HURSAT data
+##    add the "Global" basin
 hursat_all_basins <- hursat_non_shorty_for_props |>
   group_by(SEASON) |>
   summarize(Hurricanes = sum(Hurricanes),
@@ -55,17 +54,23 @@ hursat_all_basins <- hursat_non_shorty_for_props |>
 num_years_ibtracs <- length(unique(ibtracs_non_shorty_for_props$SEASON))
 num_years_hursat <- length(unique(hursat_non_shorty_for_props$SEASON) )
 
-## Trimmed version of IBTraCs matching HURSAT years
+## Trimmed version of IBTrACs matching HURSAT years
+##   We do not include these results since the
+##   two sources now mostly overlap
+##   but the code is here for legacy purposes.
 ibtracs_trimmed_all_basins <- ibtracs_all_basins |>
   dplyr::filter(SEASON %in% unique(hursat_all_basins$SEASON) )
 
 
-
+#########################################################################
+#########################################################################
 ## Main analysis function
 ##
 ## Specify a Basin and dataset (IBTracs vs HURSAT vs Trimmed IBTracs)
 ## All statistical models are put together
 ##    and provided in a named list.
+#########################################################################
+
 get_report_basin <- function(basin="Global", all_basins=ibtracs_all_basins) {
   ## Some Data Processing for plots and summary statistics
   ##   and used in our analysis
@@ -166,6 +171,7 @@ get_report_basin <- function(basin="Global", all_basins=ibtracs_all_basins) {
   prop_intense_chpt_test <- scusumTestProportion(cbind(prop_data$Intense_Storms, prop_data$Total_Storms) )
   
   ## Output all results in a useful list
+  
   list(basin_name = basin,
        summary_stat = summary_stat,
        
@@ -192,8 +198,11 @@ get_report_basin <- function(basin="Global", all_basins=ibtracs_all_basins) {
        data=storm_basin)
 }
 
+
+#########################################################################
+#########################################################################
 ## Now call that function on all basins & data sources, saving
-##   the results for the report.
+##   the results in an RData file to use in our report.
 
 ibtracs_global_results <- get_report_basin(basin="Global", all_basins=ibtracs_all_basins)
 hursat_global_results <- get_report_basin(basin="Global", all_basins=hursat_all_basins)
@@ -240,7 +249,8 @@ save(ibtracs_trimmed_global_results, ibtracs_trimmed_na_results, ibtracs_trimmed
 
 
 
-##################################################################
+#########################################################################
+#########################################################################
 ## Ultimately, we take all the results from above and
 ##   effectively summarize as one table in the manuscript
 ## This function helps build that table and streamlines
@@ -256,6 +266,7 @@ save(ibtracs_trimmed_global_results, ibtracs_trimmed_na_results, ibtracs_trimmed
 ##   - Relative_Shift - Percentage change for changepoint, to (End-Start)/N*10 -- linear slope at decadal level
 ##   - Time - the changepoint location (NA for Regression)
 ##   - p.value - the p-value for the relavent test (SCUSUM or LRT)
+#########################################################################
 
 extract_test_results <- function(basin_result) {
   num_years <- length(unique(basin_result$data$SEASON))
