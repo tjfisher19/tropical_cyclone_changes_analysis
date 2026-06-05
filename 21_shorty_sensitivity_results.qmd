@@ -48,6 +48,16 @@ hursat_summaries |>
   kable(caption="Change in Record after removing Shorties")
 ```
 
+## Major Storms by Basin
+
+A key component of our analysis is the change in major storms -- ideally the removing of shorties will not have much effect on the overall rate of Major Storms. Below we look at each of the basins.
+
+```{r, echo=FALSE}
+ibtracs_count_basin |>
+  pivot_wider(id_cols = Days, names_from="BASIN", values_from="Major_Storms") |>
+  kable(caption="Major Storm Rates based on shorty threshold", digits=1)
+```
+
 ## Sensitivity in Changepoint Methods
 
 ### IBTrACS Record

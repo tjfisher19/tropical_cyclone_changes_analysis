@@ -36,6 +36,45 @@ ibtracs_key000 <- ibtracs_key_results
 hursat_global000 <- hursat_global_results
 ibtracs_global000 <- ibtracs_global_results
 
+ibtracs_count_basin <- ibtracs_non_shorty_for_props |> 
+  group_by(BASIN) |> 
+  summarize(Major_Storms = mean(Major_Storms)) |>
+  mutate(Days = 0)
+
+hursat_count_basin <- hursat_non_shorty_for_props |>
+  group_by(BASIN) |> 
+  summarize(Major_Storms = mean(Major_Storms)) |>
+  mutate(Days = 0)
+
+#######################################
+## At least 1/2 a day of consecutive wind speeds
+##   35+ knots of wind speed
+
+shorty_day_cutoff <- 0.5
+
+source("01_fetching_best_track_data.R")
+source("02_processing_hursat_adt.R")
+source("04_tropical_cyclone_analysis.R")
+
+hursat_key005 <- hursat_key_results
+ibtracs_key005 <- ibtracs_key_results
+
+hursat_global005 <- hursat_global_results
+ibtracs_global005 <- ibtracs_global_results
+
+ibtracs_count_basin <- bind_rows(ibtracs_count_basin,
+                                 ibtracs_non_shorty_for_props |> 
+                                   group_by(BASIN) |> 
+                                   summarize(Major_Storms = mean(Major_Storms)) |>
+                                   mutate(Days = 0.5)
+)
+
+hursat_count_basin <- bind_rows(hursat_count_basin,
+                                hursat_non_shorty_for_props |>
+                                  group_by(BASIN) |> 
+                                  summarize(Major_Storms = mean(Major_Storms)) |>
+                                  mutate(Days = 0.5)
+)
 
 #######################################
 ## At least 1 consecutive day of
@@ -53,6 +92,20 @@ ibtracs_key010 <- ibtracs_key_results
 hursat_global010 <- hursat_global_results
 ibtracs_global010 <- ibtracs_global_results
 
+ibtracs_count_basin <- bind_rows(ibtracs_count_basin,
+                                 ibtracs_non_shorty_for_props |> 
+                                   group_by(BASIN) |> 
+                                   summarize(Major_Storms = mean(Major_Storms)) |>
+                                   mutate(Days = 1)
+)
+
+hursat_count_basin <- bind_rows(hursat_count_basin,
+                                hursat_non_shorty_for_props |>
+                                  group_by(BASIN) |> 
+                                  summarize(Major_Storms = mean(Major_Storms)) |>
+                                  mutate(Days = 1)
+)
+
 #######################################
 ## At least 1.5 consecutive days of
 ##   35+ knots of wind speed
@@ -68,6 +121,20 @@ ibtracs_key015 <- ibtracs_key_results
 
 hursat_global015 <- hursat_global_results
 ibtracs_global015 <- ibtracs_global_results
+
+ibtracs_count_basin <- bind_rows(ibtracs_count_basin,
+                                 ibtracs_non_shorty_for_props |> 
+                                   group_by(BASIN) |> 
+                                   summarize(Major_Storms = mean(Major_Storms)) |>
+                                   mutate(Days = 1.5)
+)
+
+hursat_count_basin <- bind_rows(hursat_count_basin,
+                                hursat_non_shorty_for_props |>
+                                  group_by(BASIN) |> 
+                                  summarize(Major_Storms = mean(Major_Storms)) |>
+                                  mutate(Days = 1.5)
+)
 
 #######################################
 ## At least 2 consecutive day2 of
@@ -85,6 +152,19 @@ ibtracs_key020 <- ibtracs_key_results
 hursat_global020 <- hursat_global_results
 ibtracs_global020 <- ibtracs_global_results
 
+ibtracs_count_basin <- bind_rows(ibtracs_count_basin,
+                                 ibtracs_non_shorty_for_props |> 
+                                   group_by(BASIN) |> 
+                                   summarize(Major_Storms = mean(Major_Storms)) |>
+                                   mutate(Days = 2)
+)
+
+hursat_count_basin <- bind_rows(hursat_count_basin,
+                                hursat_non_shorty_for_props |>
+                                  group_by(BASIN) |> 
+                                  summarize(Major_Storms = mean(Major_Storms)) |>
+                                  mutate(Days = 2)
+)
 
 #######################################
 ## At least 2.5 consecutive days of
@@ -102,6 +182,20 @@ ibtracs_key025 <- ibtracs_key_results
 hursat_global025 <- hursat_global_results
 ibtracs_global025 <- ibtracs_global_results
 
+ibtracs_count_basin <- bind_rows(ibtracs_count_basin,
+                                 ibtracs_non_shorty_for_props |> 
+                                   group_by(BASIN) |> 
+                                   summarize(Major_Storms = mean(Major_Storms)) |>
+                                   mutate(Days = 2.5)
+)
+
+hursat_count_basin <- bind_rows(hursat_count_basin,
+                                hursat_non_shorty_for_props |>
+                                  group_by(BASIN) |> 
+                                  summarize(Major_Storms = mean(Major_Storms)) |>
+                                  mutate(Days = 2.5)
+)
+
 #######################################
 ## At least 3 consecutive days of
 ##   35+ knots of wind speed
@@ -118,6 +212,19 @@ ibtracs_key030 <- ibtracs_key_results
 hursat_global030 <- hursat_global_results
 ibtracs_global030 <- ibtracs_global_results
 
+ibtracs_count_basin <- bind_rows(ibtracs_count_basin,
+                                 ibtracs_non_shorty_for_props |> 
+                                   group_by(BASIN) |> 
+                                   summarize(Major_Storms = mean(Major_Storms)) |>
+                                   mutate(Days = 3)
+)
+
+hursat_count_basin <- bind_rows(hursat_count_basin,
+                                hursat_non_shorty_for_props |>
+                                  group_by(BASIN) |> 
+                                  summarize(Major_Storms = mean(Major_Storms)) |>
+                                  mutate(Days = 3)
+)
 
 #######################################
 ## At least 3.5 consecutive days of
@@ -135,6 +242,20 @@ ibtracs_key035 <- ibtracs_key_results
 hursat_global035 <- hursat_global_results
 ibtracs_global035 <- ibtracs_global_results
 
+ibtracs_count_basin <- bind_rows(ibtracs_count_basin,
+                                 ibtracs_non_shorty_for_props |> 
+                                   group_by(BASIN) |> 
+                                   summarize(Major_Storms = mean(Major_Storms)) |>
+                                   mutate(Days = 3.5)
+)
+
+hursat_count_basin <- bind_rows(hursat_count_basin,
+                                hursat_non_shorty_for_props |>
+                                  group_by(BASIN) |> 
+                                  summarize(Major_Storms = mean(Major_Storms)) |>
+                                  mutate(Days = 3.5)
+)
+
 #######################################
 ## At least 4 consecutive days of
 ##   35+ knots of wind speed
@@ -151,7 +272,19 @@ ibtracs_key040 <- ibtracs_key_results
 hursat_global040 <- hursat_global_results
 ibtracs_global040 <- ibtracs_global_results
 
+ibtracs_count_basin <- bind_rows(ibtracs_count_basin,
+                                 ibtracs_non_shorty_for_props |> 
+                                   group_by(BASIN) |> 
+                                   summarize(Major_Storms = mean(Major_Storms)) |>
+                                   mutate(Days = 4)
+)
 
+hursat_count_basin <- bind_rows(hursat_count_basin,
+                                hursat_non_shorty_for_props |>
+                                  group_by(BASIN) |> 
+                                  summarize(Major_Storms = mean(Major_Storms)) |>
+                                  mutate(Days = 4)
+)
 
 ###############################
 ## Bundle all the resutls into
@@ -160,6 +293,7 @@ ibtracs_global040 <- ibtracs_global_results
 ibtracs_key_shorty <-
   bind_rows(
     ibtracs_key000 |> mutate(Days = 0),
+    ibtracs_key005 |> mutate(Days = 0.5),
     ibtracs_key010 |> mutate(Days = 1),
     ibtracs_key015 |> mutate(Days = 1.5),
     ibtracs_key020 |> mutate(Days = 2),
@@ -172,6 +306,7 @@ ibtracs_key_shorty <-
 hursat_key_shorty <-
   bind_rows(
     hursat_key000 |> mutate(Days = 0),
+    hursat_key005 |> mutate(Days = 0.5),
     hursat_key010 |> mutate(Days = 1),
     hursat_key015 |> mutate(Days = 1.5),
     hursat_key020 |> mutate(Days = 2),
@@ -185,28 +320,31 @@ hursat_key_shorty <-
 ibtracs_summaries <- 
   bind_rows(
     ibtracs_global000$summary_stat |> 
-      mutate(Total = sum(ibtracs_global000$data$Total_Storms),
+      mutate(Total = sum(ibtracs_global000$data$Major_Storms),
              Days = 0),
+    ibtracs_global005$summary_stat |> 
+      mutate(Total = sum(ibtracs_global005$data$Major_Storms),
+             Days = 0.5),
     ibtracs_global010$summary_stat |> 
-      mutate(Total = sum(ibtracs_global010$data$Total_Storms),
+      mutate(Total = sum(ibtracs_global010$data$Major_Storms),
              Days = 1),
     ibtracs_global015$summary_stat |> 
-      mutate(Total = sum(ibtracs_global015$data$Total_Storms),
+      mutate(Total = sum(ibtracs_global015$data$Major_Storms),
              Days = 1.5),
     ibtracs_global020$summary_stat |> 
-      mutate(Total = sum(ibtracs_global020$data$Total_Storms),
+      mutate(Total = sum(ibtracs_global020$data$Major_Storms),
              Days = 2),
     ibtracs_global025$summary_stat |> 
-      mutate(Total = sum(ibtracs_global025$data$Total_Storms),
+      mutate(Total = sum(ibtracs_global025$data$Major_Storms),
              Days = 2.5),
     ibtracs_global030$summary_stat |> 
-      mutate(Total = sum(ibtracs_global030$data$Total_Storms),
+      mutate(Total = sum(ibtracs_global030$data$Major_Storms),
              Days = 3),
     ibtracs_global035$summary_stat |> 
-      mutate(Total = sum(ibtracs_global035$data$Total_Storms),
+      mutate(Total = sum(ibtracs_global035$data$Major_Storms),
              Days = 3.5),
     ibtracs_global040$summary_stat |> 
-      mutate(Total = sum(ibtracs_global040$data$Total_Storms),
+      mutate(Total = sum(ibtracs_global040$data$Major_Storms),
              Days = 4)
   )
 
@@ -214,32 +352,36 @@ ibtracs_summaries <-
 hursat_summaries <- 
   bind_rows(
     hursat_global000$summary_stat |> 
-      mutate(Total = sum(hursat_global000$data$Total_Storms),
+      mutate(Total = sum(hursat_global000$data$Major_Storms),
              Days = 0),
+    hursat_global005$summary_stat |> 
+      mutate(Total = sum(hursat_global005$data$Major_Storms),
+             Days = 0.5),
     hursat_global010$summary_stat |> 
-      mutate(Total = sum(hursat_global010$data$Total_Storms),
+      mutate(Total = sum(hursat_global010$data$Major_Storms),
              Days = 1),
     hursat_global015$summary_stat |> 
-      mutate(Total = sum(hursat_global015$data$Total_Storms),
+      mutate(Total = sum(hursat_global015$data$Major_Storms),
              Days = 1.5),
     hursat_global020$summary_stat |> 
-      mutate(Total = sum(hursat_global020$data$Total_Storms),
+      mutate(Total = sum(hursat_global020$data$Major_Storms),
              Days = 2),
     hursat_global025$summary_stat |> 
-      mutate(Total = sum(hursat_global025$data$Total_Storms),
+      mutate(Total = sum(hursat_global025$data$Major_Storms),
              Days = 2.5),
     hursat_global030$summary_stat |> 
-      mutate(Total = sum(hursat_global030$data$Total_Storms),
+      mutate(Total = sum(hursat_global030$data$Major_Storms),
              Days = 3),
     hursat_global035$summary_stat |> 
-      mutate(Total = sum(hursat_global035$data$Total_Storms),
+      mutate(Total = sum(hursat_global035$data$Major_Storms),
              Days = 3.5),
     hursat_global040$summary_stat |> 
-      mutate(Total = sum(hursat_global040$data$Total_Storms),
+      mutate(Total = sum(hursat_global040$data$Major_Storms),
              Days = 4)
   )
 
 save(ibtracs_key_shorty, hursat_key_shorty,
      ibtracs_summaries, hursat_summaries,
+     ibtracs_count_basin, hursat_count_basin,
      file="./data/shorty_sensitivity.RData")
 
