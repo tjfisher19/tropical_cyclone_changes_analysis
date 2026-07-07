@@ -40,7 +40,7 @@ plot_compare_wind_distro <- ggplot(compare_wind_df, aes(x=Wind_ms, fill=Source) 
   scale_fill_manual(name="Source:", values=c("black", "gray80") ) +
   labs(x="Maximum Windspeed (m/s)",
        title="Distribution of Maximum Windspeeds",
-       subtitle="Includes All Storms at that reached Tropical Cyclone Strength for 3+ days",
+       subtitle="Includes All Storms that reached Tropical Cyclone Strength for 3+ days",
        caption="Sources: ADT-HURSAT and IBTrACS\nhttps://www.ncei.noaa.gov/products/advanced-dvorak-technique-hurricane-satellite\nhttps://www.ncei.noaa.gov/products/international-best-track-archive"
   ) + 
   theme_minimal() +
