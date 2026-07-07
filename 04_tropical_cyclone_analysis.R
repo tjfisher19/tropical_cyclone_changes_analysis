@@ -363,7 +363,28 @@ hursat_key_results <- bind_rows(
 )
 
 
+#######################################
+## We also use tables of summary
+##   statistics in the discussion
+ibtracs_summary <- bind_rows(
+  ibtracs_global_results$summary_stat,
+  ibtracs_na_results$summary_stat,
+  ibtracs_ep_results$summary_stat,
+  ibtracs_wp_results$summary_stat,
+  ibtracs_ni_results$summary_stat,
+  ibtracs_si_results$summary_stat,
+  ibtracs_sp_results$summary_stat)
+
+hursat_summary <- bind_rows(
+  hursat_global_results$summary_stat,
+  hursat_na_results$summary_stat,
+  hursat_ep_results$summary_stat,
+  hursat_wp_results$summary_stat,
+  hursat_ni_results$summary_stat,
+  hursat_si_results$summary_stat,
+  hursat_sp_results$summary_stat)
 
 save(ibtracs_key_results, hursat_key_results,
+     ibtracs_summary, hursat_summary,
      file="./data/results_overview.RData")
 

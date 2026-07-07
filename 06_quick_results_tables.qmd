@@ -37,6 +37,34 @@ A few caveats we have already established
 - Storms with at least `r shorty_day_cutoff` consecutive days of tropical storm strength (non-shorty) are considered in this analysis.
 - There are differences between IBTrACS and HURAT -- see the other report.
 
+## Summary Statistics
+
+Some summary statistics
+
+### IBTrACS
+
+```{r, echo=FALSE}
+ibtracs_summary |>
+  dplyr::select(`Total Storms (Avg)`, `Hurricanes (Avg)`, 
+                `Major Storms (Avg)`, `Prop Major Storms`,
+                `Intense Storms (Avg)`, `Prop Intense Storms`) |>
+  mutate(`Prop Major Storms` = `Prop Major Storms`*100,
+         `Prop Intense Storms` = `Prop Intense Storms`*100) |>
+  knitr::kable(caption="Summary Statistics for the IBTrACS Data", digits=1)
+```
+
+### HURSAT
+
+```{r, echo=FALSE}
+hursat_summary |>
+  dplyr::select(`Total Storms (Avg)`, `Hurricanes (Avg)`, 
+                `Major Storms (Avg)`, `Prop Major Storms`,
+                `Intense Storms (Avg)`, `Prop Intense Storms`) |>
+  mutate(`Prop Major Storms` = `Prop Major Storms`*100,
+         `Prop Intense Storms` = `Prop Intense Storms`*100) |>
+  knitr::kable(caption="Summary Statistics for the IBTrACS Data", digits=1)
+```
+
 ## Changepoint Approach
 
 He we summarize the *at most one changepoint* (AMOC) method we describe in the other report. The "Shift of \## in YEAR" marks the change in mean (or proportion) and the year we found the change. It must be reiterated that by finding a change at a given year this does not mean something systematically happened, it just happens to be the point where we detecting a nonhomogeneity in the underlying mean process of the data.

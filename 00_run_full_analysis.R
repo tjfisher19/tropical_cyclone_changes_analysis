@@ -16,7 +16,7 @@
 ##
 ##  Author: Tom Fisher (fishert4@miamioh.edu)
 ##
-##  Code tested on 2026-05-19
+##  Code tested on 2026-07-07
 
 
 library(quarto)
@@ -42,11 +42,13 @@ quarto::quarto_render("03_ibtracs_v_hursat.qmd")
 source("04_tropical_cyclone_analysis.R")
 rm(list=setdiff(ls(), "shorty_day_cutoff") )
 quarto::quarto_render("05_report_tropical_cyclone_analysis.qmd")
-quarto::quarto_render("06_quick_updated_results.qmd")
+quarto::quarto_render("06_quick_results_tables.qmd")
 
 ## Make plots of changepoint results
 source("07_results_ibtracs_plots.R")
 rm(list=setdiff(ls(), "shorty_day_cutoff") )
 source("08_results_hursat_plots.R")
+rm(list=ls() )
+source("09_compare_hursat_ibtracs_plot.R")
 rm(list=ls() )
 

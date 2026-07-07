@@ -1,6 +1,6 @@
 ################################################
 ##
-##  results_hursat_plots.R
+##  08_results_hursat_plots.R
 ##
 ##  This file builds the plots of the change
 ##    point results. If the found p-value
