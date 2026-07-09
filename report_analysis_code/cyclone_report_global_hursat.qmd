@@ -1,168 +1,60 @@
 
-## HURSAT Full Analysis
 
-```{r global_hursat, echo=FALSE}
-```
+## HURSAT Quick Results
 
-### Summary Statistics (overall)
+
+### Summary Statistics and Data
 
 ```{r, echo=FALSE}
 hursat_global_results$summary_stat |>
   knitr::kable()
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE}
 hursat_global_results$plot_data
 ```
 
+### Testing Results
 
-### Regression Methods
+**Changepoint Methods**
 
-#### Poisson Regression on non-Shorties
-
-```{r, echo=FALSE}
-(hursat_global_results$pois_fit)
-drop1(hursat_global_results$pois_fit, test="LRT")
-```
-
-
-Using this model, we would predict `r predict(hursat_global_results$pois_fit, type="response")[1]` storms in `r min(hursat_global_results$data$SEASON)` and `r predict(hursat_global_results$pois_fit, type="response")[num_years_hursat]` storms in `r max(hursat_global_results$data$SEASON)`.
-
-That is a change of `r (predict(hursat_global_results$pois_fit, type="response")[num_years_hursat]-predict(hursat_global_results$pois_fit, type="response")[1])/num_years_hursat*10` storms per decade.
-
-#### Poisson Regression on Hurricanes
+Here, we report the estimate mean for each segment or regime regardless of whether the test found a significant shift.  
 
 ```{r, echo=FALSE}
-(hursat_global_results$hur_fit)
-drop1(hursat_global_results$hur_fit, test="LRT")
-```
+df <- data.frame(
+  Response = c("Cyclone Freq", "Hurricanes", "Major Freq", "Prop Major", "Intense Freq", "Prop Freq"),
+  `Chpt Location` = c(hursat_global_results$pois_chpt_test[2]+1981,
+                      hursat_global_results$hur_pois_chpt_test[2]+1981,
+                      hursat_global_results$major_pois_chpt_test[2]+1981,
+                      hursat_global_results$prop_major_chpt_test[2]+1981,
+                      hursat_global_results$intense_pois_chpt_test[2]+1981,
+                      hursat_global_results$prop_intense_chpt_test[2]+1981),
+  `p-value` =c(hursat_global_results$pois_chpt_test[3],
+               hursat_global_results$hur_pois_chpt_test[3],
+               hursat_global_results$major_pois_chpt_test[3],
+               hursat_global_results$prop_major_chpt_test[3],
+               hursat_global_results$intense_pois_chpt_test[3],
+               hursat_global_results$prop_intense_chpt_test[3] ),
+  `Regime1` = c(mean(hursat_global_results$data$Total_Storms[1:hursat_global_results$pois_chpt_test[2]]),
+                mean(hursat_global_results$data$Hurricanes[1:hursat_global_results$hur_pois_chpt_test[2]]),
+                mean(hursat_global_results$data$Major_Storms[1:hursat_global_results$major_pois_chpt_test[2]]),
+                sum(hursat_global_results$data$Major_Storms[1:hursat_global_results$prop_major_chpt_test[2]])/sum(hursat_global_results$data$Total_Storms[1:hursat_global_results$prop_major_chpt_test[2]])*100,
+                mean(hursat_global_results$data$Intense_Storms[1:hursat_global_results$intense_pois_chpt_test[2]]),
+                sum(hursat_global_results$data$Intense_Storms[1:hursat_global_results$prop_intense_chpt_test[2]])/sum(hursat_global_results$data$Total_Storms[1:hursat_global_results$prop_intense_chpt_test[2]])*100 ),
+  `Regime2` = c(mean(hursat_global_results$data$Total_Storms[(hursat_global_results$pois_chpt_test[2]+1):num_years_hursat]),
+                mean(hursat_global_results$data$Hurricanes[(hursat_global_results$hur_pois_chpt_test[2]+1):num_years_hursat]),
+                mean(hursat_global_results$data$Major_Storms[(hursat_global_results$major_pois_chpt_test[2]+1):num_years_hursat]),
+                sum(hursat_global_results$data$Major_Storms[(hursat_global_results$prop_major_chpt_test[2]+1):num_years_hursat])/sum(hursat_global_results$data$Total_Storms[(hursat_global_results$prop_major_chpt_test[2]+1):num_years_hursat])*100,
+                mean(hursat_global_results$data$Intense_Storms[(hursat_global_results$intense_pois_chpt_test[2]+1):num_years_hursat]),
+                sum(hursat_global_results$data$Intense_Storms[(hursat_global_results$prop_intense_chpt_test[2]+1):num_years_hursat])/sum(hursat_global_results$data$Total_Storms[(hursat_global_results$prop_intense_chpt_test[2]+1):num_years_hursat])*100)
+  )
 
-Using this model the number of a hurricanes in `r min(hursat_global_results$data$SEASON)` was `r predict(hursat_global_results$hur_fit, type="response")[1]` and `r predict(hursat_global_results$hur_fit, type="response")[num_years_hursat]` in `r max(hursat_global_results$data$SEASON)`.
-
-That is a change of `r (predict(hursat_global_results$hur_fit, type="response")[num_years_hursat]-predict(hursat_global_results$hur_fit, type="response")[1])/num_years_hursat*10` storms per decade.
-
-#### Poisson Regression on Major Storms
-
-```{r, echo=FALSE}
-(hursat_global_results$major_fit)
-drop1(hursat_global_results$major_fit, test="LRT")
-```
-
-Using this model the number of a major storm in `r min(hursat_global_results$data$SEASON)` was `r predict(hursat_global_results$major_fit, type="response")[1]` and `r predict(hursat_global_results$major_fit, type="response")[num_years_hursat]` in `r max(hursat_global_results$data$SEASON)`.
-
-That is a change of `r (predict(hursat_global_results$major_fit, type="response")[num_years_hursat]-predict(hursat_global_results$major_fit, type="response")[1])/num_years_hursat*10` storms per decade.
-
-#### Poisson Regression on Intense Storms
-
-```{r, echo=FALSE}
-(hursat_global_results$intense_fit)
-drop1(hursat_global_results$intense_fit, test="LRT")
-```
-
-
-Using this model the number of a intense storms in `r min(hursat_global_results$data$SEASON)` was `r predict(hursat_global_results$intense_fit, type="response")[1]` and `r predict(hursat_global_results$intense_fit, type="response")[num_years_hursat]` in `r max(hursat_global_results$data$SEASON)`.
-
-That is a change of `r (predict(hursat_global_results$intense_fit, type="response")[num_years_hursat]-predict(hursat_global_results$intense_fit, type="response")[1])/num_years_hursat*10` storms per decade.
-
-#### Logistic Regression on Proportions of Major
-
-```{r, echo=FALSE}
-(hursat_global_results$major_logit_fit)
-drop1(hursat_global_results$major_logit_fit, test="LRT")
-```
-
-
-
-Using this model the probability of a major storm in `r min(hursat_global_results$data$SEASON)` was `r predict(hursat_global_results$major_logit_fit, type="response")[1]` and `r predict(hursat_global_results$major_logit_fit, type="response")[num_years_hursat]` in `r max(hursat_global_results$data$SEASON)`.
-
-That is a change of `r (predict(hursat_global_results$major_logit_fit, type="response")[num_years_hursat]-predict(hursat_global_results$major_logit_fit, type="response")[1])/num_years_hursat*10*100` percent per decade.
-
-#### Logistic Regression on Proportions of Intense
-
-```{r, echo=FALSE}
-(hursat_global_results$intense_logit_fit)
-drop1(hursat_global_results$intense_logit_fit, test="LRT")
-```
-
-
-Using this model the probability of an intense storm in `r min(hursat_global_results$data$SEASON)` was `r predict(hursat_global_results$intense_logit_fit, type="response")[1]` and `r predict(hursat_global_results$intense_logit_fit, type="response")[num_years_hursat]` in `r max(hursat_global_results$data$SEASON)`.
-
-That is a change of `r (predict(hursat_global_results$intense_logit_fit, type="response")[num_years_hursat]-predict(hursat_global_results$intense_logit_fit, type="response")[1])/num_years_hursat*10*100` percent per decade.
-
-### Changepoint Methods
-
-#### Change in Non-Shorty Counts
-
-```{r, echo=FALSE}
-hursat_global_results$pois_chpt_test
-```
-
-The dates suggest the changepoint would occur from `r 1980+hursat_global_results$pois_chpt_test[2]` to `r 1980+hursat_global_results$pois_chpt_test[2]+1` with $p$-value `r hursat_global_results$pois_chpt_test[3]`.
-
-In regime one, the mean number of total storms is `r mean(hursat_global_results$data$Total_Storms[1:hursat_global_results$pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(hursat_global_results$data$Total_Storms[(hursat_global_results$pois_chpt_test[2]+1):num_years_hursat])`; a change of `r mean(hursat_global_results$data$Total_Storms[(hursat_global_results$pois_chpt_test[2]+1):num_years_hursat]) - mean(hursat_global_results$data$Total_Storms[1:hursat_global_results$pois_chpt_test[2]])`.
-
-
-#### Change in counts of hurricanes
-
-```{r, echo=FALSE}
-hursat_global_results$hur_pois_chpt_test
-```
-
-The dates suggest the changepoint would occur from `r 1980+hursat_global_results$hur_pois_chpt_test[2]` to `r 1980+hursat_global_results$hur_pois_chpt_test[2]+1` with $p$-value `r hursat_global_results$hur_pois_chpt_test[3]`.
-
-In regime one, the mean number of hurricanes is `r mean(hursat_global_results$data$Hurricanes[1:hursat_global_results$hur_pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(hursat_global_results$data$Hurricanes[(hursat_global_results$hur_pois_chpt_test[2]+1):num_years_hursat])`; a change of `r mean(hursat_global_results$data$Hurricanes[(hursat_global_results$hur_pois_chpt_test[2]+1):num_years_hursat]) - mean(hursat_global_results$data$Hurricanes[1:hursat_global_results$hur_pois_chpt_test[2]])`.
-
-
-#### Change in counts of major storms
-
-```{r, echo=FALSE}
-hursat_global_results$major_pois_chpt_test
-```
-
-The dates suggest the changepoint would occur from `r 1980+hursat_global_results$major_pois_chpt_test[2]` to `r 1980+hursat_global_results$major_pois_chpt_test[2]+1` with $p$-value `r hursat_global_results$major_pois_chpt_test[3]`.
-
-In regime one, the mean number of major storms is `r mean(hursat_global_results$data$Major_Storms[1:hursat_global_results$major_pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(hursat_global_results$data$Major_Storms[(hursat_global_results$major_pois_chpt_test[2]+1):num_years_hursat])`; a change of `r mean(hursat_global_results$data$Major_Storms[(hursat_global_results$major_pois_chpt_test[2]+1):num_years_hursat]) - mean(hursat_global_results$data$Major_Storms[1:hursat_global_results$major_pois_chpt_test[2]])`.
-
-#### Change in counts of intense storms
-
-```{r, echo=FALSE}
-hursat_global_results$intense_pois_chpt_test
-```
-
-
-The dates suggest the changepoint would occur from `r 1980+hursat_global_results$intense_pois_chpt_test[2]` to `r 1980+hursat_global_results$intense_pois_chpt_test[2]+1` with $p$-value `r hursat_global_results$intense_pois_chpt_test[3]`.
-
-In regime one, the mean number of intense storms is `r mean(hursat_global_results$data$Intense_Storms[1:hursat_global_results$intense_pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(hursat_global_results$data$Intense_Storms[(hursat_global_results$intense_pois_chpt_test[2]+1):num_years_hursat])`; a change of `r mean(hursat_global_results$data$Intense_Storms[(hursat_global_results$intense_pois_chpt_test[2]+1):num_years_hursat]) - mean(hursat_global_results$data$Intense_Storms[1:hursat_global_results$intense_pois_chpt_test[2]])`.
-
-#### Proportion of major storms
-
-A change in the proportion of major storms?
+df |>
+  mutate(Change = Regime2-Regime1,
+         Perc_Change = Change/Regime1*100) |>
+  knitr::kable(digits=5)
   
-```{r, echo=FALSE}
-hursat_global_results$prop_major_chpt_test
 ```
-
-The change in proportions occurs `r 1980+hursat_global_results$prop_major_chpt_test[2]` to `r 1980+hursat_global_results$prop_major_chpt_test[2]+1` with $p$-value `r hursat_global_results$prop_major_chpt_test[3]`. 
-
-In regime one, the proportion of major storms is `r sum(hursat_global_results$data$Major_Storms[1:hursat_global_results$prop_major_chpt_test[2]])/sum(hursat_global_results$data$Total_Storms[1:hursat_global_results$prop_major_chpt_test[2]])` and in regime two, the proportion of major storms is `r sum(hursat_global_results$data$Major_Storms[(hursat_global_results$prop_major_chpt_test[2]+1):num_years_hursat])/sum(hursat_global_results$data$Total_Storms[(hursat_global_results$prop_major_chpt_test[2]+1):num_years_hursat])`; a change of `r sum(hursat_global_results$data$Major_Storms[(hursat_global_results$prop_major_chpt_test[2]+1):num_years_hursat])/sum(hursat_global_results$data$Total_Storms[(hursat_global_results$prop_major_chpt_test[2]+1):num_years_hursat]) - sum(hursat_global_results$data$Major_Storms[1:hursat_global_results$prop_major_chpt_test[2]])/sum(hursat_global_results$data$Total_Storms[1:hursat_global_results$prop_major_chpt_test[2]])`.
-
-#### Proportion of intense storms
-
-A change in the proportion of major storms?
-  
-```{r, echo=FALSE}
-hursat_global_results$prop_intense_chpt_test
-```
-
-The change in proportions occurs `r 1980+hursat_global_results$prop_intense_chpt_test[2]` to `r 1980+hursat_global_results$prop_intense_chpt_test[2]+1` with $p$-value `r hursat_global_results$prop_intense_chpt_test[3]`.
-
-
-In regime one, the proportion of intense storms is `r sum(hursat_global_results$data$Intense_Storms[1:hursat_global_results$prop_intense_chpt_test[2]])/sum(hursat_global_results$data$Total_Storms[1:hursat_global_results$prop_intense_chpt_test[2]])` and in regime two, the proportion of major storms is `r sum(hursat_global_results$data$Intense_Storms[(hursat_global_results$prop_intense_chpt_test[2]+1):num_years_hursat])/sum(hursat_global_results$data$Total_Storms[(hursat_global_results$prop_intense_chpt_test[2]+1):num_years_hursat])`; a change of `r sum(hursat_global_results$data$Intense_Storms[(hursat_global_results$prop_intense_chpt_test[2]+1):num_years_hursat])/sum(hursat_global_results$data$Total_Storms[(hursat_global_results$prop_intense_chpt_test[2]+1):num_years_hursat]) - sum(hursat_global_results$data$Intense_Storms[1:hursat_global_results$prop_intense_chpt_test[2]])/sum(hursat_global_results$data$Total_Storms[1:hursat_global_results$prop_intense_chpt_test[2]])`.
-
-
-
-## HURSAT Test Results
-
 
 
 **Generalized Linear Model Approaches**
@@ -206,41 +98,313 @@ df |>
   knitr::kable(digits=5)
 ```
 
-**Changepoint Methods**
+
+
+## HURSAT Full Analysis
+
+
+### Changepoint Methods
+
+#### Change in Non-Shorty Counts
 
 ```{r, echo=FALSE}
-df <- data.frame(
-  Response = c("Cyclone Freq", "Hurricanes", "Major Freq", "Prop Major", "Intense Freq", "Prop Freq"),
-  `Chpt Location` = c(hursat_global_results$pois_chpt_test[2]+1981,
-                      hursat_global_results$hur_pois_chpt_test[2]+1981,
-                      hursat_global_results$major_pois_chpt_test[2]+1981,
-                      hursat_global_results$prop_major_chpt_test[2]+1981,
-                      hursat_global_results$intense_pois_chpt_test[2]+1981,
-                      hursat_global_results$prop_intense_chpt_test[2]+1981),
-  `p-value` =c(hursat_global_results$pois_chpt_test[3],
-               hursat_global_results$hur_pois_chpt_test[3],
-               hursat_global_results$major_pois_chpt_test[3],
-               hursat_global_results$prop_major_chpt_test[3],
-               hursat_global_results$intense_pois_chpt_test[3],
-               hursat_global_results$prop_intense_chpt_test[3] ),
-  `Regime1` = c(mean(hursat_global_results$data$Total_Storms[1:hursat_global_results$pois_chpt_test[2]]),
-                mean(hursat_global_results$data$Hurricanes[1:hursat_global_results$hur_pois_chpt_test[2]]),
-                mean(hursat_global_results$data$Major_Storms[1:hursat_global_results$major_pois_chpt_test[2]]),
-                sum(hursat_global_results$data$Major_Storms[1:hursat_global_results$prop_major_chpt_test[2]])/sum(hursat_global_results$data$Total_Storms[1:hursat_global_results$prop_major_chpt_test[2]])*100,
-                mean(hursat_global_results$data$Intense_Storms[1:hursat_global_results$intense_pois_chpt_test[2]]),
-                sum(hursat_global_results$data$Intense_Storms[1:hursat_global_results$prop_intense_chpt_test[2]])/sum(hursat_global_results$data$Total_Storms[1:hursat_global_results$prop_intense_chpt_test[2]])*100 ),
-  `Regime2` = c(mean(hursat_global_results$data$Total_Storms[(hursat_global_results$pois_chpt_test[2]+1):num_years_hursat]),
-                mean(hursat_global_results$data$Hurricanes[(hursat_global_results$hur_pois_chpt_test[2]+1):num_years_hursat]),
-                mean(hursat_global_results$data$Major_Storms[(hursat_global_results$major_pois_chpt_test[2]+1):num_years_hursat]),
-                sum(hursat_global_results$data$Major_Storms[(hursat_global_results$prop_major_chpt_test[2]+1):num_years_hursat])/sum(hursat_global_results$data$Total_Storms[(hursat_global_results$prop_major_chpt_test[2]+1):num_years_hursat])*100,
-                mean(hursat_global_results$data$Intense_Storms[(hursat_global_results$intense_pois_chpt_test[2]+1):num_years_hursat]),
-                sum(hursat_global_results$data$Intense_Storms[(hursat_global_results$prop_intense_chpt_test[2]+1):num_years_hursat])/sum(hursat_global_results$data$Total_Storms[(hursat_global_results$prop_intense_chpt_test[2]+1):num_years_hursat])*100)
-  )
-
-df |>
-  mutate(Change = Regime2-Regime1,
-         Perc_Change = Change/Regime1*100) |>
-  knitr::kable(digits=5)
-  
+hursat_global_results$pois_chpt_test
 ```
+
+The dates suggest the changepoint would occur from `r 1980+hursat_global_results$pois_chpt_test[2]` to `r 1980+hursat_global_results$pois_chpt_test[2]+1` with $p$-value `r hursat_global_results$pois_chpt_test[3]`.
+
+
+In regime one, the mean number of storms is `r predict(hursat_global_results$pois_chpt_model, type="response")[1]` (CI: `r exp(predict(hursat_global_results$pois_chpt_model, type="link")[1]-1.96*predict(hursat_global_results$pois_chpt_model, type="link", se=TRUE)$se.fit[1])`, `r exp(predict(hursat_global_results$pois_chpt_model, type="link")[1]+1.96*predict(hursat_global_results$pois_chpt_model, type="link", se=TRUE)$se.fit[1])`) and in regime two, the mean number of storms is `r predict(hursat_global_results$pois_chpt_model, type="response")[num_years_hursat]` (CI: `r exp(predict(hursat_global_results$pois_chpt_model, type="link")[num_years_hursat]-1.96*predict(hursat_global_results$pois_chpt_model, type="link", se=TRUE)$se.fit[num_years_hursat])`, `r exp(predict(hursat_global_results$pois_chpt_model, type="link")[num_years_hursat]+1.96*predict(hursat_global_results$pois_chpt_model, type="link", se=TRUE)$se.fit[num_years_hursat])`); a change of `r predict(hursat_global_results$pois_chpt_model, type="response")[num_years_hursat] - predict(hursat_global_results$pois_chpt_model, type="response")[1]`.
+
+
+**Model Assessment**
+
+The ratio of the residual deviance is `r hursat_global_results$pois_chpt_model$deviance/hursat_global_results$pois_chpt_model$df.residual`.
+
+The $p$-value for the Ljung-Box test on the deviance residuals `r Box.test(residuals(hursat_global_results$pois_chpt_model, type="deviance"), lag=ceiling(log(num_years_hursat)))$p.value`.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.height=8}
+residual_plots(hursat_global_results$pois_chpt_model)
+```
+
+
+#### Change in counts of hurricanes
+
+```{r, echo=FALSE}
+hursat_global_results$hur_pois_chpt_test
+```
+
+The dates suggest the changepoint would occur from `r 1980+hursat_global_results$hur_pois_chpt_test[2]` to `r 1980+hursat_global_results$hur_pois_chpt_test[2]+1` with $p$-value `r hursat_global_results$hur_pois_chpt_test[3]`.
+
+
+In regime one, the mean number of hurricanes is `r predict(hursat_global_results$hur_chpt_model, type="response")[1]` (CI: `r exp(predict(hursat_global_results$hur_chpt_model, type="link")[1]-1.96*predict(hursat_global_results$hur_chpt_model, type="link", se=TRUE)$se.fit[1])`, `r exp(predict(hursat_global_results$hur_chpt_model, type="link")[1]+1.96*predict(hursat_global_results$hur_chpt_model, type="link", se=TRUE)$se.fit[1])`) and in regime two, the mean number of hurricanes is `r predict(hursat_global_results$hur_chpt_model, type="response")[num_years_hursat]` (CI: `r exp(predict(hursat_global_results$hur_chpt_model, type="link")[num_years_hursat]-1.96*predict(hursat_global_results$hur_chpt_model, type="link", se=TRUE)$se.fit[num_years_hursat])`, `r exp(predict(hursat_global_results$hur_chpt_model, type="link")[num_years_hursat]+1.96*predict(hursat_global_results$hur_chpt_model, type="link", se=TRUE)$se.fit[num_years_hursat])`); a change of `r predict(hursat_global_results$hur_chpt_model, type="response")[num_years_hursat] - predict(hursat_global_results$hur_chpt_model, type="response")[1]`.
+
+
+
+**Model Assessment**
+
+The ratio of the residual deviance is `r hursat_global_results$hur_chpt_model$deviance/hursat_global_results$hur_chpt_model$df.residual`.
+
+The $p$-value for the Ljung-Box test on the deviance residuals `r Box.test(residuals(hursat_global_results$hur_chpt_model, type="deviance"), lag=ceiling(log(num_years_hursat)))$p.value`.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.height=8}
+residual_plots(hursat_global_results$hur_chpt_model)
+```
+
+#### Change in counts of major storms
+
+```{r, echo=FALSE}
+hursat_global_results$major_pois_chpt_test
+```
+
+The dates suggest the changepoint would occur from `r 1980+hursat_global_results$major_pois_chpt_test[2]` to `r 1980+hursat_global_results$major_pois_chpt_test[2]+1` with $p$-value `r hursat_global_results$major_pois_chpt_test[3]`.
+
+
+In regime one, the mean number of storms is `r predict(hursat_global_results$major_pois_chpt_model, type="response")[1]` (CI: `r exp(predict(hursat_global_results$major_pois_chpt_model, type="link")[1]-1.96*predict(hursat_global_results$major_pois_chpt_model, type="link", se=TRUE)$se.fit[1])`, `r exp(predict(hursat_global_results$major_pois_chpt_model, type="link")[1]+1.96*predict(hursat_global_results$major_pois_chpt_model, type="link", se=TRUE)$se.fit[1])`) and in regime two, the mean number of storms is `r predict(hursat_global_results$major_pois_chpt_model, type="response")[num_years_hursat]` (CI: `r exp(predict(hursat_global_results$major_pois_chpt_model, type="link")[num_years_hursat]-1.96*predict(hursat_global_results$major_pois_chpt_model, type="link", se=TRUE)$se.fit[num_years_hursat])`, `r exp(predict(hursat_global_results$major_pois_chpt_model, type="link")[num_years_hursat]+1.96*predict(hursat_global_results$major_pois_chpt_model, type="link", se=TRUE)$se.fit[num_years_hursat])`); a change of `r predict(hursat_global_results$major_pois_chpt_model, type="response")[num_years_hursat] - predict(hursat_global_results$major_pois_chpt_model, type="response")[1]`.
+
+
+
+**Model Assessment**
+
+The ratio of the residual deviance is `r hursat_global_results$major_pois_chpt_model$deviance/hursat_global_results$major_pois_chpt_model$df.residual`.
+
+The $p$-value for the Ljung-Box test on the deviance residuals `r Box.test(residuals(hursat_global_results$major_pois_chpt_model, type="deviance"), lag=ceiling(log(num_years_hursat)))$p.value`.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.height=8}
+residual_plots(hursat_global_results$major_pois_chpt_model)
+```
+
+
+
+
+#### Change in counts of intense storms
+
+```{r, echo=FALSE}
+hursat_global_results$intense_pois_chpt_test
+```
+
+
+The dates suggest the changepoint would occur from `r 1980+hursat_global_results$intense_pois_chpt_test[2]` to `r 1980+hursat_global_results$intense_pois_chpt_test[2]+1` with $p$-value `r hursat_global_results$intense_pois_chpt_test[3]`.
+
+
+In regime one, the mean number of storms is `r predict(hursat_global_results$intense_pois_chpt_model, type="response")[1]` (CI: `r exp(predict(hursat_global_results$intense_pois_chpt_model, type="link")[1]-1.96*predict(hursat_global_results$intense_pois_chpt_model, type="link", se=TRUE)$se.fit[1])`, `r exp(predict(hursat_global_results$intense_pois_chpt_model, type="link")[1]+1.96*predict(hursat_global_results$intense_pois_chpt_model, type="link", se=TRUE)$se.fit[1])`) and in regime two, the mean number of storms is `r predict(hursat_global_results$intense_pois_chpt_model, type="response")[num_years_hursat]` (CI: `r exp(predict(hursat_global_results$intense_pois_chpt_model, type="link")[num_years_hursat]-1.96*predict(hursat_global_results$intense_pois_chpt_model, type="link", se=TRUE)$se.fit[num_years_hursat])`, `r exp(predict(hursat_global_results$intense_pois_chpt_model, type="link")[num_years_hursat]+1.96*predict(hursat_global_results$intense_pois_chpt_model, type="link", se=TRUE)$se.fit[num_years_hursat])`); a change of `r predict(hursat_global_results$intense_pois_chpt_model, type="response")[num_years_hursat] - predict(hursat_global_results$intense_pois_chpt_model, type="response")[1]`.
+
+
+**Model Assessment**
+
+The ratio of the residual deviance is `r hursat_global_results$intense_pois_chpt_model$deviance/hursat_global_results$intense_pois_chpt_model$df.residual`.
+
+The $p$-value for the Ljung-Box test on the deviance residuals `r Box.test(residuals(hursat_global_results$intense_pois_chpt_model, type="deviance"), lag=ceiling(log(num_years_hursat)))$p.value`.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.height=8}
+residual_plots(hursat_global_results$intense_pois_chpt_model)
+```
+
+
+
+#### Proportion of major storms
+
+A change in the proportion of major storms?
+  
+```{r, echo=FALSE}
+hursat_global_results$prop_major_chpt_test
+```
+
+The change in proportions occurs `r 1980+hursat_global_results$prop_major_chpt_test[2]` to `r 1980+hursat_global_results$prop_major_chpt_test[2]+1` with $p$-value `r hursat_global_results$prop_major_chpt_test[3]`. 
+
+In regime one, the proportion of major storms is `r plogis(predict(hursat_global_results$prop_major_chpt_model)[1])` (CI: `r plogis(predict(hursat_global_results$prop_major_chpt_model)[1] - 1.96*predict(hursat_global_results$prop_major_chpt_model, se=TRUE)$se.fit[1])`, `r plogis(predict(hursat_global_results$prop_major_chpt_model)[1] + 1.96*predict(hursat_global_results$prop_major_chpt_model, se=TRUE)$se.fit[1])`) and in regime two, the proportion of major storms is `r plogis(predict(hursat_global_results$prop_major_chpt_model)[num_years_hursat])` (CI: `r plogis(predict(hursat_global_results$prop_major_chpt_model)[num_years_hursat] - 1.96*predict(hursat_global_results$prop_major_chpt_model, se=TRUE)$se.fit[num_years_hursat])`, `r plogis(predict(hursat_global_results$prop_major_chpt_model)[num_years_hursat] + 1.96*predict(hursat_global_results$prop_major_chpt_model, se=TRUE)$se.fit[num_years_hursat])`); a change of `r plogis(predict(hursat_global_results$prop_major_chpt_model)[num_years_hursat]) - plogis(predict(hursat_global_results$prop_major_chpt_model)[1])`.
+
+
+
+**Model Assessment**
+
+The ratio of the residual deviance is `r hursat_global_results$prop_major_chpt_model$deviance/hursat_global_results$prop_major_chpt_model$df.residual`.
+
+The $p$-value for the Ljung-Box test on the deviance residuals `r Box.test(residuals(hursat_global_results$prop_major_chpt_model, type="deviance"), lag=ceiling(log(num_years_hursat)))$p.value`.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.height=8}
+residual_plots(hursat_global_results$prop_major_chpt_model)
+```
+
+
+
+#### Proportion of intense storms
+
+A change in the proportion of intense storms?
+  
+```{r, echo=FALSE}
+hursat_global_results$prop_intense_chpt_test
+```
+
+The change in proportions occurs `r 1980+hursat_global_results$prop_intense_chpt_test[2]` to `r 1980+hursat_global_results$prop_intense_chpt_test[2]+1` with $p$-value `r hursat_global_results$prop_intense_chpt_test[3]`.
+
+
+In regime one, the proportion of intense storms is `r plogis(predict(hursat_global_results$prop_intense_chpt_model)[1])` (CI: `r plogis(predict(hursat_global_results$prop_intense_chpt_model)[1] - 1.96*predict(hursat_global_results$prop_intense_chpt_model, se=TRUE)$se.fit[1])`, `r plogis(predict(hursat_global_results$prop_intense_chpt_model)[1] + 1.96*predict(hursat_global_results$prop_intense_chpt_model, se=TRUE)$se.fit[1])`) and in regime two, the proportion of intense storms is `r plogis(predict(hursat_global_results$prop_intense_chpt_model)[num_years_hursat])` (CI: `r plogis(predict(hursat_global_results$prop_intense_chpt_model)[num_years_hursat] - 1.96*predict(hursat_global_results$prop_intense_chpt_model, se=TRUE)$se.fit[num_years_hursat])`, `r plogis(predict(hursat_global_results$prop_intense_chpt_model)[num_years_hursat] + 1.96*predict(hursat_global_results$prop_intense_chpt_model, se=TRUE)$se.fit[num_years_hursat])`); a change of `r plogis(predict(hursat_global_results$prop_intense_chpt_model)[num_years_hursat]) - plogis(predict(hursat_global_results$prop_intense_chpt_model)[1])`.
+
+**Model Assessment**
+
+The ratio of the residual deviance is `r hursat_global_results$prop_intense_chpt_model$deviance/hursat_global_results$prop_intense_chpt_model$df.residual`.
+
+The $p$-value for the Ljung-Box test on the deviance residuals `r Box.test(residuals(hursat_global_results$prop_intense_chpt_model, type="deviance"), lag=ceiling(log(num_years_hursat)))$p.value`.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.height=8}
+residual_plots(hursat_global_results$prop_intense_chpt_model)
+```
+
+
+
+### Regression Methods
+
+#### Poisson Regression on non-Shorties
+
+```{r, echo=FALSE}
+(hursat_global_results$pois_fit)
+drop1(hursat_global_results$pois_fit, test="LRT")
+```
+
+
+Using this model, in `r min(hursat_global_results$data$SEASON)` we would predict `r predict(hursat_global_results$pois_fit, type="response")[1]` storms (CI: `r exp(predict(hursat_global_results$pois_fit, type="link")[1]-1.96*predict(hursat_global_results$pois_fit, type="link", se.fit=TRUE)$se.fit[1])`, `r exp(predict(hursat_global_results$pois_fit, type="link")[1]+1.96*predict(hursat_global_results$pois_fit, type="link", se.fit=TRUE)$se.fit[1])`) and in `r max(hursat_global_results$data$SEASON)` we predict `r predict(hursat_global_results$pois_fit, type="response")[num_years_hursat]` storms (CI: `r exp(predict(hursat_global_results$pois_fit, type="link")[num_years_hursat]-1.96*predict(hursat_global_results$pois_fit, type="link", se.fit=TRUE)$se.fit[num_years_hursat])`, `r exp(predict(hursat_global_results$pois_fit, type="link")[num_years_hursat]+1.96*predict(hursat_global_results$pois_fit, type="link", se.fit=TRUE)$se.fit[num_years_hursat])`).
+
+That is a change of `r (predict(hursat_global_results$pois_fit, type="response")[num_years_hursat]-predict(hursat_global_results$pois_fit, type="response")[1])/num_years_hursat*10` storms per decade.
+
+**Model Assessment**
+
+The ratio of the residual deviance is `r hursat_global_results$pois_fit$deviance/hursat_global_results$pois_fit$df.residual`.
+
+The $p$-value for the Ljung-Box test on the deviance residuals `r Box.test(residuals(hursat_global_results$pois_fit, type="deviance"), lag=ceiling(log(num_years_hursat)))$p.value`.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.height=8}
+residual_plots(hursat_global_results$pois_fit)
+```
+
+
+
+#### Poisson Regression on Hurricanes
+
+```{r, echo=FALSE}
+(hursat_global_results$hur_fit)
+drop1(hursat_global_results$hur_fit, test="LRT")
+```
+
+Using this model, in `r min(hursat_global_results$data$SEASON)` we would predict `r predict(hursat_global_results$hur_fit, type="response")[1]` hurricanes (CI: `r exp(predict(hursat_global_results$hur_fit, type="link")[1]-1.96*predict(hursat_global_results$hur_fit, type="link", se.fit=TRUE)$se.fit[1])`, `r exp(predict(hursat_global_results$hur_fit, type="link")[1]+1.96*predict(hursat_global_results$hur_fit, type="link", se.fit=TRUE)$se.fit[1])`) and in `r max(hursat_global_results$data$SEASON)` we predict `r predict(hursat_global_results$hur_fit, type="response")[num_years_hursat]` hurricanes (CI: `r exp(predict(hursat_global_results$hur_fit, type="link")[num_years_hursat]-1.96*predict(hursat_global_results$hur_fit, type="link", se.fit=TRUE)$se.fit[num_years_hursat])`, `r exp(predict(hursat_global_results$hur_fit, type="link")[num_years_hursat]+1.96*predict(hursat_global_results$hur_fit, type="link", se.fit=TRUE)$se.fit[num_years_hursat])`).
+
+That is a change of `r (predict(hursat_global_results$hur_fit, type="response")[num_years_hursat]-predict(hursat_global_results$hur_fit, type="response")[1])/num_years_hursat*10` hurricanes per decade.
+
+**Model Assessment**
+
+The ratio of the residual deviance is `r hursat_global_results$hur_fit$deviance/hursat_global_results$hur_fit$df.residual`.
+
+The $p$-value for the Ljung-Box test on the deviance residuals `r Box.test(residuals(hursat_global_results$hur_fit, type="deviance"), lag=ceiling(log(num_years_hursat)))$p.value`.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.height=8}
+residual_plots(hursat_global_results$hur_fit)
+```
+
+
+
+#### Poisson Regression on Major Storms
+
+```{r, echo=FALSE}
+(hursat_global_results$major_fit)
+drop1(hursat_global_results$major_fit, test="LRT")
+```
+
+Using this model, in `r min(hursat_global_results$data$SEASON)` we would predict `r predict(hursat_global_results$major_fit, type="response")[1]` major storms (CI: `r exp(predict(hursat_global_results$major_fit, type="link")[1]-1.96*predict(hursat_global_results$major_fit, type="link", se.fit=TRUE)$se.fit[1])`, `r exp(predict(hursat_global_results$major_fit, type="link")[1]+1.96*predict(hursat_global_results$major_fit, type="link", se.fit=TRUE)$se.fit[1])`) and in `r max(hursat_global_results$data$SEASON)` we predict `r predict(hursat_global_results$major_fit, type="response")[num_years_hursat]` major storms (CI: `r exp(predict(hursat_global_results$major_fit, type="link")[num_years_hursat]-1.96*predict(hursat_global_results$major_fit, type="link", se.fit=TRUE)$se.fit[num_years_hursat])`, `r exp(predict(hursat_global_results$major_fit, type="link")[num_years_hursat]+1.96*predict(hursat_global_results$major_fit, type="link", se.fit=TRUE)$se.fit[num_years_hursat])`).
+
+That is a change of `r (predict(hursat_global_results$major_fit, type="response")[num_years_hursat]-predict(hursat_global_results$major_fit, type="response")[1])/num_years_hursat*10` major storms per decade.
+
+**Model Assessment**
+
+The ratio of the residual deviance is `r hursat_global_results$major_fit$deviance/hursat_global_results$major_fit$df.residual`.
+
+The $p$-value for the Ljung-Box test on the deviance residuals `r Box.test(residuals(hursat_global_results$major_fit, type="deviance"), lag=ceiling(log(num_years_hursat)))$p.value`.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.height=8}
+residual_plots(hursat_global_results$major_fit)
+```
+
+
+
+
+#### Poisson Regression on Intense Storms
+
+```{r, echo=FALSE}
+(hursat_global_results$intense_fit)
+drop1(hursat_global_results$intense_fit, test="LRT")
+```
+
+
+Using this model, in `r min(hursat_global_results$data$SEASON)` we would predict `r predict(hursat_global_results$intense_fit, type="response")[1]` intense storms (CI: `r exp(predict(hursat_global_results$intense_fit, type="link")[1]-1.96*predict(hursat_global_results$intense_fit, type="link", se.fit=TRUE)$se.fit[1])`, `r exp(predict(hursat_global_results$intense_fit, type="link")[1]+1.96*predict(hursat_global_results$intense_fit, type="link", se.fit=TRUE)$se.fit[1])`) and in `r max(hursat_global_results$data$SEASON)` we predict `r predict(hursat_global_results$intense_fit, type="response")[num_years_hursat]` intense storms (CI: `r exp(predict(hursat_global_results$intense_fit, type="link")[num_years_hursat]-1.96*predict(hursat_global_results$intense_fit, type="link", se.fit=TRUE)$se.fit[num_years_hursat])`, `r exp(predict(hursat_global_results$intense_fit, type="link")[num_years_hursat]+1.96*predict(hursat_global_results$intense_fit, type="link", se.fit=TRUE)$se.fit[num_years_hursat])`).
+
+That is a change of `r (predict(hursat_global_results$intense_fit, type="response")[num_years_hursat]-predict(hursat_global_results$intense_fit, type="response")[1])/num_years_hursat*10` intense storms per decade.
+
+**Model Assessment**
+
+The ratio of the residual deviance is `r hursat_global_results$intense_fit$deviance/hursat_global_results$intense_fit$df.residual`.
+
+The $p$-value for the Ljung-Box test on the deviance residuals `r Box.test(residuals(hursat_global_results$intense_fit, type="deviance"), lag=ceiling(log(num_years_hursat)))$p.value`.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.height=8}
+residual_plots(hursat_global_results$intense_fit)
+```
+
+
+
+
+#### Logistic Regression on Proportions of Major
+
+```{r, echo=FALSE}
+(hursat_global_results$major_logit_fit)
+drop1(hursat_global_results$major_logit_fit, test="LRT")
+```
+
+
+
+Using this model, in `r min(hursat_global_results$data$SEASON)` the probability of a major storm in  was `r predict(hursat_global_results$major_logit_fit, type="response")[1]` (CI: `r plogis(predict(hursat_global_results$major_logit_fit, type="link")[1]-1.96*predict(hursat_global_results$major_logit_fit, type="link", se=TRUE)$se.fit[1])`, `r plogis(predict(hursat_global_results$major_logit_fit, type="link")[1]+1.96*predict(hursat_global_results$major_logit_fit, type="link", se=TRUE)$se.fit[1])`)  and in `r max(hursat_global_results$data$SEASON)` the probability of a major storm was `r predict(hursat_global_results$major_logit_fit, type="response")[num_years_hursat]` (CI: `r plogis(predict(hursat_global_results$major_logit_fit, type="link")[num_years_hursat]-1.96*predict(hursat_global_results$major_logit_fit, type="link", se=TRUE)$se.fit[num_years_hursat])`, `r plogis(predict(hursat_global_results$major_logit_fit, type="link")[num_years_hursat]+1.96*predict(hursat_global_results$major_logit_fit, type="link", se=TRUE)$se.fit[num_years_hursat])`).
+
+That is a change of `r (predict(hursat_global_results$major_logit_fit, type="response")[num_years_hursat]-predict(hursat_global_results$major_logit_fit, type="response")[1])/num_years_hursat*10*100` percent per decade.
+
+**Model Assessment**
+
+The ratio of the residual deviance is `r hursat_global_results$major_logit_fit$deviance/hursat_global_results$major_logit_fit$df.residual`.
+
+The $p$-value for the Ljung-Box test on the deviance residuals `r Box.test(residuals(hursat_global_results$major_logit_fit, type="deviance"), lag=ceiling(log(num_years_hursat)))$p.value`.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.height=8}
+residual_plots(hursat_global_results$major_logit_fit)
+```
+
+
+
+
+#### Logistic Regression on Proportions of Intense
+
+```{r, echo=FALSE}
+(hursat_global_results$intense_logit_fit)
+drop1(hursat_global_results$intense_logit_fit, test="LRT")
+```
+
+
+
+Using this model, in `r min(hursat_global_results$data$SEASON)` the probability of a major storm in  was `r predict(hursat_global_results$intense_logit_fit, type="response")[1]` (CI: `r plogis(predict(hursat_global_results$intense_logit_fit, type="link")[1]-1.96*predict(hursat_global_results$intense_logit_fit, type="link", se=TRUE)$se.fit[1])`, `r plogis(predict(hursat_global_results$intense_logit_fit, type="link")[1]+1.96*predict(hursat_global_results$intense_logit_fit, type="link", se=TRUE)$se.fit[1])`)  and in `r max(hursat_global_results$data$SEASON)` the probability of a major storm was `r predict(hursat_global_results$intense_logit_fit, type="response")[num_years_hursat]` (CI: `r plogis(predict(hursat_global_results$intense_logit_fit, type="link")[num_years_hursat]-1.96*predict(hursat_global_results$intense_logit_fit, type="link", se=TRUE)$se.fit[num_years_hursat])`, `r plogis(predict(hursat_global_results$intense_logit_fit, type="link")[num_years_hursat]+1.96*predict(hursat_global_results$intense_logit_fit, type="link", se=TRUE)$se.fit[num_years_hursat])`).
+
+
+
+That is a change of `r (predict(hursat_global_results$intense_logit_fit, type="response")[num_years_hursat]-predict(hursat_global_results$intense_logit_fit, type="response")[1])/num_years_hursat*10*100` percent per decade.
+
+
+**Model Assessment**
+
+The ratio of the residual deviance is `r hursat_global_results$intense_logit_fit$deviance/hursat_global_results$intense_logit_fit$df.residual`.
+
+The $p$-value for the Ljung-Box test on the deviance residuals `r Box.test(residuals(hursat_global_results$intense_logit_fit, type="deviance"), lag=ceiling(log(num_years_hursat)))$p.value`.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.height=8}
+residual_plots(hursat_global_results$intense_logit_fit)
+```
+
+
+
+
+
 

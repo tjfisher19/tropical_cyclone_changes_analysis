@@ -1,168 +1,60 @@
 
-## IBTrACS Full Analysis
 
-```{r global_ibtracs, echo=FALSE}
-```
+## IBTrACS Quick Results
 
-### Summary Statistics (overall)
+
+### Summary Statistics and Data
 
 ```{r, echo=FALSE}
 ibtracs_global_results$summary_stat |>
   knitr::kable()
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE}
 ibtracs_global_results$plot_data
 ```
 
+### Testing Results
 
-### Regression Methods
+**Changepoint Methods**
 
-#### Poisson Regression on non-Shorties
-
-```{r, echo=FALSE}
-(ibtracs_global_results$pois_fit)
-drop1(ibtracs_global_results$pois_fit, test="LRT")
-```
-
-
-Using this model, we would predict `r predict(ibtracs_global_results$pois_fit, type="response")[1]` storms in `r min(ibtracs_global_results$data$SEASON)` and `r predict(ibtracs_global_results$pois_fit, type="response")[num_years_ibtracs]` storms in `r max(ibtracs_global_results$data$SEASON)`.
-
-That is a change of `r (predict(ibtracs_global_results$pois_fit, type="response")[num_years_ibtracs]-predict(ibtracs_global_results$pois_fit, type="response")[1])/num_years_ibtracs*10` storms per decade.
-
-#### Poisson Regression on Hurricanes
+Here, we report the estimate mean for each segment or regime regardless of whether the test found a significant shift.  
 
 ```{r, echo=FALSE}
-(ibtracs_global_results$hur_fit)
-drop1(ibtracs_global_results$hur_fit, test="LRT")
-```
+df <- data.frame(
+  Response = c("Cyclone Freq", "Hurricanes", "Major Freq", "Prop Major", "Intense Freq", "Prop Freq"),
+  `Chpt Location` = c(ibtracs_global_results$pois_chpt_test[2]+1981,
+                      ibtracs_global_results$hur_pois_chpt_test[2]+1981,
+                      ibtracs_global_results$major_pois_chpt_test[2]+1981,
+                      ibtracs_global_results$prop_major_chpt_test[2]+1981,
+                      ibtracs_global_results$intense_pois_chpt_test[2]+1981,
+                      ibtracs_global_results$prop_intense_chpt_test[2]+1981),
+  `p-value` =c(ibtracs_global_results$pois_chpt_test[3],
+               ibtracs_global_results$hur_pois_chpt_test[3],
+               ibtracs_global_results$major_pois_chpt_test[3],
+               ibtracs_global_results$prop_major_chpt_test[3],
+               ibtracs_global_results$intense_pois_chpt_test[3],
+               ibtracs_global_results$prop_intense_chpt_test[3] ),
+  `Regime1` = c(mean(ibtracs_global_results$data$Total_Storms[1:ibtracs_global_results$pois_chpt_test[2]]),
+                mean(ibtracs_global_results$data$Hurricanes[1:ibtracs_global_results$hur_pois_chpt_test[2]]),
+                mean(ibtracs_global_results$data$Major_Storms[1:ibtracs_global_results$major_pois_chpt_test[2]]),
+                sum(ibtracs_global_results$data$Major_Storms[1:ibtracs_global_results$prop_major_chpt_test[2]])/sum(ibtracs_global_results$data$Total_Storms[1:ibtracs_global_results$prop_major_chpt_test[2]])*100,
+                mean(ibtracs_global_results$data$Intense_Storms[1:ibtracs_global_results$intense_pois_chpt_test[2]]),
+                sum(ibtracs_global_results$data$Intense_Storms[1:ibtracs_global_results$prop_intense_chpt_test[2]])/sum(ibtracs_global_results$data$Total_Storms[1:ibtracs_global_results$prop_intense_chpt_test[2]])*100 ),
+  `Regime2` = c(mean(ibtracs_global_results$data$Total_Storms[(ibtracs_global_results$pois_chpt_test[2]+1):num_years_ibtracs]),
+                mean(ibtracs_global_results$data$Hurricanes[(ibtracs_global_results$hur_pois_chpt_test[2]+1):num_years_ibtracs]),
+                mean(ibtracs_global_results$data$Major_Storms[(ibtracs_global_results$major_pois_chpt_test[2]+1):num_years_ibtracs]),
+                sum(ibtracs_global_results$data$Major_Storms[(ibtracs_global_results$prop_major_chpt_test[2]+1):num_years_ibtracs])/sum(ibtracs_global_results$data$Total_Storms[(ibtracs_global_results$prop_major_chpt_test[2]+1):num_years_ibtracs])*100,
+                mean(ibtracs_global_results$data$Intense_Storms[(ibtracs_global_results$intense_pois_chpt_test[2]+1):num_years_ibtracs]),
+                sum(ibtracs_global_results$data$Intense_Storms[(ibtracs_global_results$prop_intense_chpt_test[2]+1):num_years_ibtracs])/sum(ibtracs_global_results$data$Total_Storms[(ibtracs_global_results$prop_intense_chpt_test[2]+1):num_years_ibtracs])*100)
+  )
 
-Using this model the number of a hurricanes in `r min(ibtracs_global_results$data$SEASON)` was `r predict(ibtracs_global_results$hur_fit, type="response")[1]` and `r predict(ibtracs_global_results$hur_fit, type="response")[num_years_ibtracs]` in `r max(ibtracs_global_results$data$SEASON)`.
-
-That is a change of `r (predict(ibtracs_global_results$hur_fit, type="response")[num_years_ibtracs]-predict(ibtracs_global_results$hur_fit, type="response")[1])/num_years_ibtracs*10` storms per decade.
-
-#### Poisson Regression on Major Storms
-
-```{r, echo=FALSE}
-(ibtracs_global_results$major_fit)
-drop1(ibtracs_global_results$major_fit, test="LRT")
-```
-
-Using this model the number of a major storm in `r min(ibtracs_global_results$data$SEASON)` was `r predict(ibtracs_global_results$major_fit, type="response")[1]` and `r predict(ibtracs_global_results$major_fit, type="response")[num_years_ibtracs]` in `r max(ibtracs_global_results$data$SEASON)`.
-
-That is a change of `r (predict(ibtracs_global_results$major_fit, type="response")[num_years_ibtracs]-predict(ibtracs_global_results$major_fit, type="response")[1])/num_years_ibtracs*10` storms per decade.
-
-#### Poisson Regression on Intense Storms
-
-```{r, echo=FALSE}
-(ibtracs_global_results$intense_fit)
-drop1(ibtracs_global_results$intense_fit, test="LRT")
-```
-
-
-Using this model the number of a intense storms in `r min(ibtracs_global_results$data$SEASON)` was `r predict(ibtracs_global_results$intense_fit, type="response")[1]` and `r predict(ibtracs_global_results$intense_fit, type="response")[num_years_ibtracs]` in `r max(ibtracs_global_results$data$SEASON)`.
-
-That is a change of `r (predict(ibtracs_global_results$intense_fit, type="response")[num_years_ibtracs]-predict(ibtracs_global_results$intense_fit, type="response")[1])/num_years_ibtracs*10` storms per decade.
-
-#### Logistic Regression on Proportions of Major
-
-```{r, echo=FALSE}
-(ibtracs_global_results$major_logit_fit)
-drop1(ibtracs_global_results$major_logit_fit, test="LRT")
-```
-
-
-
-Using this model the probability of a major storm in `r min(ibtracs_global_results$data$SEASON)` was `r predict(ibtracs_global_results$major_logit_fit, type="response")[1]` and `r predict(ibtracs_global_results$major_logit_fit, type="response")[num_years_ibtracs]` in `r max(ibtracs_global_results$data$SEASON)`.
-
-That is a change of `r (predict(ibtracs_global_results$major_logit_fit, type="response")[num_years_ibtracs]-predict(ibtracs_global_results$major_logit_fit, type="response")[1])/num_years_ibtracs*10*100` percent per decade.
-
-#### Logistic Regression on Proportions of Intense
-
-```{r, echo=FALSE}
-(ibtracs_global_results$intense_logit_fit)
-drop1(ibtracs_global_results$intense_logit_fit, test="LRT")
-```
-
-
-Using this model the probability of an intense storm in `r min(ibtracs_global_results$data$SEASON)` was `r predict(ibtracs_global_results$intense_logit_fit, type="response")[1]` and `r predict(ibtracs_global_results$intense_logit_fit, type="response")[num_years_ibtracs]` in `r max(ibtracs_global_results$data$SEASON)`.
-
-That is a change of `r (predict(ibtracs_global_results$intense_logit_fit, type="response")[num_years_ibtracs]-predict(ibtracs_global_results$intense_logit_fit, type="response")[1])/num_years_ibtracs*10*100` percent per decade.
-
-### Changepoint Methods
-
-#### Change in Non-Shorty Counts
-
-```{r, echo=FALSE}
-ibtracs_global_results$pois_chpt_test
-```
-
-The dates suggest the changepoint would occur from `r 1980+ibtracs_global_results$pois_chpt_test[2]` to `r 1980+ibtracs_global_results$pois_chpt_test[2]+1` with $p$-value `r ibtracs_global_results$pois_chpt_test[3]`.
-
-In regime one, the mean number of total storms is `r mean(ibtracs_global_results$data$Total_Storms[1:ibtracs_global_results$pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(ibtracs_global_results$data$Total_Storms[(ibtracs_global_results$pois_chpt_test[2]+1):num_years_ibtracs])`; a change of `r mean(ibtracs_global_results$data$Total_Storms[(ibtracs_global_results$pois_chpt_test[2]+1):num_years_ibtracs]) - mean(ibtracs_global_results$data$Total_Storms[1:ibtracs_global_results$pois_chpt_test[2]])`.
-
-
-#### Change in counts of hurricanes
-
-```{r, echo=FALSE}
-ibtracs_global_results$hur_pois_chpt_test
-```
-
-The dates suggest the changepoint would occur from `r 1980+ibtracs_global_results$hur_pois_chpt_test[2]` to `r 1980+ibtracs_global_results$hur_pois_chpt_test[2]+1` with $p$-value `r ibtracs_global_results$hur_pois_chpt_test[3]`.
-
-In regime one, the mean number of hurricanes is `r mean(ibtracs_global_results$data$Hurricanes[1:ibtracs_global_results$hur_pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(ibtracs_global_results$data$Hurricanes[(ibtracs_global_results$hur_pois_chpt_test[2]+1):num_years_ibtracs])`; a change of `r mean(ibtracs_global_results$data$Hurricanes[(ibtracs_global_results$hur_pois_chpt_test[2]+1):num_years_ibtracs]) - mean(ibtracs_global_results$data$Hurricanes[1:ibtracs_global_results$hur_pois_chpt_test[2]])`.
-
-
-#### Change in counts of major storms
-
-```{r, echo=FALSE}
-ibtracs_global_results$major_pois_chpt_test
-```
-
-The dates suggest the changepoint would occur from `r 1980+ibtracs_global_results$major_pois_chpt_test[2]` to `r 1980+ibtracs_global_results$major_pois_chpt_test[2]+1` with $p$-value `r ibtracs_global_results$major_pois_chpt_test[3]`.
-
-In regime one, the mean number of major storms is `r mean(ibtracs_global_results$data$Major_Storms[1:ibtracs_global_results$major_pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(ibtracs_global_results$data$Major_Storms[(ibtracs_global_results$major_pois_chpt_test[2]+1):num_years_ibtracs])`; a change of `r mean(ibtracs_global_results$data$Major_Storms[(ibtracs_global_results$major_pois_chpt_test[2]+1):num_years_ibtracs]) - mean(ibtracs_global_results$data$Major_Storms[1:ibtracs_global_results$major_pois_chpt_test[2]])`.
-
-#### Change in counts of intense storms
-
-```{r, echo=FALSE}
-ibtracs_global_results$intense_pois_chpt_test
-```
-
-
-The dates suggest the changepoint would occur from `r 1980+ibtracs_global_results$intense_pois_chpt_test[2]` to `r 1980+ibtracs_global_results$intense_pois_chpt_test[2]+1` with $p$-value `r ibtracs_global_results$intense_pois_chpt_test[3]`.
-
-In regime one, the mean number of intense storms is `r mean(ibtracs_global_results$data$Intense_Storms[1:ibtracs_global_results$intense_pois_chpt_test[2]])` and in regime two, the mean number of storms is `r mean(ibtracs_global_results$data$Intense_Storms[(ibtracs_global_results$intense_pois_chpt_test[2]+1):num_years_ibtracs])`; a change of `r mean(ibtracs_global_results$data$Intense_Storms[(ibtracs_global_results$intense_pois_chpt_test[2]+1):num_years_ibtracs]) - mean(ibtracs_global_results$data$Intense_Storms[1:ibtracs_global_results$intense_pois_chpt_test[2]])`.
-
-#### Proportion of major storms
-
-A change in the proportion of major storms?
+df |>
+  mutate(Change = Regime2-Regime1,
+         Perc_Change = Change/Regime1*100) |>
+  knitr::kable(digits=5)
   
-```{r, echo=FALSE}
-ibtracs_global_results$prop_major_chpt_test
 ```
-
-The change in proportions occurs `r 1980+ibtracs_global_results$prop_major_chpt_test[2]` to `r 1980+ibtracs_global_results$prop_major_chpt_test[2]+1` with $p$-value `r ibtracs_global_results$prop_major_chpt_test[3]`. 
-
-In regime one, the proportion of major storms is `r sum(ibtracs_global_results$data$Major_Storms[1:ibtracs_global_results$prop_major_chpt_test[2]])/sum(ibtracs_global_results$data$Total_Storms[1:ibtracs_global_results$prop_major_chpt_test[2]])` and in regime two, the proportion of major storms is `r sum(ibtracs_global_results$data$Major_Storms[(ibtracs_global_results$prop_major_chpt_test[2]+1):num_years_ibtracs])/sum(ibtracs_global_results$data$Total_Storms[(ibtracs_global_results$prop_major_chpt_test[2]+1):num_years_ibtracs])`; a change of `r sum(ibtracs_global_results$data$Major_Storms[(ibtracs_global_results$prop_major_chpt_test[2]+1):num_years_ibtracs])/sum(ibtracs_global_results$data$Total_Storms[(ibtracs_global_results$prop_major_chpt_test[2]+1):num_years_ibtracs]) - sum(ibtracs_global_results$data$Major_Storms[1:ibtracs_global_results$prop_major_chpt_test[2]])/sum(ibtracs_global_results$data$Total_Storms[1:ibtracs_global_results$prop_major_chpt_test[2]])`.
-
-#### Proportion of intense storms
-
-A change in the proportion of major storms?
-  
-```{r, echo=FALSE}
-ibtracs_global_results$prop_intense_chpt_test
-```
-
-The change in proportions occurs `r 1980+ibtracs_global_results$prop_intense_chpt_test[2]` to `r 1980+ibtracs_global_results$prop_intense_chpt_test[2]+1` with $p$-value `r ibtracs_global_results$prop_intense_chpt_test[3]`.
-
-
-In regime one, the proportion of intense storms is `r sum(ibtracs_global_results$data$Intense_Storms[1:ibtracs_global_results$prop_intense_chpt_test[2]])/sum(ibtracs_global_results$data$Total_Storms[1:ibtracs_global_results$prop_intense_chpt_test[2]])` and in regime two, the proportion of major storms is `r sum(ibtracs_global_results$data$Intense_Storms[(ibtracs_global_results$prop_intense_chpt_test[2]+1):num_years_ibtracs])/sum(ibtracs_global_results$data$Total_Storms[(ibtracs_global_results$prop_intense_chpt_test[2]+1):num_years_ibtracs])`; a change of `r sum(ibtracs_global_results$data$Intense_Storms[(ibtracs_global_results$prop_intense_chpt_test[2]+1):num_years_ibtracs])/sum(ibtracs_global_results$data$Total_Storms[(ibtracs_global_results$prop_intense_chpt_test[2]+1):num_years_ibtracs]) - sum(ibtracs_global_results$data$Intense_Storms[1:ibtracs_global_results$prop_intense_chpt_test[2]])/sum(ibtracs_global_results$data$Total_Storms[1:ibtracs_global_results$prop_intense_chpt_test[2]])`.
-
-
-
-## IBTrACS Test Results
-
 
 
 **Generalized Linear Model Approaches**
@@ -206,41 +98,314 @@ df |>
   knitr::kable(digits=5)
 ```
 
-**Changepoint Methods**
+
+
+## IBTrACS Full Analysis
+
+
+
+### Changepoint Methods
+
+#### Change in Non-Shorty Counts
 
 ```{r, echo=FALSE}
-df <- data.frame(
-  Response = c("Cyclone Freq", "Hurricanes", "Major Freq", "Prop Major", "Intense Freq", "Prop Freq"),
-  `Chpt Location` = c(ibtracs_global_results$pois_chpt_test[2]+1981,
-                      ibtracs_global_results$hur_pois_chpt_test[2]+1981,
-                      ibtracs_global_results$major_pois_chpt_test[2]+1981,
-                      ibtracs_global_results$prop_major_chpt_test[2]+1981,
-                      ibtracs_global_results$intense_pois_chpt_test[2]+1981,
-                      ibtracs_global_results$prop_intense_chpt_test[2]+1981),
-  `p-value` =c(ibtracs_global_results$pois_chpt_test[3],
-               ibtracs_global_results$hur_pois_chpt_test[3],
-               ibtracs_global_results$major_pois_chpt_test[3],
-               ibtracs_global_results$prop_major_chpt_test[3],
-               ibtracs_global_results$intense_pois_chpt_test[3],
-               ibtracs_global_results$prop_intense_chpt_test[3] ),
-  `Regime1` = c(mean(ibtracs_global_results$data$Total_Storms[1:ibtracs_global_results$pois_chpt_test[2]]),
-                mean(ibtracs_global_results$data$Hurricanes[1:ibtracs_global_results$hur_pois_chpt_test[2]]),
-                mean(ibtracs_global_results$data$Major_Storms[1:ibtracs_global_results$major_pois_chpt_test[2]]),
-                sum(ibtracs_global_results$data$Major_Storms[1:ibtracs_global_results$prop_major_chpt_test[2]])/sum(ibtracs_global_results$data$Total_Storms[1:ibtracs_global_results$prop_major_chpt_test[2]])*100,
-                mean(ibtracs_global_results$data$Intense_Storms[1:ibtracs_global_results$intense_pois_chpt_test[2]]),
-                sum(ibtracs_global_results$data$Intense_Storms[1:ibtracs_global_results$prop_intense_chpt_test[2]])/sum(ibtracs_global_results$data$Total_Storms[1:ibtracs_global_results$prop_intense_chpt_test[2]])*100 ),
-  `Regime2` = c(mean(ibtracs_global_results$data$Total_Storms[(ibtracs_global_results$pois_chpt_test[2]+1):num_years_ibtracs]),
-                mean(ibtracs_global_results$data$Hurricanes[(ibtracs_global_results$hur_pois_chpt_test[2]+1):num_years_ibtracs]),
-                mean(ibtracs_global_results$data$Major_Storms[(ibtracs_global_results$major_pois_chpt_test[2]+1):num_years_ibtracs]),
-                sum(ibtracs_global_results$data$Major_Storms[(ibtracs_global_results$prop_major_chpt_test[2]+1):num_years_ibtracs])/sum(ibtracs_global_results$data$Total_Storms[(ibtracs_global_results$prop_major_chpt_test[2]+1):num_years_ibtracs])*100,
-                mean(ibtracs_global_results$data$Intense_Storms[(ibtracs_global_results$intense_pois_chpt_test[2]+1):num_years_ibtracs]),
-                sum(ibtracs_global_results$data$Intense_Storms[(ibtracs_global_results$prop_intense_chpt_test[2]+1):num_years_ibtracs])/sum(ibtracs_global_results$data$Total_Storms[(ibtracs_global_results$prop_intense_chpt_test[2]+1):num_years_ibtracs])*100)
-  )
-
-df |>
-  mutate(Change = Regime2-Regime1,
-         Perc_Change = Change/Regime1*100) |>
-  knitr::kable(digits=5)
-  
+ibtracs_global_results$pois_chpt_test
 ```
+
+The dates suggest the changepoint would occur from `r 1980+ibtracs_global_results$pois_chpt_test[2]` to `r 1980+ibtracs_global_results$pois_chpt_test[2]+1` with $p$-value `r ibtracs_global_results$pois_chpt_test[3]`.
+
+
+In regime one, the mean number of storms is `r predict(ibtracs_global_results$pois_chpt_model, type="response")[1]` (CI: `r exp(predict(ibtracs_global_results$pois_chpt_model, type="link")[1]-1.96*predict(ibtracs_global_results$pois_chpt_model, type="link", se=TRUE)$se.fit[1])`, `r exp(predict(ibtracs_global_results$pois_chpt_model, type="link")[1]+1.96*predict(ibtracs_global_results$pois_chpt_model, type="link", se=TRUE)$se.fit[1])`) and in regime two, the mean number of storms is `r predict(ibtracs_global_results$pois_chpt_model, type="response")[num_years_ibtracs]` (CI: `r exp(predict(ibtracs_global_results$pois_chpt_model, type="link")[num_years_ibtracs]-1.96*predict(ibtracs_global_results$pois_chpt_model, type="link", se=TRUE)$se.fit[num_years_ibtracs])`, `r exp(predict(ibtracs_global_results$pois_chpt_model, type="link")[num_years_ibtracs]+1.96*predict(ibtracs_global_results$pois_chpt_model, type="link", se=TRUE)$se.fit[num_years_ibtracs])`); a change of `r predict(ibtracs_global_results$pois_chpt_model, type="response")[num_years_ibtracs] - predict(ibtracs_global_results$pois_chpt_model, type="response")[1]`.
+
+
+**Model Assessment**
+
+The ratio of the residual deviance is `r ibtracs_global_results$pois_chpt_model$deviance/ibtracs_global_results$pois_chpt_model$df.residual`.
+
+The $p$-value for the Ljung-Box test on the deviance residuals `r Box.test(residuals(ibtracs_global_results$pois_chpt_model, type="deviance"), lag=ceiling(log(num_years_ibtracs)))$p.value`.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.height=8}
+residual_plots(ibtracs_global_results$pois_chpt_model)
+```
+
+
+#### Change in counts of hurricanes
+
+```{r, echo=FALSE}
+ibtracs_global_results$hur_pois_chpt_test
+```
+
+The dates suggest the changepoint would occur from `r 1980+ibtracs_global_results$hur_pois_chpt_test[2]` to `r 1980+ibtracs_global_results$hur_pois_chpt_test[2]+1` with $p$-value `r ibtracs_global_results$hur_pois_chpt_test[3]`.
+
+
+In regime one, the mean number of hurricanes is `r predict(ibtracs_global_results$hur_chpt_model, type="response")[1]` (CI: `r exp(predict(ibtracs_global_results$hur_chpt_model, type="link")[1]-1.96*predict(ibtracs_global_results$hur_chpt_model, type="link", se=TRUE)$se.fit[1])`, `r exp(predict(ibtracs_global_results$hur_chpt_model, type="link")[1]+1.96*predict(ibtracs_global_results$hur_chpt_model, type="link", se=TRUE)$se.fit[1])`) and in regime two, the mean number of hurricanes is `r predict(ibtracs_global_results$hur_chpt_model, type="response")[num_years_ibtracs]` (CI: `r exp(predict(ibtracs_global_results$hur_chpt_model, type="link")[num_years_ibtracs]-1.96*predict(ibtracs_global_results$hur_chpt_model, type="link", se=TRUE)$se.fit[num_years_ibtracs])`, `r exp(predict(ibtracs_global_results$hur_chpt_model, type="link")[num_years_ibtracs]+1.96*predict(ibtracs_global_results$hur_chpt_model, type="link", se=TRUE)$se.fit[num_years_ibtracs])`); a change of `r predict(ibtracs_global_results$hur_chpt_model, type="response")[num_years_ibtracs] - predict(ibtracs_global_results$hur_chpt_model, type="response")[1]`.
+
+
+
+**Model Assessment**
+
+The ratio of the residual deviance is `r ibtracs_global_results$hur_chpt_model$deviance/ibtracs_global_results$hur_chpt_model$df.residual`.
+
+The $p$-value for the Ljung-Box test on the deviance residuals `r Box.test(residuals(ibtracs_global_results$hur_chpt_model, type="deviance"), lag=ceiling(log(num_years_ibtracs)))$p.value`.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.height=8}
+residual_plots(ibtracs_global_results$hur_chpt_model)
+```
+
+#### Change in counts of major storms
+
+```{r, echo=FALSE}
+ibtracs_global_results$major_pois_chpt_test
+```
+
+The dates suggest the changepoint would occur from `r 1980+ibtracs_global_results$major_pois_chpt_test[2]` to `r 1980+ibtracs_global_results$major_pois_chpt_test[2]+1` with $p$-value `r ibtracs_global_results$major_pois_chpt_test[3]`.
+
+
+In regime one, the mean number of storms is `r predict(ibtracs_global_results$major_pois_chpt_model, type="response")[1]` (CI: `r exp(predict(ibtracs_global_results$major_pois_chpt_model, type="link")[1]-1.96*predict(ibtracs_global_results$major_pois_chpt_model, type="link", se=TRUE)$se.fit[1])`, `r exp(predict(ibtracs_global_results$major_pois_chpt_model, type="link")[1]+1.96*predict(ibtracs_global_results$major_pois_chpt_model, type="link", se=TRUE)$se.fit[1])`) and in regime two, the mean number of storms is `r predict(ibtracs_global_results$major_pois_chpt_model, type="response")[num_years_ibtracs]` (CI: `r exp(predict(ibtracs_global_results$major_pois_chpt_model, type="link")[num_years_ibtracs]-1.96*predict(ibtracs_global_results$major_pois_chpt_model, type="link", se=TRUE)$se.fit[num_years_ibtracs])`, `r exp(predict(ibtracs_global_results$major_pois_chpt_model, type="link")[num_years_ibtracs]+1.96*predict(ibtracs_global_results$major_pois_chpt_model, type="link", se=TRUE)$se.fit[num_years_ibtracs])`); a change of `r predict(ibtracs_global_results$major_pois_chpt_model, type="response")[num_years_ibtracs] - predict(ibtracs_global_results$major_pois_chpt_model, type="response")[1]`.
+
+
+
+**Model Assessment**
+
+The ratio of the residual deviance is `r ibtracs_global_results$major_pois_chpt_model$deviance/ibtracs_global_results$major_pois_chpt_model$df.residual`.
+
+The $p$-value for the Ljung-Box test on the deviance residuals `r Box.test(residuals(ibtracs_global_results$major_pois_chpt_model, type="deviance"), lag=ceiling(log(num_years_ibtracs)))$p.value`.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.height=8}
+residual_plots(ibtracs_global_results$major_pois_chpt_model)
+```
+
+
+
+
+#### Change in counts of intense storms
+
+```{r, echo=FALSE}
+ibtracs_global_results$intense_pois_chpt_test
+```
+
+
+The dates suggest the changepoint would occur from `r 1980+ibtracs_global_results$intense_pois_chpt_test[2]` to `r 1980+ibtracs_global_results$intense_pois_chpt_test[2]+1` with $p$-value `r ibtracs_global_results$intense_pois_chpt_test[3]`.
+
+
+In regime one, the mean number of storms is `r predict(ibtracs_global_results$intense_pois_chpt_model, type="response")[1]` (CI: `r exp(predict(ibtracs_global_results$intense_pois_chpt_model, type="link")[1]-1.96*predict(ibtracs_global_results$intense_pois_chpt_model, type="link", se=TRUE)$se.fit[1])`, `r exp(predict(ibtracs_global_results$intense_pois_chpt_model, type="link")[1]+1.96*predict(ibtracs_global_results$intense_pois_chpt_model, type="link", se=TRUE)$se.fit[1])`) and in regime two, the mean number of storms is `r predict(ibtracs_global_results$intense_pois_chpt_model, type="response")[num_years_ibtracs]` (CI: `r exp(predict(ibtracs_global_results$intense_pois_chpt_model, type="link")[num_years_ibtracs]-1.96*predict(ibtracs_global_results$intense_pois_chpt_model, type="link", se=TRUE)$se.fit[num_years_ibtracs])`, `r exp(predict(ibtracs_global_results$intense_pois_chpt_model, type="link")[num_years_ibtracs]+1.96*predict(ibtracs_global_results$intense_pois_chpt_model, type="link", se=TRUE)$se.fit[num_years_ibtracs])`); a change of `r predict(ibtracs_global_results$intense_pois_chpt_model, type="response")[num_years_ibtracs] - predict(ibtracs_global_results$intense_pois_chpt_model, type="response")[1]`.
+
+
+**Model Assessment**
+
+The ratio of the residual deviance is `r ibtracs_global_results$intense_pois_chpt_model$deviance/ibtracs_global_results$intense_pois_chpt_model$df.residual`.
+
+The $p$-value for the Ljung-Box test on the deviance residuals `r Box.test(residuals(ibtracs_global_results$intense_pois_chpt_model, type="deviance"), lag=ceiling(log(num_years_ibtracs)))$p.value`.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.height=8}
+residual_plots(ibtracs_global_results$intense_pois_chpt_model)
+```
+
+
+
+#### Proportion of major storms
+
+A change in the proportion of major storms?
+  
+```{r, echo=FALSE}
+ibtracs_global_results$prop_major_chpt_test
+```
+
+The change in proportions occurs `r 1980+ibtracs_global_results$prop_major_chpt_test[2]` to `r 1980+ibtracs_global_results$prop_major_chpt_test[2]+1` with $p$-value `r ibtracs_global_results$prop_major_chpt_test[3]`. 
+
+In regime one, the proportion of major storms is `r plogis(predict(ibtracs_global_results$prop_major_chpt_model)[1])` (CI: `r plogis(predict(ibtracs_global_results$prop_major_chpt_model)[1] - 1.96*predict(ibtracs_global_results$prop_major_chpt_model, se=TRUE)$se.fit[1])`, `r plogis(predict(ibtracs_global_results$prop_major_chpt_model)[1] + 1.96*predict(ibtracs_global_results$prop_major_chpt_model, se=TRUE)$se.fit[1])`) and in regime two, the proportion of major storms is `r plogis(predict(ibtracs_global_results$prop_major_chpt_model)[num_years_ibtracs])` (CI: `r plogis(predict(ibtracs_global_results$prop_major_chpt_model)[num_years_ibtracs] - 1.96*predict(ibtracs_global_results$prop_major_chpt_model, se=TRUE)$se.fit[num_years_ibtracs])`, `r plogis(predict(ibtracs_global_results$prop_major_chpt_model)[num_years_ibtracs] + 1.96*predict(ibtracs_global_results$prop_major_chpt_model, se=TRUE)$se.fit[num_years_ibtracs])`); a change of `r plogis(predict(ibtracs_global_results$prop_major_chpt_model)[num_years_ibtracs]) - plogis(predict(ibtracs_global_results$prop_major_chpt_model)[1])`.
+
+
+
+**Model Assessment**
+
+The ratio of the residual deviance is `r ibtracs_global_results$prop_major_chpt_model$deviance/ibtracs_global_results$prop_major_chpt_model$df.residual`.
+
+The $p$-value for the Ljung-Box test on the deviance residuals `r Box.test(residuals(ibtracs_global_results$prop_major_chpt_model, type="deviance"), lag=ceiling(log(num_years_ibtracs)))$p.value`.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.height=8}
+residual_plots(ibtracs_global_results$prop_major_chpt_model)
+```
+
+
+
+#### Proportion of intense storms
+
+A change in the proportion of intense storms?
+  
+```{r, echo=FALSE}
+ibtracs_global_results$prop_intense_chpt_test
+```
+
+The change in proportions occurs `r 1980+ibtracs_global_results$prop_intense_chpt_test[2]` to `r 1980+ibtracs_global_results$prop_intense_chpt_test[2]+1` with $p$-value `r ibtracs_global_results$prop_intense_chpt_test[3]`.
+
+
+In regime one, the proportion of intense storms is `r plogis(predict(ibtracs_global_results$prop_intense_chpt_model)[1])` (CI: `r plogis(predict(ibtracs_global_results$prop_intense_chpt_model)[1] - 1.96*predict(ibtracs_global_results$prop_intense_chpt_model, se=TRUE)$se.fit[1])`, `r plogis(predict(ibtracs_global_results$prop_intense_chpt_model)[1] + 1.96*predict(ibtracs_global_results$prop_intense_chpt_model, se=TRUE)$se.fit[1])`) and in regime two, the proportion of intense storms is `r plogis(predict(ibtracs_global_results$prop_intense_chpt_model)[num_years_ibtracs])` (CI: `r plogis(predict(ibtracs_global_results$prop_intense_chpt_model)[num_years_ibtracs] - 1.96*predict(ibtracs_global_results$prop_intense_chpt_model, se=TRUE)$se.fit[num_years_ibtracs])`, `r plogis(predict(ibtracs_global_results$prop_intense_chpt_model)[num_years_ibtracs] + 1.96*predict(ibtracs_global_results$prop_intense_chpt_model, se=TRUE)$se.fit[num_years_ibtracs])`); a change of `r plogis(predict(ibtracs_global_results$prop_intense_chpt_model)[num_years_ibtracs]) - plogis(predict(ibtracs_global_results$prop_intense_chpt_model)[1])`.
+
+**Model Assessment**
+
+The ratio of the residual deviance is `r ibtracs_global_results$prop_intense_chpt_model$deviance/ibtracs_global_results$prop_intense_chpt_model$df.residual`.
+
+The $p$-value for the Ljung-Box test on the deviance residuals `r Box.test(residuals(ibtracs_global_results$prop_intense_chpt_model, type="deviance"), lag=ceiling(log(num_years_ibtracs)))$p.value`.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.height=8}
+residual_plots(ibtracs_global_results$prop_intense_chpt_model)
+```
+
+
+
+### Regression Methods
+
+#### Poisson Regression on non-Shorties
+
+```{r, echo=FALSE}
+(ibtracs_global_results$pois_fit)
+drop1(ibtracs_global_results$pois_fit, test="LRT")
+```
+
+
+Using this model, in `r min(ibtracs_global_results$data$SEASON)` we would predict `r predict(ibtracs_global_results$pois_fit, type="response")[1]` storms (CI: `r exp(predict(ibtracs_global_results$pois_fit, type="link")[1]-1.96*predict(ibtracs_global_results$pois_fit, type="link", se.fit=TRUE)$se.fit[1])`, `r exp(predict(ibtracs_global_results$pois_fit, type="link")[1]+1.96*predict(ibtracs_global_results$pois_fit, type="link", se.fit=TRUE)$se.fit[1])`) and in `r max(ibtracs_global_results$data$SEASON)` we predict `r predict(ibtracs_global_results$pois_fit, type="response")[num_years_ibtracs]` storms (CI: `r exp(predict(ibtracs_global_results$pois_fit, type="link")[num_years_ibtracs]-1.96*predict(ibtracs_global_results$pois_fit, type="link", se.fit=TRUE)$se.fit[num_years_ibtracs])`, `r exp(predict(ibtracs_global_results$pois_fit, type="link")[num_years_ibtracs]+1.96*predict(ibtracs_global_results$pois_fit, type="link", se.fit=TRUE)$se.fit[num_years_ibtracs])`).
+
+That is a change of `r (predict(ibtracs_global_results$pois_fit, type="response")[num_years_ibtracs]-predict(ibtracs_global_results$pois_fit, type="response")[1])/num_years_ibtracs*10` storms per decade.
+
+**Model Assessment**
+
+The ratio of the residual deviance is `r ibtracs_global_results$pois_fit$deviance/ibtracs_global_results$pois_fit$df.residual`.
+
+The $p$-value for the Ljung-Box test on the deviance residuals `r Box.test(residuals(ibtracs_global_results$pois_fit, type="deviance"), lag=ceiling(log(num_years_ibtracs)))$p.value`.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.height=8}
+residual_plots(ibtracs_global_results$pois_fit)
+```
+
+
+
+#### Poisson Regression on Hurricanes
+
+```{r, echo=FALSE}
+(ibtracs_global_results$hur_fit)
+drop1(ibtracs_global_results$hur_fit, test="LRT")
+```
+
+Using this model, in `r min(ibtracs_global_results$data$SEASON)` we would predict `r predict(ibtracs_global_results$hur_fit, type="response")[1]` hurricanes (CI: `r exp(predict(ibtracs_global_results$hur_fit, type="link")[1]-1.96*predict(ibtracs_global_results$hur_fit, type="link", se.fit=TRUE)$se.fit[1])`, `r exp(predict(ibtracs_global_results$hur_fit, type="link")[1]+1.96*predict(ibtracs_global_results$hur_fit, type="link", se.fit=TRUE)$se.fit[1])`) and in `r max(ibtracs_global_results$data$SEASON)` we predict `r predict(ibtracs_global_results$hur_fit, type="response")[num_years_ibtracs]` hurricanes (CI: `r exp(predict(ibtracs_global_results$hur_fit, type="link")[num_years_ibtracs]-1.96*predict(ibtracs_global_results$hur_fit, type="link", se.fit=TRUE)$se.fit[num_years_ibtracs])`, `r exp(predict(ibtracs_global_results$hur_fit, type="link")[num_years_ibtracs]+1.96*predict(ibtracs_global_results$hur_fit, type="link", se.fit=TRUE)$se.fit[num_years_ibtracs])`).
+
+That is a change of `r (predict(ibtracs_global_results$hur_fit, type="response")[num_years_ibtracs]-predict(ibtracs_global_results$hur_fit, type="response")[1])/num_years_ibtracs*10` hurricanes per decade.
+
+**Model Assessment**
+
+The ratio of the residual deviance is `r ibtracs_global_results$hur_fit$deviance/ibtracs_global_results$hur_fit$df.residual`.
+
+The $p$-value for the Ljung-Box test on the deviance residuals `r Box.test(residuals(ibtracs_global_results$hur_fit, type="deviance"), lag=ceiling(log(num_years_ibtracs)))$p.value`.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.height=8}
+residual_plots(ibtracs_global_results$hur_fit)
+```
+
+
+
+#### Poisson Regression on Major Storms
+
+```{r, echo=FALSE}
+(ibtracs_global_results$major_fit)
+drop1(ibtracs_global_results$major_fit, test="LRT")
+```
+
+Using this model, in `r min(ibtracs_global_results$data$SEASON)` we would predict `r predict(ibtracs_global_results$major_fit, type="response")[1]` major storms (CI: `r exp(predict(ibtracs_global_results$major_fit, type="link")[1]-1.96*predict(ibtracs_global_results$major_fit, type="link", se.fit=TRUE)$se.fit[1])`, `r exp(predict(ibtracs_global_results$major_fit, type="link")[1]+1.96*predict(ibtracs_global_results$major_fit, type="link", se.fit=TRUE)$se.fit[1])`) and in `r max(ibtracs_global_results$data$SEASON)` we predict `r predict(ibtracs_global_results$major_fit, type="response")[num_years_ibtracs]` major storms (CI: `r exp(predict(ibtracs_global_results$major_fit, type="link")[num_years_ibtracs]-1.96*predict(ibtracs_global_results$major_fit, type="link", se.fit=TRUE)$se.fit[num_years_ibtracs])`, `r exp(predict(ibtracs_global_results$major_fit, type="link")[num_years_ibtracs]+1.96*predict(ibtracs_global_results$major_fit, type="link", se.fit=TRUE)$se.fit[num_years_ibtracs])`).
+
+That is a change of `r (predict(ibtracs_global_results$major_fit, type="response")[num_years_ibtracs]-predict(ibtracs_global_results$major_fit, type="response")[1])/num_years_ibtracs*10` major storms per decade.
+
+**Model Assessment**
+
+The ratio of the residual deviance is `r ibtracs_global_results$major_fit$deviance/ibtracs_global_results$major_fit$df.residual`.
+
+The $p$-value for the Ljung-Box test on the deviance residuals `r Box.test(residuals(ibtracs_global_results$major_fit, type="deviance"), lag=ceiling(log(num_years_ibtracs)))$p.value`.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.height=8}
+residual_plots(ibtracs_global_results$major_fit)
+```
+
+
+
+
+#### Poisson Regression on Intense Storms
+
+```{r, echo=FALSE}
+(ibtracs_global_results$intense_fit)
+drop1(ibtracs_global_results$intense_fit, test="LRT")
+```
+
+
+Using this model, in `r min(ibtracs_global_results$data$SEASON)` we would predict `r predict(ibtracs_global_results$intense_fit, type="response")[1]` intense storms (CI: `r exp(predict(ibtracs_global_results$intense_fit, type="link")[1]-1.96*predict(ibtracs_global_results$intense_fit, type="link", se.fit=TRUE)$se.fit[1])`, `r exp(predict(ibtracs_global_results$intense_fit, type="link")[1]+1.96*predict(ibtracs_global_results$intense_fit, type="link", se.fit=TRUE)$se.fit[1])`) and in `r max(ibtracs_global_results$data$SEASON)` we predict `r predict(ibtracs_global_results$intense_fit, type="response")[num_years_ibtracs]` intense storms (CI: `r exp(predict(ibtracs_global_results$intense_fit, type="link")[num_years_ibtracs]-1.96*predict(ibtracs_global_results$intense_fit, type="link", se.fit=TRUE)$se.fit[num_years_ibtracs])`, `r exp(predict(ibtracs_global_results$intense_fit, type="link")[num_years_ibtracs]+1.96*predict(ibtracs_global_results$intense_fit, type="link", se.fit=TRUE)$se.fit[num_years_ibtracs])`).
+
+That is a change of `r (predict(ibtracs_global_results$intense_fit, type="response")[num_years_ibtracs]-predict(ibtracs_global_results$intense_fit, type="response")[1])/num_years_ibtracs*10` intense storms per decade.
+
+**Model Assessment**
+
+The ratio of the residual deviance is `r ibtracs_global_results$intense_fit$deviance/ibtracs_global_results$intense_fit$df.residual`.
+
+The $p$-value for the Ljung-Box test on the deviance residuals `r Box.test(residuals(ibtracs_global_results$intense_fit, type="deviance"), lag=ceiling(log(num_years_ibtracs)))$p.value`.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.height=8}
+residual_plots(ibtracs_global_results$intense_fit)
+```
+
+
+
+
+#### Logistic Regression on Proportions of Major
+
+```{r, echo=FALSE}
+(ibtracs_global_results$major_logit_fit)
+drop1(ibtracs_global_results$major_logit_fit, test="LRT")
+```
+
+
+
+Using this model, in `r min(ibtracs_global_results$data$SEASON)` the probability of a major storm in  was `r predict(ibtracs_global_results$major_logit_fit, type="response")[1]` (CI: `r plogis(predict(ibtracs_global_results$major_logit_fit, type="link")[1]-1.96*predict(ibtracs_global_results$major_logit_fit, type="link", se=TRUE)$se.fit[1])`, `r plogis(predict(ibtracs_global_results$major_logit_fit, type="link")[1]+1.96*predict(ibtracs_global_results$major_logit_fit, type="link", se=TRUE)$se.fit[1])`)  and in `r max(ibtracs_global_results$data$SEASON)` the probability of a major storm was `r predict(ibtracs_global_results$major_logit_fit, type="response")[num_years_ibtracs]` (CI: `r plogis(predict(ibtracs_global_results$major_logit_fit, type="link")[num_years_ibtracs]-1.96*predict(ibtracs_global_results$major_logit_fit, type="link", se=TRUE)$se.fit[num_years_ibtracs])`, `r plogis(predict(ibtracs_global_results$major_logit_fit, type="link")[num_years_ibtracs]+1.96*predict(ibtracs_global_results$major_logit_fit, type="link", se=TRUE)$se.fit[num_years_ibtracs])`).
+
+That is a change of `r (predict(ibtracs_global_results$major_logit_fit, type="response")[num_years_ibtracs]-predict(ibtracs_global_results$major_logit_fit, type="response")[1])/num_years_ibtracs*10*100` percent per decade.
+
+**Model Assessment**
+
+The ratio of the residual deviance is `r ibtracs_global_results$major_logit_fit$deviance/ibtracs_global_results$major_logit_fit$df.residual`.
+
+The $p$-value for the Ljung-Box test on the deviance residuals `r Box.test(residuals(ibtracs_global_results$major_logit_fit, type="deviance"), lag=ceiling(log(num_years_ibtracs)))$p.value`.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.height=8}
+residual_plots(ibtracs_global_results$major_logit_fit)
+```
+
+
+
+
+#### Logistic Regression on Proportions of Intense
+
+```{r, echo=FALSE}
+(ibtracs_global_results$intense_logit_fit)
+drop1(ibtracs_global_results$intense_logit_fit, test="LRT")
+```
+
+
+
+Using this model, in `r min(ibtracs_global_results$data$SEASON)` the probability of a major storm in  was `r predict(ibtracs_global_results$intense_logit_fit, type="response")[1]` (CI: `r plogis(predict(ibtracs_global_results$intense_logit_fit, type="link")[1]-1.96*predict(ibtracs_global_results$intense_logit_fit, type="link", se=TRUE)$se.fit[1])`, `r plogis(predict(ibtracs_global_results$intense_logit_fit, type="link")[1]+1.96*predict(ibtracs_global_results$intense_logit_fit, type="link", se=TRUE)$se.fit[1])`)  and in `r max(ibtracs_global_results$data$SEASON)` the probability of a major storm was `r predict(ibtracs_global_results$intense_logit_fit, type="response")[num_years_ibtracs]` (CI: `r plogis(predict(ibtracs_global_results$intense_logit_fit, type="link")[num_years_ibtracs]-1.96*predict(ibtracs_global_results$intense_logit_fit, type="link", se=TRUE)$se.fit[num_years_ibtracs])`, `r plogis(predict(ibtracs_global_results$intense_logit_fit, type="link")[num_years_ibtracs]+1.96*predict(ibtracs_global_results$intense_logit_fit, type="link", se=TRUE)$se.fit[num_years_ibtracs])`).
+
+
+
+That is a change of `r (predict(ibtracs_global_results$intense_logit_fit, type="response")[num_years_ibtracs]-predict(ibtracs_global_results$intense_logit_fit, type="response")[1])/num_years_ibtracs*10*100` percent per decade.
+
+
+**Model Assessment**
+
+The ratio of the residual deviance is `r ibtracs_global_results$intense_logit_fit$deviance/ibtracs_global_results$intense_logit_fit$df.residual`.
+
+The $p$-value for the Ljung-Box test on the deviance residuals `r Box.test(residuals(ibtracs_global_results$intense_logit_fit, type="deviance"), lag=ceiling(log(num_years_ibtracs)))$p.value`.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE, fig.height=8}
+residual_plots(ibtracs_global_results$intense_logit_fit)
+```
+
+
+
+
+
 

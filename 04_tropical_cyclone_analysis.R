@@ -54,19 +54,14 @@ hursat_all_basins <- hursat_non_shorty_for_props |>
 num_years_ibtracs <- length(unique(ibtracs_non_shorty_for_props$SEASON))
 num_years_hursat <- length(unique(hursat_non_shorty_for_props$SEASON) )
 
-## Trimmed version of IBTrACs matching HURSAT years
-##   We do not include these results since the
-##   two sources now mostly overlap
-##   but the code is here for legacy purposes.
-ibtracs_trimmed_all_basins <- ibtracs_all_basins |>
-  dplyr::filter(SEASON %in% unique(hursat_all_basins$SEASON) )
+
 
 
 #########################################################################
 #########################################################################
 ## Main analysis function
 ##
-## Specify a Basin and dataset (IBTracs vs HURSAT vs Trimmed IBTracs)
+## Specify a Basin and dataset (IBTrACS or HURSAT)
 ## All statistical models are put together
 ##    and provided in a named list.
 #########################################################################
@@ -135,11 +130,38 @@ get_report_basin <- function(basin="Global", all_basins=ibtracs_all_basins) {
   
   pois_chpt_test <- scusumTestPoisson(storm_basin$Total_Storms)
   
+  x <- factor(findInterval(1:dim(storm_basin)[1], pois_chpt_test[2]+1) )
+  pois_chpt_model <- glm(storm_basin$Total_Storms ~ x, family=poisson(link="log"))
+  pois_null_model <- glm(storm_basin$Total_Storms ~ 1, family=poisson(link="log"))
+
+  
+  
   hur_chpt_test <- scusumTestPoisson(storm_basin$Hurricanes)
+  
+  x <- factor(findInterval(1:dim(storm_basin)[1], hur_chpt_test[2]+1) )
+  hur_chpt_model <- glm(storm_basin$Hurricanes ~ x, family=poisson(link="log"))
+  hur_null_model <- glm(storm_basin$Hurricanes ~ 1, family=poisson(link="log"))
+  
+  
+  
   
   major_pois_chpt_test <- scusumTestPoisson(storm_basin$Major_Storms)
   
+
+    x <- factor(findInterval(1:dim(storm_basin)[1], major_pois_chpt_test[2]+1) )
+    major_pois_chpt_model <- glm(storm_basin$Major_Storms ~ x, family=poisson(link="log"))
+    major_pois_null_model <- glm(storm_basin$Major_Storms ~ 1, family=poisson(link="log"))
+
+  
+  
+  
   intense_pois_chpt_test <- scusumTestPoisson(storm_basin$Intense_Storms)
+  
+    x <- factor(findInterval(1:dim(storm_basin)[1], intense_pois_chpt_test[2]+1) )
+    intense_pois_chpt_model <- glm(storm_basin$Intense_Storms ~ x, family=poisson(link="log"))
+    intense_pois_null_model <- glm(storm_basin$Intense_Storms ~ 1, family=poisson(link="log"))
+  
+  
   
   ## Logistic Regression on Proportion of Hurricanes,
   ##    Major and Proportion of Intense
@@ -166,9 +188,33 @@ get_report_basin <- function(basin="Global", all_basins=ibtracs_all_basins) {
   
   prop_hurr_chpt_test <- scusumTestProportion(cbind(prop_data$Hurricanes, prop_data$Total_Storms) )
   
+  
+    x <- factor(findInterval(1:dim(storm_basin)[1], prop_hurr_chpt_test[2]+1) )
+    prop_hurr_chpt_model <- glm(cbind(prop_data$Hurricanes, prop_data$Non_Hurricane) ~ x, family=binomial(link="logit"))
+    prop_hurr_null_model <- glm(cbind(prop_data$Hurricanes, prop_data$Non_Hurricane) ~ 1, family=binomial(link="logit"))
+  
+  
+  
+  
   prop_major_chpt_test <- scusumTestProportion(cbind(prop_data$Major_Storms, prop_data$Total_Storms) )
   
+
+    x <- factor(findInterval(1:dim(storm_basin)[1], prop_major_chpt_test[2]+1) )
+    prop_major_chpt_model <- glm(cbind(prop_data$Major_Storms, prop_data$Non_Major) ~ x, family=binomial(link="logit"))
+
+    prop_major_null_model <- glm(cbind(prop_data$Major_Storms, prop_data$Non_Major) ~ 1, family=binomial(link="logit"))
+
+  
+  
+  
   prop_intense_chpt_test <- scusumTestProportion(cbind(prop_data$Intense_Storms, prop_data$Total_Storms) )
+  
+    x <- factor(findInterval(1:dim(storm_basin)[1], prop_intense_chpt_test[2]+1) )
+    prop_intense_chpt_model <- glm(cbind(prop_data$Intense_Storms, prop_data$Non_Intense) ~ x, family=binomial(link="logit"))
+
+    prop_intense_null_model <- glm(cbind(prop_data$Intense_Storms, prop_data$Non_Intense) ~ 1, family=binomial(link="logit"))
+
+  
   
   ## Output all results in a useful list
   
@@ -193,6 +239,20 @@ get_report_basin <- function(basin="Global", all_basins=ibtracs_all_basins) {
        prop_major_chpt_test = prop_major_chpt_test,
        prop_intense_chpt_test = prop_intense_chpt_test,
        
+       pois_chpt_model = pois_chpt_model,
+       hur_chpt_model = hur_chpt_model,
+       major_pois_chpt_model = major_pois_chpt_model,
+       intense_pois_chpt_model = intense_pois_chpt_model,
+       prop_major_chpt_model = prop_major_chpt_model,
+       prop_intense_chpt_model = prop_intense_chpt_model,
+       
+       pois_null_model = pois_null_model,
+       hur_null_model = hur_null_model,
+       major_pois_null_model = major_pois_null_model,
+       intense_pois_null_model = intense_pois_null_model,
+       prop_major_null_model = prop_major_null_model,
+       prop_intense_null_model = prop_intense_null_model,
+       
        plot_data = plot_data,
        
        data=storm_basin)
@@ -206,31 +266,24 @@ get_report_basin <- function(basin="Global", all_basins=ibtracs_all_basins) {
 
 ibtracs_global_results <- get_report_basin(basin="Global", all_basins=ibtracs_all_basins)
 hursat_global_results <- get_report_basin(basin="Global", all_basins=hursat_all_basins)
-ibtracs_trimmed_global_results <- get_report_basin(basin="Global", all_basins=ibtracs_trimmed_all_basins)
 
 ibtracs_na_results <- get_report_basin(basin="North Atlantic", all_basins=ibtracs_all_basins)
 hursat_na_results <- get_report_basin(basin="North Atlantic", all_basins=hursat_all_basins)
-ibtracs_trimmed_na_results <- get_report_basin(basin="North Atlantic", all_basins=ibtracs_trimmed_all_basins)
 
 ibtracs_ep_results <- get_report_basin(basin="Eastern North Pacific", all_basins=ibtracs_all_basins)
 hursat_ep_results <- get_report_basin(basin="Eastern North Pacific", all_basins=hursat_all_basins)
-ibtracs_trimmed_ep_results <- get_report_basin(basin="Eastern North Pacific", all_basins=ibtracs_trimmed_all_basins)
 
 ibtracs_wp_results <- get_report_basin(basin="Western North Pacific", all_basins=ibtracs_all_basins)
 hursat_wp_results <- get_report_basin(basin="Western North Pacific", all_basins=hursat_all_basins)
-ibtracs_trimmed_wp_results <- get_report_basin(basin="Western North Pacific", all_basins=ibtracs_trimmed_all_basins)
 
 ibtracs_ni_results <- get_report_basin(basin="Northern Indian", all_basins=ibtracs_all_basins)
 hursat_ni_results <- get_report_basin(basin="Northern Indian", all_basins=hursat_all_basins)
-ibtracs_trimmed_ni_results <- get_report_basin(basin="Northern Indian", all_basins=ibtracs_trimmed_all_basins)
 
 ibtracs_si_results <- get_report_basin(basin="Southern Indian", all_basins=ibtracs_all_basins)
 hursat_si_results <- get_report_basin(basin="Southern Indian", all_basins=hursat_all_basins)
-ibtracs_trimmed_si_results <- get_report_basin(basin="Southern Indian", all_basins=ibtracs_trimmed_all_basins)
 
 ibtracs_sp_results <- get_report_basin(basin="Southern Pacific", all_basins=ibtracs_all_basins)
 hursat_sp_results <- get_report_basin(basin="Southern Pacific", all_basins=hursat_all_basins)
-ibtracs_trimmed_sp_results <- get_report_basin(basin="Southern Pacific", all_basins=ibtracs_trimmed_all_basins)
 
 
 
@@ -242,10 +295,7 @@ save(hursat_global_results, hursat_na_results, hursat_ep_results,
      hursat_wp_results, hursat_ni_results, hursat_si_results, hursat_sp_results,
      num_years_hursat,
      file="./data/results_hursat.RData")
-save(ibtracs_trimmed_global_results, ibtracs_trimmed_na_results, ibtracs_trimmed_ep_results,
-     ibtracs_trimmed_wp_results, ibtracs_trimmed_ni_results, ibtracs_trimmed_si_results, ibtracs_trimmed_sp_results,
-     num_years_hursat,
-     file="./data/results_trimmed.RData")
+
 
 
 

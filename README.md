@@ -24,12 +24,14 @@ Statistical Analysis of Tropical Cyclone Record:
 * `03_ibtracs_v_hursat.qmd` - Code to generate a short report comparing IBTrACS to HURSAT-ADT.
 * `05_report_tropical_cyclone_analysis.qmd` - The main file that builds the "report" (a Quarto rendered website).
    + `report_analysis_code` - a folder containing the `qmd` files for each of the six basins and global record.
-* `05_report_tropical_cyclone_anlysis.html` - The rendered HTML file of the report.
-* `06_quick_updated_results.qmd` - a file that generates tables that summarize the key findings.
-   + `06_quick_updated_results.html` - rendered HTML of the summary.
+* `05_report_tropical_cyclone_anlysis.html` - The rendered HTML file of the report with the full analysis.
+* `06_quick_results_tabls.qmd` - a file that generates tables that summarize the key findings.
+   + `06_quick_results_tabls.html` - rendered HTML of the summary.
 * `07_results_ibtracs_plots.R` - R code that will make plots with significant changepoint segmentation for IBTrACS data.
 * `08_results_hursat_plots.R` - R code that will plots with significant changepoints segmentation for HURSAT data.
+* `09_compare_hursat_ibtracs_plot.R` - R code that builds a plot comparing the distribution of maximum windspeeds in the IBTrACS dataset vs the ADT-HURSAT data. 
    + `plots` - a folder with the generated plots showing the change point segmentation.
+
 
 Simulation Study Code:
 

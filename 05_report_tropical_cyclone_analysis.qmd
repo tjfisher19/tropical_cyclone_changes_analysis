@@ -16,9 +16,11 @@ bibliography: sn-bibliography.bib
 
 ```{r, include=FALSE}
 library(tidyverse)
+library(patchwork)
+library(ggfortify)
+library(forecast)
 load("./data/results_ibtracs.RData")
 load("./data/results_hursat.RData")
-load("./data/results_trimmed.RData")
 ```
 
 # Methods
@@ -41,9 +43,9 @@ $$Count = \exp(\beta_0 + \beta_1\times Year) = \exp(\beta_0)\times \exp(\beta_1\
 
 So for the Poisson based method, all the effects we find are multiplicative.
 
-It is worth noting that the Poisson regression is arguably more reliable than standard linear regression (particularly in the six basins) since we are working with moderately small counts. Inference is done using a Likelihood Ratio test on the $\beta$ coefficient using the `drop1()` function in R.
+It is worth noting that the Poisson regression is arguably more reliable than standard linear regression (particularly in the six basins) since we are working with moderately small counts. Inference is done using a Likelihood Ratio test on the $\beta$ coefficient using the `drop1()` function in R. Some residual diagnostics are provided for each fitted model.
 
-I also report values from the predictions based on these models. This provides some context of what the model is suggesting. We use the prediction at the first and last time points to find an *overall trend*, that trend is then scaled to the #/decade level for easier interpretation.
+I also report values from the predictions based on these models (confidence intervals are provided for these predictions). This provides some context of what the model is suggesting. We use the prediction at the first and last time points to find an *overall trend*, that trend is then scaled to the #/decade level for easier interpretation. 
 
 ### For Proportions
 
@@ -53,11 +55,11 @@ $$\log\left(\frac{p}{1-p}\right) = \beta_0 + \beta_1\times Year$$
 
 So again, when interpreting we need to transform back to the original units. It is worth noting that the associated hypothesis test for this regression must be interpreted in terms of log-odds. It is also worth noting that when performing this logistic regression we are implicitly assuming that the process controlling the total counts of storms, is not changing.
 
-Again, a likelihood ratio test is used for significance of the $\beta_1$ coefficient. We provide predicted probability values at the first and last time point, and from those values find an *overall trend* (%/decade).
+Again, a likelihood ratio test is used for significance of the $\beta_1$ coefficient. We provide predicted probability values at the first and last time point (with confidence intervals), and from those values find an *overall trend* (%/decade). Residual diagnostics are also provided.
 
 ## Changepoint Approaches
 
-The regression approaches assume a fairly restrictive structure -- we are assuming some underlying linear model. That is, any changes we see in the record are following some underlying linear trend. In the changepoint approach, we are simply looking for shifts in the mean of the process.
+The regression approaches assume a fairly restrictive structure -- we are assuming some underlying linear model. That is, any changes we see in the record are following some underlying linear trend. In the changepoint approach, we are simply looking for shifts in the mean of the process. **Our primary results are based on the changepoint methods.**
 
 At some level, both methods look for changes, or non-homegenieties, in the data, but the changepoint approach doesn't require that linearity assumption.
 
@@ -77,48 +79,83 @@ For the cyclone count series, we are assuming each observation, $X_t$, is a Pois
 
 When working with the proportion of major (or intense) storms, we perform a CUSUM comparison on $\hat{p}_t$, the observed proportion of major (or intense) storms at time $t$. Let $Y_t$ be the number of major (or intense) storms in year $t$ and $X_t$ is the total number of storms in that year. Based on the Poisson-Binomial likelihood arguments we calculate $$\hat{p}_t = Y_t/X_t.$$ The $\mbox{CUSUM}(k)$ statistic is calculated on the $\hat{p}_t$ terms as $$\mbox{CUSUM}(k)= \frac{1}{\hat{\sigma} \sqrt{n}}\left[ \sum_{t=1}^k  \hat{p}_t - \frac{k}{n} \sum_{t=1}^{n} \hat{p}_t \right].$$ The standard deviation estimation in this case is unwieldy but can be found through conditional expectation arguments: $$\mbox{Var}(\hat{p}_t) = E\left[\mbox{Var}(\hat{p}_t | X_t)\right] + \mbox{Var}\left( E[\hat{p}_t|X_t]\right).$$ Detailed derivation reveals $$\mbox{Var}(\hat{p}_t) = p^2e^{-\lambda}(1-e^{-\lambda}) + p(1-p)\sum_{k=1}^\infty \frac{e^{-\lambda}\lambda^k}{k(k!)}.$$ We estimate this variance by using $$\hat{p} = \frac{\sum_{t=1}^n Y_t}{\sum_{t=1}^n X_t}~~~~~\mbox{and}~~~~~\hat{\lambda}=\bar{X} = \frac{1}{n}\sum_{t=1}^n X_t$$ in place of $p$ and $\lambda$ respectively. In practice, the term $e^{-\lambda}$ is small for large values of lambda, so the $p^2e^{-\lambda}(1-e^{-\lambda})$ terms goes to zero. The infinite summation is $E\left[\frac{1}{X}1_{X>0}\right]$ and is approximately equal to $1/\lambda$ for large values of $\lambda$. More importantly for our application, the sequence in the summation converges to zero fairly quickly, so the series can be well-approximated by replacing $\infty$ with a finite number.
 
+### Modeling with Changepoints
+
+Ultimately, a single changepoint model can be considered a special case of a generalized linear model. For example, suppose the method found a changepoint at time $c$ for tropical cyclone counts, we can build a model using a generalized linear regression with 
+$$\log(Count) = \beta_0 + \beta_1\times I(t>c)$$
+where $I(t>c)$ is an indicator function determining if the time point $t$ is greater than the changepoint location. In this parameterization, $\beta_1$ essentially determines the shift in the Poisson rate. After determining the changepoint time, we fit this model to easily extract predictions for the mean in each regime and to build rudimentary confidence intervals around those estimates. This also allows us to perform some model assessment through GLM diagnostics.
+
+In a similar way, we do the same modeling with logistic regression for the proportion of major and intense storms. It is important to note these models are built after determining the changepoint location using the appropriate CUSUM statistic. Additional hypothesis testing should not be performed using these models. We use these fitted models for some follow-up procedures and are not the primary testing mechanism.
+
+```{r, echo=FALSE}
+##############################
+## A function to extract all
+##   residual plots provided
+residual_plots <- function(fit) {
+  if(length(hatvalues(fit)) != length(fitted.values(fit) ) ) {
+    mat <- fit$model[which(fit$weights!=0),]
+    names(mat) <- c("successfailure", "x")
+    new_fit <- glm(successfailure ~ x, family=family(fit), data=mat)
+    res_plots <- autoplot(new_fit, which=c(1,2,3,5,4,6) )
+  } else {
+    res_plots <- autoplot(fit, which=c(1,2,3,5,4,6))
+  }
+  
+  df <- data.frame(y=residuals(fit, type="deviance") ) |>
+    mutate(x=row_number() )
+  p1 <- ggplot(df, aes(x=x,y=y)) + geom_line() + geom_point() + labs(x="Time Order", y="Deviance Residuals", title="Residuals in Time")
+  p2 <- ggAcf(df$y) + labs(title="Series: Deviance Residuals")
+  (res_plots[[1]] | res_plots[[2]]) /
+    (res_plots[[3]] | res_plots[[4]]) /
+    (res_plots[[5]] | res_plots[[6]]) /
+    (p1 | p2)
+}
+```
+
+
+
 # Global Cyclone Record
 
-We begin with a study of the record across the entire globe -- the Global "basin". Our analysis looks at all non-shorties (storms that lasted at least 48 hours) and achieved tropical storm strength. We also look at those storms that achieved major hurricane strength.
+We begin with a study of the record across the entire globe -- the Global "basin". Our analysis looks at all non-shorties (storms that lasted at least 72 hours) and achieved tropical storm strength. We also look at those storms that achieved major hurricane strength.
 
-{{< include ./report_analysis_code/cyclone_report_global_ibtracs.qmd >}} 
+{{< include ./report_analysis_code/cyclone_report_global_ibtracs.qmd >}}
 
 {{< include ./report_analysis_code/cyclone_report_global_hursat.qmd >}}
 
 # North Atlantic
 
-{{< include ./report_analysis_code/cyclone_report_north_atlantic_ibtracs.qmd >}} 
+{{< include ./report_analysis_code/cyclone_report_na_ibtracs.qmd >}}
 
-{{< include ./report_analysis_code/cyclone_report_north_atlantic_hursat.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_na_hursat.qmd >}}
 
 # Eastern North Pacific
 
-{{< include ./report_analysis_code/cyclone_report_eastern_pacific_ibtracs.qmd >}} 
+{{< include ./report_analysis_code/cyclone_report_ep_ibtracs.qmd >}}
 
-{{< include ./report_analysis_code/cyclone_report_eastern_pacific_hursat.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_ep_hursat.qmd >}}
 
 # Western North Pacific
 
-{{< include ./report_analysis_code/cyclone_report_western_pacific_ibtracs.qmd >}} 
+{{< include ./report_analysis_code/cyclone_report_wp_ibtracs.qmd >}}
 
-{{< include ./report_analysis_code/cyclone_report_western_pacific_hursat.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_wp_hursat.qmd >}}
 
 # North Indian
 
-{{< include ./report_analysis_code/cyclone_report_north_indian_ibtracs.qmd >}} 
+{{< include ./report_analysis_code/cyclone_report_ni_ibtracs.qmd >}}
 
-{{< include ./report_analysis_code/cyclone_report_north_indian_hursat.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_ni_hursat.qmd >}}
 
 # South Indian
 
-{{< include ./report_analysis_code/cyclone_report_southern_indian_ibtracs.qmd >}} 
+{{< include ./report_analysis_code/cyclone_report_si_ibtracs.qmd >}}
 
-{{< include ./report_analysis_code/cyclone_report_southern_indian_hursat.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_si_hursat.qmd >}}
 
 # South Pacific
 
-{{< include ./report_analysis_code/cyclone_report_southern_pacific_ibtracs.qmd >}} 
+{{< include ./report_analysis_code/cyclone_report_sp_ibtracs.qmd >}}
 
-{{< include ./report_analysis_code/cyclone_report_southern_pacific_hursat.qmd >}}
+{{< include ./report_analysis_code/cyclone_report_sp_hursat.qmd >}}
 
 # References
