@@ -434,7 +434,69 @@ hursat_summary <- bind_rows(
   hursat_si_results$summary_stat,
   hursat_sp_results$summary_stat)
 
+
+
+
+big_confint_table <- function(basin_result) {
+  num_years <- length(unique(basin_result$data$SEASON))
+  confint_table <- function(conf.level=2/3) {
+    df <- as.data.frame(
+      rbind(confint(basin_result$pois_fit, level=conf.level)[2,],
+            confint(basin_result$hur_fit, level=conf.level)[2,],
+            confint(basin_result$major_fit, level=conf.level)[2,],
+            confint(basin_result$major_logit_fit, level=conf.level)[2,],
+            confint(basin_result$intense_fit, level=conf.level)[2,],
+            confint(basin_result$intense_logit_fit, level=conf.level)[2,] ) )
+    names(df) <- c(paste0("lo", round(conf.level,2)), paste0("hi", round(conf.level,2)) )
+    df
+  }
+  bind_cols(confint_table(conf.level=2/3),
+            confint_table(conf.level=0.90),
+            confint_table(conf.level=0.95),
+            confint_table(conf.level=0.99)) |>
+    mutate(Response = c("Cyclone Freq", "Hurricanes", "Major Freq", "Prop Major", "Intense Freq", "Prop Intense"))
+  
+    
+}
+
+ibtracs_confint <- bind_rows(
+  big_confint_table(ibtracs_global_results) |>
+    mutate(Basin = "Global"),
+  big_confint_table(ibtracs_na_results) |>
+    mutate(Basin = "North Atlantic"),
+  big_confint_table(ibtracs_ep_results) |>
+    mutate(Basin = "Eastern North Pacific"),
+  big_confint_table(ibtracs_wp_results) |>
+    mutate(Basin = "Western North Pacific"),
+  big_confint_table(ibtracs_ni_results) |>
+    mutate(Basin = "Northern Indian"),
+  big_confint_table(ibtracs_si_results) |>
+    mutate(Basin = "Southern Indian"),
+  big_confint_table(ibtracs_sp_results) |>
+    mutate(Basin = "Southern Pacific")
+)
+
+
+hursat_confint <- bind_rows(
+  big_confint_table(hursat_global_results) |>
+    mutate(Basin = "Global"),
+  big_confint_table(hursat_na_results) |>
+    mutate(Basin = "North Atlantic"),
+  big_confint_table(hursat_ep_results) |>
+    mutate(Basin = "Eastern North Pacific"),
+  big_confint_table(hursat_wp_results) |>
+    mutate(Basin = "Western North Pacific"),
+  big_confint_table(hursat_ni_results) |>
+    mutate(Basin = "Northern Indian"),
+  big_confint_table(hursat_si_results) |>
+    mutate(Basin = "Southern Indian"),
+  big_confint_table(hursat_sp_results) |>
+    mutate(Basin = "Southern Pacific")
+)
+
+
 save(ibtracs_key_results, hursat_key_results,
      ibtracs_summary, hursat_summary,
+     ibtracs_confint, hursat_confint,
      file="./data/results_overview.RData")
 

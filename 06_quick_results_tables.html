@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Tom Fisher">
-<meta name="dcterms.date" content="2026-07-09">
+<meta name="dcterms.date" content="2026-10-09">
 
 <title>Key Results</title>
 <style>
@@ -2300,6 +2300,11 @@ window.Quarto = {
   <li><a href="#ibtracs-2" id="toc-ibtracs-2" class="nav-link" data-scroll-target="#ibtracs-2">IBTrACS</a></li>
   <li><a href="#hursat-2" id="toc-hursat-2" class="nav-link" data-scroll-target="#hursat-2">HURSAT</a></li>
   </ul></li>
+  <li><a href="#confidence-intervals" id="toc-confidence-intervals" class="nav-link" data-scroll-target="#confidence-intervals">Confidence Intervals</a>
+  <ul class="collapse">
+  <li><a href="#ibtracs-3" id="toc-ibtracs-3" class="nav-link" data-scroll-target="#ibtracs-3">IBTrACS</a></li>
+  <li><a href="#hursat-3" id="toc-hursat-3" class="nav-link" data-scroll-target="#hursat-3">HURSAT</a></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -2327,7 +2332,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 9, 2026</p>
+      <p class="date">October 9, 2026</p>
     </div>
   </div>
   
@@ -2908,6 +2913,742 @@ window.Quarto = {
 <td style="text-align: left;">Change 2.7285 per decade. p-val=0.2378 (FDR: 0.3444)</td>
 <td style="text-align: left;">Change -0.1102 per decade. p-val=0.4413 (FDR: 0.5296)</td>
 <td style="text-align: left;">Change 4.017 per decade. p-val=0.0593 (FDR: 0.1364)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section id="confidence-intervals" class="level2">
+<h2 class="anchored" data-anchor-id="confidence-intervals">Confidence Intervals</h2>
+<p>Here, we report confidence intervals on the Poisson and Logistic regression trend coefficients.</p>
+<section id="ibtracs-3" class="level3">
+<h3 class="anchored" data-anchor-id="ibtracs-3">IBTrACS</h3>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Confidence Intervals of Differences of Point Estimates at different levels, Second Regime - First Regime</caption>
+<colgroup>
+<col style="width: 20%">
+<col style="width: 11%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Basin</th>
+<th style="text-align: left;">Response</th>
+<th style="text-align: left;">CI67</th>
+<th style="text-align: left;">CI90</th>
+<th style="text-align: left;">CI95</th>
+<th style="text-align: left;">CI99</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Global</td>
+<td style="text-align: left;">Cyclone Freq</td>
+<td style="text-align: left;">(-0.0032, -3e-04)</td>
+<td style="text-align: left;">(-0.0043, 7e-04)</td>
+<td style="text-align: left;">(-0.0047, 0.0012)</td>
+<td style="text-align: left;">(-0.0057, 0.0021)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Global</td>
+<td style="text-align: left;">Hurricanes</td>
+<td style="text-align: left;">(-0.0034, -1e-04)</td>
+<td style="text-align: left;">(-0.0045, 0.001)</td>
+<td style="text-align: left;">(-0.0051, 0.0015)</td>
+<td style="text-align: left;">(-0.0061, 0.0026)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Global</td>
+<td style="text-align: left;">Major Freq</td>
+<td style="text-align: left;">(0.0017, 0.0062)</td>
+<td style="text-align: left;">(2e-04, 0.0077)</td>
+<td style="text-align: left;">(-5e-04, 0.0085)</td>
+<td style="text-align: left;">(-0.002, 0.0099)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Global</td>
+<td style="text-align: left;">Prop Major</td>
+<td style="text-align: left;">(0.0071, 0.013)</td>
+<td style="text-align: left;">(0.0051, 0.0151)</td>
+<td style="text-align: left;">(0.0041, 0.0161)</td>
+<td style="text-align: left;">(0.0022, 0.018)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Global</td>
+<td style="text-align: left;">Intense Freq</td>
+<td style="text-align: left;">(0.0089, 0.0143)</td>
+<td style="text-align: left;">(0.007, 0.0161)</td>
+<td style="text-align: left;">(0.0061, 0.017)</td>
+<td style="text-align: left;">(0.0045, 0.0187)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Global</td>
+<td style="text-align: left;">Prop Intense</td>
+<td style="text-align: left;">(0.0159, 0.0224)</td>
+<td style="text-align: left;">(0.0137, 0.0246)</td>
+<td style="text-align: left;">(0.0126, 0.0257)</td>
+<td style="text-align: left;">(0.0106, 0.0277)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">North Atlantic</td>
+<td style="text-align: left;">Cyclone Freq</td>
+<td style="text-align: left;">(0.0153, 0.0227)</td>
+<td style="text-align: left;">(0.0127, 0.0254)</td>
+<td style="text-align: left;">(0.0114, 0.0266)</td>
+<td style="text-align: left;">(0.0091, 0.029)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">North Atlantic</td>
+<td style="text-align: left;">Hurricanes</td>
+<td style="text-align: left;">(0.0096, 0.0182)</td>
+<td style="text-align: left;">(0.0066, 0.0213)</td>
+<td style="text-align: left;">(0.0052, 0.0227)</td>
+<td style="text-align: left;">(0.0024, 0.0255)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">North Atlantic</td>
+<td style="text-align: left;">Major Freq</td>
+<td style="text-align: left;">(0.0131, 0.026)</td>
+<td style="text-align: left;">(0.0086, 0.0306)</td>
+<td style="text-align: left;">(0.0066, 0.0327)</td>
+<td style="text-align: left;">(0.0025, 0.0369)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">North Atlantic</td>
+<td style="text-align: left;">Prop Major</td>
+<td style="text-align: left;">(-0.0072, 0.0089)</td>
+<td style="text-align: left;">(-0.0128, 0.0146)</td>
+<td style="text-align: left;">(-0.0154, 0.0172)</td>
+<td style="text-align: left;">(-0.0205, 0.0224)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">North Atlantic</td>
+<td style="text-align: left;">Intense Freq</td>
+<td style="text-align: left;">(0.0191, 0.0356)</td>
+<td style="text-align: left;">(0.0134, 0.0416)</td>
+<td style="text-align: left;">(0.0108, 0.0443)</td>
+<td style="text-align: left;">(0.0057, 0.0498)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">North Atlantic</td>
+<td style="text-align: left;">Prop Intense</td>
+<td style="text-align: left;">(0.0015, 0.0204)</td>
+<td style="text-align: left;">(-0.005, 0.0272)</td>
+<td style="text-align: left;">(-0.008, 0.0304)</td>
+<td style="text-align: left;">(-0.0139, 0.0366)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Eastern North Pacific</td>
+<td style="text-align: left;">Cyclone Freq</td>
+<td style="text-align: left;">(-0.0065, 2e-04)</td>
+<td style="text-align: left;">(-0.0088, 0.0025)</td>
+<td style="text-align: left;">(-0.0099, 0.0036)</td>
+<td style="text-align: left;">(-0.012, 0.0057)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Eastern North Pacific</td>
+<td style="text-align: left;">Hurricanes</td>
+<td style="text-align: left;">(-0.0092, -0.0018)</td>
+<td style="text-align: left;">(-0.0118, 8e-04)</td>
+<td style="text-align: left;">(-0.013, 0.002)</td>
+<td style="text-align: left;">(-0.0154, 0.0043)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Eastern North Pacific</td>
+<td style="text-align: left;">Major Freq</td>
+<td style="text-align: left;">(-0.0069, 0.0032)</td>
+<td style="text-align: left;">(-0.0104, 0.0067)</td>
+<td style="text-align: left;">(-0.0121, 0.0084)</td>
+<td style="text-align: left;">(-0.0153, 0.0116)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Eastern North Pacific</td>
+<td style="text-align: left;">Prop Major</td>
+<td style="text-align: left;">(-0.0044, 0.0086)</td>
+<td style="text-align: left;">(-0.0089, 0.0131)</td>
+<td style="text-align: left;">(-0.011, 0.0152)</td>
+<td style="text-align: left;">(-0.0152, 0.0194)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Eastern North Pacific</td>
+<td style="text-align: left;">Intense Freq</td>
+<td style="text-align: left;">(0.0035, 0.0157)</td>
+<td style="text-align: left;">(-7e-04, 0.02)</td>
+<td style="text-align: left;">(-0.0027, 0.022)</td>
+<td style="text-align: left;">(-0.0065, 0.0259)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Eastern North Pacific</td>
+<td style="text-align: left;">Prop Intense</td>
+<td style="text-align: left;">(0.01, 0.0241)</td>
+<td style="text-align: left;">(0.0051, 0.0291)</td>
+<td style="text-align: left;">(0.0028, 0.0315)</td>
+<td style="text-align: left;">(-0.0016, 0.0361)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Western North Pacific</td>
+<td style="text-align: left;">Cyclone Freq</td>
+<td style="text-align: left;">(-0.0103, -0.0052)</td>
+<td style="text-align: left;">(-0.0121, -0.0034)</td>
+<td style="text-align: left;">(-0.0129, -0.0026)</td>
+<td style="text-align: left;">(-0.0146, -0.001)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Western North Pacific</td>
+<td style="text-align: left;">Hurricanes</td>
+<td style="text-align: left;">(-0.0103, -0.0047)</td>
+<td style="text-align: left;">(-0.0123, -0.0028)</td>
+<td style="text-align: left;">(-0.0132, -0.0019)</td>
+<td style="text-align: left;">(-0.015, -1e-04)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Western North Pacific</td>
+<td style="text-align: left;">Major Freq</td>
+<td style="text-align: left;">(-0.0058, 0.0015)</td>
+<td style="text-align: left;">(-0.0084, 0.004)</td>
+<td style="text-align: left;">(-0.0096, 0.0052)</td>
+<td style="text-align: left;">(-0.0119, 0.0075)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Western North Pacific</td>
+<td style="text-align: left;">Prop Major</td>
+<td style="text-align: left;">(0.0061, 0.0166)</td>
+<td style="text-align: left;">(0.0025, 0.0203)</td>
+<td style="text-align: left;">(8e-04, 0.022)</td>
+<td style="text-align: left;">(-0.0026, 0.0254)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Western North Pacific</td>
+<td style="text-align: left;">Intense Freq</td>
+<td style="text-align: left;">(-9e-04, 0.0074)</td>
+<td style="text-align: left;">(-0.0038, 0.0103)</td>
+<td style="text-align: left;">(-0.0052, 0.0116)</td>
+<td style="text-align: left;">(-0.0078, 0.0143)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Western North Pacific</td>
+<td style="text-align: left;">Prop Intense</td>
+<td style="text-align: left;">(0.0132, 0.024)</td>
+<td style="text-align: left;">(0.0094, 0.0278)</td>
+<td style="text-align: left;">(0.0076, 0.0296)</td>
+<td style="text-align: left;">(0.0042, 0.0331)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Northern Indian</td>
+<td style="text-align: left;">Cyclone Freq</td>
+<td style="text-align: left;">(0.0058, 0.0217)</td>
+<td style="text-align: left;">(3e-04, 0.0273)</td>
+<td style="text-align: left;">(-0.0023, 0.0299)</td>
+<td style="text-align: left;">(-0.0073, 0.0351)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Northern Indian</td>
+<td style="text-align: left;">Hurricanes</td>
+<td style="text-align: left;">(0.0132, 0.0322)</td>
+<td style="text-align: left;">(0.0066, 0.039)</td>
+<td style="text-align: left;">(0.0036, 0.0422)</td>
+<td style="text-align: left;">(-0.0023, 0.0486)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Northern Indian</td>
+<td style="text-align: left;">Major Freq</td>
+<td style="text-align: left;">(0.0209, 0.0471)</td>
+<td style="text-align: left;">(0.012, 0.0566)</td>
+<td style="text-align: left;">(0.008, 0.0612)</td>
+<td style="text-align: left;">(0, 0.0703)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Northern Indian</td>
+<td style="text-align: left;">Prop Major</td>
+<td style="text-align: left;">(0.0206, 0.0573)</td>
+<td style="text-align: left;">(0.0082, 0.0709)</td>
+<td style="text-align: left;">(0.0025, 0.0773)</td>
+<td style="text-align: left;">(-0.0085, 0.0903)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Northern Indian</td>
+<td style="text-align: left;">Intense Freq</td>
+<td style="text-align: left;">(0.0105, 0.0428)</td>
+<td style="text-align: left;">(-5e-04, 0.0547)</td>
+<td style="text-align: left;">(-0.0056, 0.0603)</td>
+<td style="text-align: left;">(-0.0155, 0.0716)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Northern Indian</td>
+<td style="text-align: left;">Prop Intense</td>
+<td style="text-align: left;">(-3e-04, 0.0397)</td>
+<td style="text-align: left;">(-0.0139, 0.0543)</td>
+<td style="text-align: left;">(-0.0202, 0.0613)</td>
+<td style="text-align: left;">(-0.0325, 0.0754)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Southern Indian</td>
+<td style="text-align: left;">Cyclone Freq</td>
+<td style="text-align: left;">(-0.0057, 0.001)</td>
+<td style="text-align: left;">(-0.008, 0.0034)</td>
+<td style="text-align: left;">(-0.0091, 0.0045)</td>
+<td style="text-align: left;">(-0.0113, 0.0066)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Southern Indian</td>
+<td style="text-align: left;">Hurricanes</td>
+<td style="text-align: left;">(-0.0015, 0.0061)</td>
+<td style="text-align: left;">(-0.0041, 0.0088)</td>
+<td style="text-align: left;">(-0.0054, 0.01)</td>
+<td style="text-align: left;">(-0.0078, 0.0125)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Southern Indian</td>
+<td style="text-align: left;">Major Freq</td>
+<td style="text-align: left;">(0.0058, 0.0161)</td>
+<td style="text-align: left;">(0.0022, 0.0197)</td>
+<td style="text-align: left;">(6e-04, 0.0214)</td>
+<td style="text-align: left;">(-0.0027, 0.0248)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Southern Indian</td>
+<td style="text-align: left;">Prop Major</td>
+<td style="text-align: left;">(0.0168, 0.0307)</td>
+<td style="text-align: left;">(0.012, 0.0356)</td>
+<td style="text-align: left;">(0.0098, 0.0379)</td>
+<td style="text-align: left;">(0.0054, 0.0425)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Southern Indian</td>
+<td style="text-align: left;">Intense Freq</td>
+<td style="text-align: left;">(0.0152, 0.0283)</td>
+<td style="text-align: left;">(0.0106, 0.033)</td>
+<td style="text-align: left;">(0.0085, 0.0352)</td>
+<td style="text-align: left;">(0.0044, 0.0395)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Southern Indian</td>
+<td style="text-align: left;">Prop Intense</td>
+<td style="text-align: left;">(0.0258, 0.0414)</td>
+<td style="text-align: left;">(0.0204, 0.047)</td>
+<td style="text-align: left;">(0.0179, 0.0496)</td>
+<td style="text-align: left;">(0.013, 0.0548)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Southern Pacific</td>
+<td style="text-align: left;">Cyclone Freq</td>
+<td style="text-align: left;">(-0.0211, -0.0117)</td>
+<td style="text-align: left;">(-0.0244, -0.0085)</td>
+<td style="text-align: left;">(-0.0259, -0.007)</td>
+<td style="text-align: left;">(-0.0289, -0.004)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Southern Pacific</td>
+<td style="text-align: left;">Hurricanes</td>
+<td style="text-align: left;">(-0.0181, -0.0076)</td>
+<td style="text-align: left;">(-0.0218, -0.0039)</td>
+<td style="text-align: left;">(-0.0235, -0.0022)</td>
+<td style="text-align: left;">(-0.0269, 0.0011)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Southern Pacific</td>
+<td style="text-align: left;">Major Freq</td>
+<td style="text-align: left;">(-0.0112, 0.0034)</td>
+<td style="text-align: left;">(-0.0164, 0.0085)</td>
+<td style="text-align: left;">(-0.0188, 0.0109)</td>
+<td style="text-align: left;">(-0.0235, 0.0155)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Southern Pacific</td>
+<td style="text-align: left;">Prop Major</td>
+<td style="text-align: left;">(0.0114, 0.0305)</td>
+<td style="text-align: left;">(0.0048, 0.0373)</td>
+<td style="text-align: left;">(0.0017, 0.0405)</td>
+<td style="text-align: left;">(-0.0044, 0.0468)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Southern Pacific</td>
+<td style="text-align: left;">Intense Freq</td>
+<td style="text-align: left;">(0.0022, 0.0213)</td>
+<td style="text-align: left;">(-0.0044, 0.0281)</td>
+<td style="text-align: left;">(-0.0075, 0.0313)</td>
+<td style="text-align: left;">(-0.0136, 0.0376)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Southern Pacific</td>
+<td style="text-align: left;">Prop Intense</td>
+<td style="text-align: left;">(0.026, 0.0483)</td>
+<td style="text-align: left;">(0.0183, 0.0563)</td>
+<td style="text-align: left;">(0.0148, 0.0601)</td>
+<td style="text-align: left;">(0.0078, 0.0675)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="hursat-3" class="level3">
+<h3 class="anchored" data-anchor-id="hursat-3">HURSAT</h3>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Confidence Intervals of Differences of Point Estimates at different levels, Second Regime - First Regime</caption>
+<colgroup>
+<col style="width: 19%">
+<col style="width: 11%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Basin</th>
+<th style="text-align: left;">Response</th>
+<th style="text-align: left;">CI67</th>
+<th style="text-align: left;">CI90</th>
+<th style="text-align: left;">CI95</th>
+<th style="text-align: left;">CI99</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Global</td>
+<td style="text-align: left;">Cyclone Freq</td>
+<td style="text-align: left;">(-0.008, -0.0046)</td>
+<td style="text-align: left;">(-0.0092, -0.0034)</td>
+<td style="text-align: left;">(-0.0097, -0.0028)</td>
+<td style="text-align: left;">(-0.0108, -0.0017)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Global</td>
+<td style="text-align: left;">Hurricanes</td>
+<td style="text-align: left;">(-0.0056, -0.0017)</td>
+<td style="text-align: left;">(-0.007, -4e-04)</td>
+<td style="text-align: left;">(-0.0076, 3e-04)</td>
+<td style="text-align: left;">(-0.0088, 0.0015)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Global</td>
+<td style="text-align: left;">Major Freq</td>
+<td style="text-align: left;">(-0.0038, 9e-04)</td>
+<td style="text-align: left;">(-0.0054, 0.0025)</td>
+<td style="text-align: left;">(-0.0062, 0.0032)</td>
+<td style="text-align: left;">(-0.0076, 0.0047)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Global</td>
+<td style="text-align: left;">Prop Major</td>
+<td style="text-align: left;">(0.0072, 0.0141)</td>
+<td style="text-align: left;">(0.0048, 0.0166)</td>
+<td style="text-align: left;">(0.0036, 0.0177)</td>
+<td style="text-align: left;">(0.0014, 0.0199)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Global</td>
+<td style="text-align: left;">Intense Freq</td>
+<td style="text-align: left;">(-7e-04, 0.005)</td>
+<td style="text-align: left;">(-0.0027, 0.007)</td>
+<td style="text-align: left;">(-0.0036, 0.008)</td>
+<td style="text-align: left;">(-0.0054, 0.0098)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Global</td>
+<td style="text-align: left;">Prop Intense</td>
+<td style="text-align: left;">(0.0098, 0.017)</td>
+<td style="text-align: left;">(0.0073, 0.0196)</td>
+<td style="text-align: left;">(0.0061, 0.0208)</td>
+<td style="text-align: left;">(0.0038, 0.0231)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">North Atlantic</td>
+<td style="text-align: left;">Cyclone Freq</td>
+<td style="text-align: left;">(0.0145, 0.0258)</td>
+<td style="text-align: left;">(0.0106, 0.0298)</td>
+<td style="text-align: left;">(0.0088, 0.0317)</td>
+<td style="text-align: left;">(0.0052, 0.0354)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">North Atlantic</td>
+<td style="text-align: left;">Hurricanes</td>
+<td style="text-align: left;">(0.0135, 0.0251)</td>
+<td style="text-align: left;">(0.0094, 0.0292)</td>
+<td style="text-align: left;">(0.0075, 0.0312)</td>
+<td style="text-align: left;">(0.0039, 0.035)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">North Atlantic</td>
+<td style="text-align: left;">Major Freq</td>
+<td style="text-align: left;">(0.0172, 0.0314)</td>
+<td style="text-align: left;">(0.0122, 0.0365)</td>
+<td style="text-align: left;">(0.01, 0.0389)</td>
+<td style="text-align: left;">(0.0055, 0.0435)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">North Atlantic</td>
+<td style="text-align: left;">Prop Major</td>
+<td style="text-align: left;">(1e-04, 0.025)</td>
+<td style="text-align: left;">(-0.0086, 0.0338)</td>
+<td style="text-align: left;">(-0.0126, 0.0379)</td>
+<td style="text-align: left;">(-0.0206, 0.046)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">North Atlantic</td>
+<td style="text-align: left;">Intense Freq</td>
+<td style="text-align: left;">(0.0224, 0.0406)</td>
+<td style="text-align: left;">(0.0162, 0.0472)</td>
+<td style="text-align: left;">(0.0133, 0.0502)</td>
+<td style="text-align: left;">(0.0077, 0.0563)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">North Atlantic</td>
+<td style="text-align: left;">Prop Intense</td>
+<td style="text-align: left;">(0.0087, 0.0335)</td>
+<td style="text-align: left;">(1e-04, 0.0424)</td>
+<td style="text-align: left;">(-0.0038, 0.0465)</td>
+<td style="text-align: left;">(-0.0116, 0.0548)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Eastern North Pacific</td>
+<td style="text-align: left;">Cyclone Freq</td>
+<td style="text-align: left;">(-0.0127, -0.005)</td>
+<td style="text-align: left;">(-0.0154, -0.0023)</td>
+<td style="text-align: left;">(-0.0167, -0.001)</td>
+<td style="text-align: left;">(-0.0192, 0.0015)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Eastern North Pacific</td>
+<td style="text-align: left;">Hurricanes</td>
+<td style="text-align: left;">(-0.0128, -0.0048)</td>
+<td style="text-align: left;">(-0.0157, -0.002)</td>
+<td style="text-align: left;">(-0.017, -7e-04)</td>
+<td style="text-align: left;">(-0.0196, 0.0019)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Eastern North Pacific</td>
+<td style="text-align: left;">Major Freq</td>
+<td style="text-align: left;">(-0.0098, 1e-04)</td>
+<td style="text-align: left;">(-0.0132, 0.0036)</td>
+<td style="text-align: left;">(-0.0148, 0.0052)</td>
+<td style="text-align: left;">(-0.018, 0.0083)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Eastern North Pacific</td>
+<td style="text-align: left;">Prop Major</td>
+<td style="text-align: left;">(0.0021, 0.0177)</td>
+<td style="text-align: left;">(-0.0033, 0.0232)</td>
+<td style="text-align: left;">(-0.0058, 0.0258)</td>
+<td style="text-align: left;">(-0.0107, 0.0308)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Eastern North Pacific</td>
+<td style="text-align: left;">Intense Freq</td>
+<td style="text-align: left;">(-0.0116, 3e-04)</td>
+<td style="text-align: left;">(-0.0157, 0.0044)</td>
+<td style="text-align: left;">(-0.0177, 0.0063)</td>
+<td style="text-align: left;">(-0.0215, 0.0101)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Eastern North Pacific</td>
+<td style="text-align: left;">Prop Intense</td>
+<td style="text-align: left;">(-0.0024, 0.0129)</td>
+<td style="text-align: left;">(-0.0077, 0.0183)</td>
+<td style="text-align: left;">(-0.0102, 0.0208)</td>
+<td style="text-align: left;">(-0.0151, 0.0257)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Western North Pacific</td>
+<td style="text-align: left;">Cyclone Freq</td>
+<td style="text-align: left;">(-0.0106, -0.0047)</td>
+<td style="text-align: left;">(-0.0127, -0.0026)</td>
+<td style="text-align: left;">(-0.0137, -0.0017)</td>
+<td style="text-align: left;">(-0.0156, 2e-04)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Western North Pacific</td>
+<td style="text-align: left;">Hurricanes</td>
+<td style="text-align: left;">(-0.0096, -0.0029)</td>
+<td style="text-align: left;">(-0.0119, -6e-04)</td>
+<td style="text-align: left;">(-0.013, 5e-04)</td>
+<td style="text-align: left;">(-0.0151, 0.0026)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Western North Pacific</td>
+<td style="text-align: left;">Major Freq</td>
+<td style="text-align: left;">(-0.011, -0.0035)</td>
+<td style="text-align: left;">(-0.0137, -8e-04)</td>
+<td style="text-align: left;">(-0.0149, 4e-04)</td>
+<td style="text-align: left;">(-0.0174, 0.0028)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Western North Pacific</td>
+<td style="text-align: left;">Prop Major</td>
+<td style="text-align: left;">(-0.0051, 0.0072)</td>
+<td style="text-align: left;">(-0.0095, 0.0116)</td>
+<td style="text-align: left;">(-0.0115, 0.0136)</td>
+<td style="text-align: left;">(-0.0154, 0.0176)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Western North Pacific</td>
+<td style="text-align: left;">Intense Freq</td>
+<td style="text-align: left;">(-0.0077, 0.0014)</td>
+<td style="text-align: left;">(-0.0109, 0.0046)</td>
+<td style="text-align: left;">(-0.0123, 0.0061)</td>
+<td style="text-align: left;">(-0.0152, 0.009)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Western North Pacific</td>
+<td style="text-align: left;">Prop Intense</td>
+<td style="text-align: left;">(0.0021, 0.0143)</td>
+<td style="text-align: left;">(-0.0022, 0.0186)</td>
+<td style="text-align: left;">(-0.0042, 0.0205)</td>
+<td style="text-align: left;">(-0.0081, 0.0245)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Northern Indian</td>
+<td style="text-align: left;">Cyclone Freq</td>
+<td style="text-align: left;">(-0.004, 0.0125)</td>
+<td style="text-align: left;">(-0.0097, 0.0183)</td>
+<td style="text-align: left;">(-0.0124, 0.021)</td>
+<td style="text-align: left;">(-0.0177, 0.0263)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Northern Indian</td>
+<td style="text-align: left;">Hurricanes</td>
+<td style="text-align: left;">(0.0036, 0.0254)</td>
+<td style="text-align: left;">(-0.0039, 0.0332)</td>
+<td style="text-align: left;">(-0.0074, 0.0368)</td>
+<td style="text-align: left;">(-0.0143, 0.044)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Northern Indian</td>
+<td style="text-align: left;">Major Freq</td>
+<td style="text-align: left;">(0.0041, 0.0352)</td>
+<td style="text-align: left;">(-0.0066, 0.0464)</td>
+<td style="text-align: left;">(-0.0116, 0.0517)</td>
+<td style="text-align: left;">(-0.0214, 0.0624)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Northern Indian</td>
+<td style="text-align: left;">Prop Major</td>
+<td style="text-align: left;">(0.0036, 0.0416)</td>
+<td style="text-align: left;">(-0.0093, 0.0555)</td>
+<td style="text-align: left;">(-0.0153, 0.0622)</td>
+<td style="text-align: left;">(-0.0271, 0.0754)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Northern Indian</td>
+<td style="text-align: left;">Intense Freq</td>
+<td style="text-align: left;">(0.0222, 0.0708)</td>
+<td style="text-align: left;">(0.0063, 0.0896)</td>
+<td style="text-align: left;">(-0.001, 0.0988)</td>
+<td style="text-align: left;">(-0.0152, 0.1175)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Northern Indian</td>
+<td style="text-align: left;">Prop Intense</td>
+<td style="text-align: left;">(0.0251, 0.0813)</td>
+<td style="text-align: left;">(0.0072, 0.1038)</td>
+<td style="text-align: left;">(-9e-04, 0.1148)</td>
+<td style="text-align: left;">(-0.0166, 0.1377)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Southern Indian</td>
+<td style="text-align: left;">Cyclone Freq</td>
+<td style="text-align: left;">(-0.0099, -0.0024)</td>
+<td style="text-align: left;">(-0.0126, 2e-04)</td>
+<td style="text-align: left;">(-0.0138, 0.0014)</td>
+<td style="text-align: left;">(-0.0162, 0.0038)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Southern Indian</td>
+<td style="text-align: left;">Hurricanes</td>
+<td style="text-align: left;">(-0.0067, 0.0026)</td>
+<td style="text-align: left;">(-0.01, 0.0059)</td>
+<td style="text-align: left;">(-0.0116, 0.0075)</td>
+<td style="text-align: left;">(-0.0146, 0.0104)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Southern Indian</td>
+<td style="text-align: left;">Major Freq</td>
+<td style="text-align: left;">(-0.0012, 0.0103)</td>
+<td style="text-align: left;">(-0.0052, 0.0144)</td>
+<td style="text-align: left;">(-0.0071, 0.0163)</td>
+<td style="text-align: left;">(-0.0107, 0.02)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Southern Indian</td>
+<td style="text-align: left;">Prop Major</td>
+<td style="text-align: left;">(0.0127, 0.0288)</td>
+<td style="text-align: left;">(0.0071, 0.0344)</td>
+<td style="text-align: left;">(0.0045, 0.0371)</td>
+<td style="text-align: left;">(-6e-04, 0.0423)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Southern Indian</td>
+<td style="text-align: left;">Intense Freq</td>
+<td style="text-align: left;">(0.0025, 0.0177)</td>
+<td style="text-align: left;">(-0.0028, 0.0231)</td>
+<td style="text-align: left;">(-0.0053, 0.0256)</td>
+<td style="text-align: left;">(-0.0101, 0.0306)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Southern Indian</td>
+<td style="text-align: left;">Prop Intense</td>
+<td style="text-align: left;">(0.0144, 0.0329)</td>
+<td style="text-align: left;">(0.008, 0.0394)</td>
+<td style="text-align: left;">(0.0051, 0.0425)</td>
+<td style="text-align: left;">(-8e-04, 0.0485)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Southern Pacific</td>
+<td style="text-align: left;">Cyclone Freq</td>
+<td style="text-align: left;">(-0.0268, -0.0171)</td>
+<td style="text-align: left;">(-0.0302, -0.0137)</td>
+<td style="text-align: left;">(-0.0318, -0.0121)</td>
+<td style="text-align: left;">(-0.035, -0.0091)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Southern Pacific</td>
+<td style="text-align: left;">Hurricanes</td>
+<td style="text-align: left;">(-0.0221, -0.0104)</td>
+<td style="text-align: left;">(-0.0263, -0.0063)</td>
+<td style="text-align: left;">(-0.0282, -0.0044)</td>
+<td style="text-align: left;">(-0.032, -6e-04)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Southern Pacific</td>
+<td style="text-align: left;">Major Freq</td>
+<td style="text-align: left;">(-0.0225, -0.0078)</td>
+<td style="text-align: left;">(-0.0277, -0.0027)</td>
+<td style="text-align: left;">(-0.0301, -3e-04)</td>
+<td style="text-align: left;">(-0.0349, 0.0043)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Southern Pacific</td>
+<td style="text-align: left;">Prop Major</td>
+<td style="text-align: left;">(0.0022, 0.0217)</td>
+<td style="text-align: left;">(-0.0047, 0.0287)</td>
+<td style="text-align: left;">(-0.0079, 0.0319)</td>
+<td style="text-align: left;">(-0.0141, 0.0382)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Southern Pacific</td>
+<td style="text-align: left;">Intense Freq</td>
+<td style="text-align: left;">(-0.0161, 0.0018)</td>
+<td style="text-align: left;">(-0.0224, 0.0081)</td>
+<td style="text-align: left;">(-0.0253, 0.011)</td>
+<td style="text-align: left;">(-0.0311, 0.0167)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Southern Pacific</td>
+<td style="text-align: left;">Prop Intense</td>
+<td style="text-align: left;">(0.0101, 0.0316)</td>
+<td style="text-align: left;">(0.0027, 0.0392)</td>
+<td style="text-align: left;">(-8e-04, 0.0427)</td>
+<td style="text-align: left;">(-0.0076, 0.0497)</td>
 </tr>
 </tbody>
 </table>

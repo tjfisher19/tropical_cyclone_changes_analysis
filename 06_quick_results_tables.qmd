@@ -120,3 +120,31 @@ hursat_key_results |>
   pivot_wider(id_cols=Basin, names_from = Series, values_from = Output) |>
   knitr::kable(caption="Generalized Linear Model Findings, reporting the regression coefficient (the estimated beta term), the p-value for two-sided LRT for a significant coefficient (and the FDR adjusted p-value)")
 ```
+
+## Confidence Intervals
+
+Here, we report confidence intervals on the Poisson and Logistic regression trend coefficients.
+
+### IBTrACS
+
+```{r, echo=FALSE}
+ibtracs_confint |>
+  mutate( CI67 = paste0("(", round(lo0.67, 4), ", ", round(hi0.67, 4), ")"),
+          CI90 = paste0("(", round(lo0.9, 4), ", ", round(hi0.9, 4), ")"),
+          CI95 = paste0("(", round(lo0.95, 4), ", ", round(hi0.95, 4), ")"),
+          CI99 = paste0("(", round(lo0.99, 4), ", ", round(hi0.99, 4), ")") ) |>
+  dplyr::select(Basin, Response, CI67, CI90, CI95, CI99) |>
+  knitr::kable(caption="Confidence Intervals of Differences of Point Estimates at different levels, Second Regime - First Regime")
+```
+
+### HURSAT
+
+```{r, echo=FALSE}
+hursat_confint |>
+  mutate( CI67 = paste0("(", round(lo0.67, 4), ", ", round(hi0.67, 4), ")"),
+          CI90 = paste0("(", round(lo0.9, 4), ", ", round(hi0.9, 4), ")"),
+          CI95 = paste0("(", round(lo0.95, 4), ", ", round(hi0.95, 4), ")"),
+          CI99 = paste0("(", round(lo0.99, 4), ", ", round(hi0.99, 4), ")") ) |>
+  dplyr::select(Basin, Response, CI67, CI90, CI95, CI99) |>
+  knitr::kable(caption="Confidence Intervals of Differences of Point Estimates at different levels, Second Regime - First Regime")
+```
